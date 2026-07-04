@@ -7,6 +7,8 @@
   :dependencies [[org.clojure/clojure "1.12.2"]
                  [nomos-maths "0.2.1"]
                  [nomos-topology "0.1.0"]]
+  :plugins       [[lein-shell "0.5.0"]]
+  :aliases       {"lint.reuse" ["shell" "reuse" "lint"]}
   :source-paths  ["src"]
   :test-paths    ["test"]
   :target-path   "target"

@@ -1,0 +1,25 @@
+version = 1
+SPDX-PackageName = "alembic"
+SPDX-PackageSupplier = "rodgert@twrodgers.com"
+SPDX-PackageDownloadLocation = "https://github.com/nomos-studio/alembic"
+
+# Clojure source — SPDX-License-Identifier already inline; aggregate adds copyright.
+[[annotations]]
+path = ["src/**", "test/**", "examples/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025-2026 nomos-studio contributors"
+SPDX-License-Identifier = "EPL-2.0"
+
+# C++ bridge — SPDX-License-Identifier already inline
+[[annotations]]
+path = "cpp/**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025-2026 nomos-studio contributors"
+SPDX-License-Identifier = "EPL-2.0"
+
+# Project metadata and config files
+[[annotations]]
+path = ["project.clj", "README.md", "CHANGELOG.md", ".gitignore", "scripts/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025-2026 nomos-studio contributors"
+SPDX-License-Identifier = "EPL-2.0"
