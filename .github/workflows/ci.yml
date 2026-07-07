@@ -18,6 +18,16 @@ jobs:
         os: [ubuntu-latest, macos-latest]
     steps:
       - uses: actions/checkout@v4
+        with:
+          path: alembic
+      - uses: actions/checkout@v4
+        with:
+          repository: nomos-studio/nomos-maths
+          path: nomos-maths
+      - uses: actions/checkout@v4
+        with:
+          repository: nomos-studio/nomos-topology
+          path: nomos-topology
       - name: Set up Java 21 (Temurin)
         uses: actions/setup-java@v4
         with:
@@ -27,11 +37,18 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('project.clj') }}
+          key: ${{ runner.os }}-maven-${{ hashFiles('alembic/project.clj', 'nomos-maths/project.clj', 'nomos-topology/project.clj') }}
           restore-keys: ${{ runner.os }}-maven-
       - name: Install Leiningen
         uses: DeLaGuardo/setup-clojure@13.6.0
         with:
           lein: latest
+      - name: Install nomos-maths
+        run: lein install
+        working-directory: nomos-maths
+      - name: Install nomos-topology
+        run: lein install
+        working-directory: nomos-topology
       - name: Run test suite
         run: lein test
+        working-directory: alembic
