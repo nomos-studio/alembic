@@ -43,6 +43,12 @@ jobs:
         uses: DeLaGuardo/setup-clojure@13.6.0
         with:
           lein: latest
+      - name: Install Faust (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get install -y faust
+      - name: Install Faust (macOS)
+        if: runner.os == 'macOS'
+        run: brew install faust
       - name: Install nomos-maths
         run: lein install
         working-directory: nomos-maths
