@@ -45,7 +45,11 @@ jobs:
           lein: latest
       - name: Install Faust (Linux)
         if: runner.os == 'Linux'
-        run: sudo apt-get install -y faust
+        run: |
+          sudo apt-get install -y faust
+          curl -sL https://github.com/grame-cncm/faust/releases/download/2.85.9/faust-2.85.9.tar.gz \
+            | sudo tar -xz -C /usr/share/faust/ --wildcards --strip-components=2 \
+              'faust-2.85.9/libraries/*.lib'
       - name: Install Faust (macOS)
         if: runner.os == 'macOS'
         run: brew install faust
