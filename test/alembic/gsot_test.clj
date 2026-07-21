@@ -70,7 +70,11 @@
             [examples.gsot.49-sigmoid-waveshaping]
             [examples.gsot.50-sigmoid-gsot]
             ;; Chapter 3 — Enveloped sigmoid waveshaping (p.86)
-            [examples.gsot.51-sigmoid-enveloped]))
+            [examples.gsot.51-sigmoid-enveloped]
+            ;; Chapter 3 — Normalized sigmoids as unit shapers (p.87)
+            [examples.gsot.52-unit-tanh]
+            ;; Chapter 3 — Full set of normalized sigmoid unit shapers (p.88)
+            [examples.gsot.53-unit-sigmoids]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -314,3 +318,15 @@
 (deftest gsot-51-sigmoid-enveloped
   (testing "p.86 bipolar_waveshaping_sigmoids_enveloped — wet/dry blend via envelope input"
     (check examples.gsot.51-sigmoid-enveloped/sigmoids-enveloped)))
+
+;; ---------------------------------------------------------------------------
+;; Chapter 3 — Normalized sigmoids as unit shapers (p.87)
+;; ---------------------------------------------------------------------------
+
+(deftest gsot-52-unit-tanh
+  (testing "p.87 go.unit.tanh.gendsp — normalized tanh as unit shaper [0,1]->[0,1]"
+    (check examples.gsot.52-unit-tanh/unit-tanh)))
+
+(deftest gsot-53-unit-sigmoids
+  (testing "p.88 go.unit.{logistic,sigmoid2,gundermann,ata,softclip} — normalized sigmoid unit shapers"
+    (check examples.gsot.53-unit-sigmoids/unit-sigmoids)))
