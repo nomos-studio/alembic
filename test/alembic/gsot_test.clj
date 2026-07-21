@@ -68,7 +68,9 @@
             [examples.gsot.48-chebyshev-waveshaping]
             ;; Chapter 3 — Sigmoid waveshaping (p.84)
             [examples.gsot.49-sigmoid-waveshaping]
-            [examples.gsot.50-sigmoid-gsot]))
+            [examples.gsot.50-sigmoid-gsot]
+            ;; Chapter 3 — Enveloped sigmoid waveshaping (p.86)
+            [examples.gsot.51-sigmoid-enveloped]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -304,3 +306,11 @@
 (deftest gsot-50-sigmoid-gsot
   (testing "pp.84-85 go.sigmoid.{tanh,logistic,guderman,atan,softclip} + go.sigmoid2"
     (check examples.gsot.50-sigmoid-gsot/sigmoid-gsot)))
+
+;; ---------------------------------------------------------------------------
+;; Chapter 3 — Enveloped sigmoid waveshaping (p.86)
+;; ---------------------------------------------------------------------------
+
+(deftest gsot-51-sigmoid-enveloped
+  (testing "p.86 bipolar_waveshaping_sigmoids_enveloped — wet/dry blend via envelope input"
+    (check examples.gsot.51-sigmoid-enveloped/sigmoids-enveloped)))
