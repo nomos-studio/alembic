@@ -52,7 +52,8 @@
             [examples.gsot.38-lfo-multi]
             ;; Chapter 3 — Smooth stepped interpolation (p.70)
             [examples.gsot.39-smooth-stepped]
-            [examples.gsot.40-smooth-stepped-shaped]))
+            [examples.gsot.40-smooth-stepped-shaped]
+            [examples.gsot.41-interpolating-lfo]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -224,3 +225,7 @@
 (deftest gsot-40-smooth-stepped-shaped
   (testing "p.70 shaped-stepped-noise — raised-cosine blend replaces linear mix factor"
     (check examples.gsot.40-smooth-stepped-shaped/smooth-stepped-shaped)))
+
+(deftest gsot-41-interpolating-lfo
+  (testing "Chapter 3 go.lfo — skewed triangle, arc-blend shape, symmetry, bipolar"
+    (check examples.gsot.41-interpolating-lfo/interpolating-lfo)))
