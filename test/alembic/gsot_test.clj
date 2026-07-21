@@ -46,7 +46,8 @@
             [examples.gsot.33-unit-logistic]
             [examples.gsot.34-unit-ease-exp]
             [examples.gsot.35-unit-welch]
-            [examples.gsot.36-unit-tukey]))
+            [examples.gsot.36-unit-tukey]
+            [examples.gsot.37-ramp-swing]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -198,3 +199,7 @@
 (deftest gsot-36-unit-tukey
   (testing "p.58 go.unit.tukey — cosine-tapered window with flat top"
     (check examples.gsot.36-unit-tukey/unit-tukey)))
+
+(deftest gsot-37-ramp-swing
+  (testing "pp.59-61 ramp.swing.maxpat — go.unit.kink applied to beat ramp"
+    (check examples.gsot.37-ramp-swing/ramp-swing)))
