@@ -67,7 +67,8 @@
             ;; Chapter 3 — Audio waveshaping / polynomial shapers (p.81)
             [examples.gsot.48-chebyshev-waveshaping]
             ;; Chapter 3 — Sigmoid waveshaping (p.84)
-            [examples.gsot.49-sigmoid-waveshaping]))
+            [examples.gsot.49-sigmoid-waveshaping]
+            [examples.gsot.50-sigmoid-gsot]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -299,3 +300,7 @@
 (deftest gsot-49-sigmoid-waveshaping
   (testing "pp.84-85 sigmoid waveshaping — tanh, Padé, sqrt, hard clip with drive param"
     (check examples.gsot.49-sigmoid-waveshaping/sigmoid-waveshaping)))
+
+(deftest gsot-50-sigmoid-gsot
+  (testing "pp.84-85 go.sigmoid.{tanh,logistic,guderman,atan,softclip} + go.sigmoid2"
+    (check examples.gsot.50-sigmoid-gsot/sigmoid-gsot)))
