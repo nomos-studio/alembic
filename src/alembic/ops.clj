@@ -89,6 +89,8 @@
    :hard-clip   [:in]
    ;; :wave-fold — triangle wavefolder; folds input > 1 or < −1 back into [−1, 1]
    :wave-fold   [:in]
+   ;; :floor — round down to nearest integer (Faust floor()); rate follows input
+   :floor       [:in]
    ;; :abs — absolute value; full-wave rectify; rate follows input
    :abs         [:in]
    ;; :sqrt — square root; rate follows input; undefined for negative values
@@ -129,6 +131,21 @@
    ;; :vco — anti-aliased oscillator
    ;;   opts: {:shape :saw|:sine|:square|:triangle|:pulse  :pw 0.5  :sync false}
    :vco         [:freq]
+   ;; :accum — running sum accumulator with reset; the gen~ `accum` analog.
+   ;;   in     signal added to the running total each sample
+   ;;   reset  when > 0.5, clears the accumulator to 0.0 on that sample
+   ;;   To pause without resetting: gate the :in signal before the accum node,
+   ;;   e.g. (accum (mul in play-gate) reset).
+   :accum       [:in :reset]
+   ;; :sample-rate — host sample rate as a block-rate constant; lowers to ma.SR.
+   ;;   No inlets.  Use to convert sample counts to seconds: (div count (sample-rate)).
+   :sample-rate []
+   ;; :audio-file — runtime-loaded audio file; gen~ `buffer~` + `peek` analog.
+   ;;   opts: {:path "..." :channel 0}
+   ;;   path     path to audio file, resolved by CLAP host at plugin init
+   ;;   channel  zero-based channel index for multi-channel files (default 0)
+   ;;   index    sample position as float; int-cast by the emitter
+   :audio-file  [:index]
    ;; :counter — clocked integer counter; carry output requires multi-output extension
    ;;   opts: {:max 16 :dir :up|:down :wrap true|false}
    :counter     [:clock :reset]
@@ -200,8 +217,13 @@
    :delay       :sample   ; delay line — sample-indexed
    :allpass     :sample   ; de.apf — delay-based
    :buffer      :sample   ; rwtable — sample-indexed
+   :accum       :sample   ; ~ _ feedback
+   :audio-file  :sample   ; soundfile read is sample-indexed
+   :sample-rate :block
    :counter     :sample   ; edge detection via '
    ;; ---- utility ops — stateless, rate-polymorphic ----
+   ;; :floor — round down to nearest integer; stateless, rate-polymorphic
+   :floor       :polymorphic
    ;; :abs — absolute value; full-wave rectify when applied to audio
    :abs         :polymorphic
    ;; :sqrt — square root; undefined for negative inputs (no guarding applied)

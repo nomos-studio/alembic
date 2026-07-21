@@ -87,7 +87,7 @@
 
 (defn- node-rhs
   "Return the Faust right-hand side string for a single node."
-  [node params-schema]
+  [id node params-schema]
   (let [i #(node-ident (get (:inputs node) %))]
     (case (:op node)
       :const    (fmt-num (:value node))
@@ -262,6 +262,12 @@
                        (throw (ex-info (str "Unknown :vco :shape — expected :sine :saw "
                                             ":square :triangle :pulse, got: " shape)
                                        {:shape shape}))))
+      ;; :sample-rate — host sample rate as a block-rate constant (ma.SR).
+      :sample-rate "float(ma.SR)"
+      ;; :accum — running sum accumulator; gen~ `accum` analog.
+      ;; select2(rst > 0.5, 0.0, _ + in): when rst fires, clear to 0; else accumulate.
+      ;; ~ _ feeds the output back to the input with a 1-sample delay.
+      :accum       (format "(select2(%s > 0.5, 0.0, _ + %s) ~ _)" (i :reset) (i :in))
       ;; :counter — clock-gated integer counter; dir and wrap from compile-time opts.
       ;; Edge detection: rising edge of :clock → increment/decrement.
       ;; :carry output requires multi-output support; emits count only for now.
@@ -304,6 +310,22 @@
                                                          " — expected :wrap :clamp :fold")
                                                     {:mode mode})))]
                      (format "rdtable(%d, waveform{%s}, %s)" n data-str idx-expr))
+      ;; :audio-file — runtime-loaded audio file; gen~ `buffer~` + `peek` analog.
+      ;; Faust soundfile(label, nCh)(part, ridx) → (ch0…chN-1, size, sr).
+      ;; We declare with nCh = channel+1, route to keep only the selected channel,
+      ;; discard size and sr.  Path is resolved by the CLAP host at plugin init.
+      :audio-file
+      (let [{:keys [path channel] :or {channel 0}} (:opts node)
+            _ (when (nil? path)
+                (throw (ex-info ":audio-file requires :path in opts"
+                                {:opts (:opts node)})))
+            n-ch    (inc channel)
+            sf-name (str "sf_" (node-ident id))
+            idx     (i :index)
+            ;; (!, !, ... _, !, !) — cut channels before selection, keep selected, cut size+sr
+            route   (str/join ", " (concat (repeat channel "!") ["_"] ["!" "!"]))]
+        (format "((%s(0, int(max(0.0, %s)))) : (%s))\n  with {\n    %s = soundfile(\"%s[url:{'%s'}]\", %d);\n  }"
+                sf-name idx route sf-name sf-name path n-ch))
       ;; ba.selectn(n, index, in0, in1, …) — N-to-1 mux; index is int
       :select      (let [n    (get (:opts node) :n 2)
                          sigs (str/join ", " (map #(i (keyword (str "in-" %))) (range n)))]
@@ -329,6 +351,7 @@
       ;; Secondary port of :comparator — logical inverse of the primary gate
       :comparator-inv (format "(1.0 - %s)" (i :source))
       ;; Utility ops — stateless, rate-polymorphic
+      :floor       (format "floor(%s)" (i :in))
       :abs         (format "abs(%s)" (i :in))
       :sqrt        (format "sqrt(%s)" (i :in))
       ;; min/max: signal minimum / maximum; AND / OR gate on boolean signals
@@ -419,7 +442,7 @@
                                (let [node (get nodes id)]
                                  (when-not (= :audio-in (:op node))
                                    (str (node-ident id) " = "
-                                        (node-rhs node params)
+                                        (node-rhs id node params)
                                         ";"))))
                              order))
         proc      (let [sorted (sort-by :channel outputs)

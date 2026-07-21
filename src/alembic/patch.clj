@@ -67,6 +67,15 @@
               (swap! params assoc pname id)
               id)))
 
+        (= op 'const)
+        (let [value (first args)
+              _     (when-not (number? value)
+                      (throw (ex-info "const expects a number literal" {:got value})))
+              id    (next-id! counter)
+              node  {:id id :op :const :value value :rate :block}]
+          (swap! nodes assoc id node)
+          id)
+
         (= op 'faust)
         (let [src-str  (first args)
               inlet-map (when (and (> (count args) 1) (map? (second args)))
@@ -180,7 +189,15 @@
             expr    (if named? (nth form 2) (second form))
             src-id  (walk-expr expr state)
             ch      (if named?
-                      (semantic->channel sem)
+                      ;; Fixed semantic names keep their reserved channels.
+                      ;; Arbitrary names (e.g. :sound, :ramp) get sequential
+                      ;; channels from the same counter as unnamed outputs.
+                      (or (get semantic-channels sem)
+                          (when-let [[_ n] (re-matches #"out(\d+)" (name sem))]
+                            (+ 4 (Long/parseLong n)))
+                          (let [n @channel-counter]
+                            (swap! channel-counter inc)
+                            n))
                       (let [n @channel-counter]
                         (swap! channel-counter inc)
                         n))]
