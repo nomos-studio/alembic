@@ -65,7 +65,9 @@
             ;; Chapter 3 — Waveshaping bipolar signals (p.79)
             [examples.gsot.47-bipolar-waveshaping]
             ;; Chapter 3 — Audio waveshaping / polynomial shapers (p.81)
-            [examples.gsot.48-chebyshev-waveshaping]))
+            [examples.gsot.48-chebyshev-waveshaping]
+            ;; Chapter 3 — Sigmoid waveshaping (p.84)
+            [examples.gsot.49-sigmoid-waveshaping]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -289,3 +291,11 @@
 (deftest gsot-48-chebyshev-waveshaping
   (testing "pp.81-83 bipolar_waveshaping_chebyshev — T1..T7 via recurrence"
     (check examples.gsot.48-chebyshev-waveshaping/chebyshev-waveshaping)))
+
+;; ---------------------------------------------------------------------------
+;; Chapter 3 — Sigmoid waveshaping (p.84)
+;; ---------------------------------------------------------------------------
+
+(deftest gsot-49-sigmoid-waveshaping
+  (testing "pp.84-85 sigmoid waveshaping — tanh, Padé, sqrt, hard clip with drive param"
+    (check examples.gsot.49-sigmoid-waveshaping/sigmoid-waveshaping)))
