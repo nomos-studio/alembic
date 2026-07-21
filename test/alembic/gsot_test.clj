@@ -63,7 +63,9 @@
             [examples.gsot.45-window-fixed]
             [examples.gsot.46-window-parametric]
             ;; Chapter 3 — Waveshaping bipolar signals (p.79)
-            [examples.gsot.47-bipolar-waveshaping]))
+            [examples.gsot.47-bipolar-waveshaping]
+            ;; Chapter 3 — Audio waveshaping / polynomial shapers (p.81)
+            [examples.gsot.48-chebyshev-waveshaping]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -279,3 +281,11 @@
 (deftest gsot-47-bipolar-waveshaping
   (testing "pp.79-81 bipolar_waveshaping_unitshapers — symmetric (odd) and full-range mappings"
     (check examples.gsot.47-bipolar-waveshaping/bipolar-waveshaping)))
+
+;; ---------------------------------------------------------------------------
+;; Chapter 3 — Audio waveshaping / polynomial shapers (p.81)
+;; ---------------------------------------------------------------------------
+
+(deftest gsot-48-chebyshev-waveshaping
+  (testing "pp.81-83 bipolar_waveshaping_chebyshev — T1..T7 via recurrence"
+    (check examples.gsot.48-chebyshev-waveshaping/chebyshev-waveshaping)))
