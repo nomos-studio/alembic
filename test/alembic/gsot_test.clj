@@ -61,7 +61,9 @@
             [examples.gsot.44-easing-multi]
             ;; Chapter 3 — Window envelope functions (p.78)
             [examples.gsot.45-window-fixed]
-            [examples.gsot.46-window-parametric]))
+            [examples.gsot.46-window-parametric]
+            ;; Chapter 3 — Waveshaping bipolar signals (p.79)
+            [examples.gsot.47-bipolar-waveshaping]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -269,3 +271,11 @@
 (deftest gsot-46-window-parametric
   (testing "pp.78-79 trapezoid, tukey, plancktaper, gauss, raisedcosine — parametric window shapes"
     (check examples.gsot.46-window-parametric/window-parametric)))
+
+;; ---------------------------------------------------------------------------
+;; Chapter 3 — Waveshaping bipolar signals (p.79)
+;; ---------------------------------------------------------------------------
+
+(deftest gsot-47-bipolar-waveshaping
+  (testing "pp.79-81 bipolar_waveshaping_unitshapers — symmetric (odd) and full-range mappings"
+    (check examples.gsot.47-bipolar-waveshaping/bipolar-waveshaping)))
