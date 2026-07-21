@@ -53,7 +53,10 @@
             ;; Chapter 3 — Smooth stepped interpolation (p.70)
             [examples.gsot.39-smooth-stepped]
             [examples.gsot.40-smooth-stepped-shaped]
-            [examples.gsot.41-interpolating-lfo]))
+            [examples.gsot.41-interpolating-lfo]
+            ;; Chapter 3 — Glides and portamento (p.76)
+            [examples.gsot.42-portamento]
+            [examples.gsot.43-portamento-shaped]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -229,3 +232,15 @@
 (deftest gsot-41-interpolating-lfo
   (testing "Chapter 3 go.lfo — skewed triangle, arc-blend shape, symmetry, bipolar"
     (check examples.gsot.41-interpolating-lfo/interpolating-lfo)))
+
+;; ---------------------------------------------------------------------------
+;; Chapter 3 — Glides and portamento (p.76)
+;; ---------------------------------------------------------------------------
+
+(deftest gsot-42-portamento
+  (testing "pp.76-77 accum-change-template — linear glide on input change"
+    (check examples.gsot.42-portamento/portamento)))
+
+(deftest gsot-43-portamento-shaped
+  (testing "pp.76-77 smooth-stepped-noise — ease-exp shaped glide on input change"
+    (check examples.gsot.43-portamento-shaped/portamento-shaped)))
