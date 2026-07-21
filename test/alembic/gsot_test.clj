@@ -58,7 +58,10 @@
             [examples.gsot.42-portamento]
             [examples.gsot.43-portamento-shaped]
             ;; Chapter 3 — Easing functions (p.77)
-            [examples.gsot.44-easing-multi]))
+            [examples.gsot.44-easing-multi]
+            ;; Chapter 3 — Window envelope functions (p.78)
+            [examples.gsot.45-window-fixed]
+            [examples.gsot.46-window-parametric]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -254,3 +257,15 @@
 (deftest gsot-44-easing-multi
   (testing "pp.77-78 go.unit.ease.{pow,circle,exp,back,elastic,sine} — generalized easing structure"
     (check examples.gsot.44-easing-multi/easing-multi)))
+
+;; ---------------------------------------------------------------------------
+;; Chapter 3 — Window envelope functions (p.78)
+;; ---------------------------------------------------------------------------
+
+(deftest gsot-45-window-fixed
+  (testing "pp.78-79 hann, hamming, blackman, blackman-harris, blackman-nuttall, nuttall, flat-top, welch, parzen"
+    (check examples.gsot.45-window-fixed/window-fixed)))
+
+(deftest gsot-46-window-parametric
+  (testing "pp.78-79 trapezoid, tukey, plancktaper, gauss, raisedcosine — parametric window shapes"
+    (check examples.gsot.46-window-parametric/window-parametric)))
