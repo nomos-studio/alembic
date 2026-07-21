@@ -1,6 +1,6 @@
 ; SPDX-License-Identifier: EPL-2.0
 (ns alembic.gsot-test
-  "Validation suite for Alembic GSOT examples — Chapter 2, pp.22-39.
+  "Validation suite for Alembic GSOT examples — Chapter 2, pp.22-41.
 
   Every example must:
     1. emit-faust — produce a non-empty Faust DSP string
@@ -21,7 +21,14 @@
             [examples.gsot.09-phasor-bpm]
             [examples.gsot.10-phasor-loop-processing]
             [examples.gsot.11-phasor-beat-slicer]
-            [examples.gsot.12-ramp-from-bpm]))
+            [examples.gsot.12-ramp-from-bpm]
+            [examples.gsot.13-ramp-to-steps]
+            [examples.gsot.14-ramp-to-trig]
+            [examples.gsot.15-ramp-phase-shift]
+            [examples.gsot.16-ramp-rotate]
+            [examples.gsot.17-ramp-to-slope]
+            [examples.gsot.18-ramp-to-freq]
+            [examples.gsot.19-ramp-to-trig-gendsp]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -69,3 +76,31 @@
 (deftest gsot-12-ramp-from-bpm
   (testing "pp.37-39 ramp_from_bpm.maxpat + go.ramp.frombpm — clock multiplication"
     (check examples.gsot.12-ramp-from-bpm/ramp-from-bpm)))
+
+(deftest gsot-13-ramp-to-steps
+  (testing "p.39 go.ramp2steps — floor(x*n)/n staircase quantisation"
+    (check examples.gsot.13-ramp-to-steps/ramp-to-steps)))
+
+(deftest gsot-14-ramp-to-trig
+  (testing "pp.39-41 go.ramp2trig — trigger from ramp wrap discontinuity"
+    (check examples.gsot.14-ramp-to-trig/ramp-to-trig)))
+
+(deftest gsot-15-ramp-phase-shift
+  (testing "pp.41+ shifting ramps — phase rotation via offset + wrap"
+    (check examples.gsot.15-ramp-phase-shift/ramp-phase-shift)))
+
+(deftest gsot-16-ramp-rotate
+  (testing "pp.41+ go.ramp.rotate — named phase-rotation processor (audio-in form)"
+    (check examples.gsot.16-ramp-rotate/ramp-rotate)))
+
+(deftest gsot-17-ramp-to-slope
+  (testing "p.42 go.ramp2slope — conditioned delta; holds slope across wrap"
+    (check examples.gsot.17-ramp-to-slope/ramp-to-slope)))
+
+(deftest gsot-18-ramp-to-freq
+  (testing "p.43 go.ramp2freq — slope * samplerate → Hz"
+    (check examples.gsot.18-ramp-to-freq/ramp-to-freq)))
+
+(deftest gsot-19-ramp-to-trig-gendsp
+  (testing "pp.43-45 ramp_to_trig.maxpat + go.ramp2trig — processor form"
+    (check examples.gsot.19-ramp-to-trig-gendsp/ramp-to-trig-gendsp)))
