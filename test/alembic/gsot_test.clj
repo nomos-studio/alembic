@@ -56,7 +56,9 @@
             [examples.gsot.41-interpolating-lfo]
             ;; Chapter 3 — Glides and portamento (p.76)
             [examples.gsot.42-portamento]
-            [examples.gsot.43-portamento-shaped]))
+            [examples.gsot.43-portamento-shaped]
+            ;; Chapter 3 — Easing functions (p.77)
+            [examples.gsot.44-easing-multi]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -244,3 +246,11 @@
 (deftest gsot-43-portamento-shaped
   (testing "pp.76-77 smooth-stepped-noise — ease-exp shaped glide on input change"
     (check examples.gsot.43-portamento-shaped/portamento-shaped)))
+
+;; ---------------------------------------------------------------------------
+;; Chapter 3 — Easing functions (p.77)
+;; ---------------------------------------------------------------------------
+
+(deftest gsot-44-easing-multi
+  (testing "pp.77-78 go.unit.ease.{pow,circle,exp,back,elastic,sine} — generalized easing structure"
+    (check examples.gsot.44-easing-multi/easing-multi)))
