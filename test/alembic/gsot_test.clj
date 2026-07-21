@@ -51,7 +51,8 @@
             ;; Chapter 3 — From ramps to LFOs (p.69)
             [examples.gsot.38-lfo-multi]
             ;; Chapter 3 — Smooth stepped interpolation (p.70)
-            [examples.gsot.39-smooth-stepped]))
+            [examples.gsot.39-smooth-stepped]
+            [examples.gsot.40-smooth-stepped-shaped]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -219,3 +220,7 @@
 (deftest gsot-39-smooth-stepped
   (testing "p.70 smooth-stepped-template / linear-stepped-noise — phasor-driven lerp with history feedback"
     (check examples.gsot.39-smooth-stepped/smooth-stepped)))
+
+(deftest gsot-40-smooth-stepped-shaped
+  (testing "p.70 shaped-stepped-noise — raised-cosine blend replaces linear mix factor"
+    (check examples.gsot.40-smooth-stepped-shaped/smooth-stepped-shaped)))
