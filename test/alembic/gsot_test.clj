@@ -47,7 +47,9 @@
             [examples.gsot.34-unit-ease-exp]
             [examples.gsot.35-unit-welch]
             [examples.gsot.36-unit-tukey]
-            [examples.gsot.37-ramp-swing]))
+            [examples.gsot.37-ramp-swing]
+            ;; Chapter 3 — From ramps to LFOs (p.69)
+            [examples.gsot.38-lfo-multi]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -203,3 +205,11 @@
 (deftest gsot-37-ramp-swing
   (testing "pp.59-61 ramp.swing.maxpat — go.unit.kink applied to beat ramp"
     (check examples.gsot.37-ramp-swing/ramp-swing)))
+
+;; ---------------------------------------------------------------------------
+;; Chapter 3 — From ramps to LFOs (p.69)
+;; ---------------------------------------------------------------------------
+
+(deftest gsot-38-lfo-multi
+  (testing "p.69 go.lfo.multi.gendsp — all 11 unit shapers on one ramp, 11 outputs"
+    (check examples.gsot.38-lfo-multi/lfo-multi)))
