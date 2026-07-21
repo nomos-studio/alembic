@@ -49,7 +49,9 @@
             [examples.gsot.36-unit-tukey]
             [examples.gsot.37-ramp-swing]
             ;; Chapter 3 — From ramps to LFOs (p.69)
-            [examples.gsot.38-lfo-multi]))
+            [examples.gsot.38-lfo-multi]
+            ;; Chapter 3 — Smooth stepped interpolation (p.70)
+            [examples.gsot.39-smooth-stepped]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -213,3 +215,7 @@
 (deftest gsot-38-lfo-multi
   (testing "p.69 go.lfo.multi.gendsp — all 11 unit shapers on one ramp, 11 outputs"
     (check examples.gsot.38-lfo-multi/lfo-multi)))
+
+(deftest gsot-39-smooth-stepped
+  (testing "p.70 smooth-stepped-template / linear-stepped-noise — phasor-driven lerp with history feedback"
+    (check examples.gsot.39-smooth-stepped/smooth-stepped)))
