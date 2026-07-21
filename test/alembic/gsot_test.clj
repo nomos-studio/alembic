@@ -74,7 +74,12 @@
             ;; Chapter 3 — Normalized sigmoids as unit shapers (p.87)
             [examples.gsot.52-unit-tanh]
             ;; Chapter 3 — Full set of normalized sigmoid unit shapers (p.88)
-            [examples.gsot.53-unit-sigmoids]))
+            [examples.gsot.53-unit-sigmoids]
+            ;; Chapter 4 — Feel the noise (p.91)
+            [examples.gsot.54-noise-basic]
+            ;; Chapter 4 — Random range and random steps (p.93)
+            [examples.gsot.55-random-range]
+            [examples.gsot.56-random-steps]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -330,3 +335,19 @@
 (deftest gsot-53-unit-sigmoids
   (testing "p.88 go.unit.{logistic,sigmoid2,gundermann,ata,softclip} — normalized sigmoid unit shapers"
     (check examples.gsot.53-unit-sigmoids/unit-sigmoids)))
+
+;; ---------------------------------------------------------------------------
+;; Chapter 4 — Feel the noise (p.91)
+;; ---------------------------------------------------------------------------
+
+(deftest gsot-54-noise-basic
+  (testing "p.91 noise operator — white noise source, no audio-in, amplitude param"
+    (check examples.gsot.54-noise-basic/noise-basic)))
+
+(deftest gsot-55-random-range
+  (testing "p.93 random_range.maxpat — noise scaled to [lo,hi] via affine map"
+    (check examples.gsot.55-random-range/random-range)))
+
+(deftest gsot-56-random-steps
+  (testing "p.93 random_steps.maxpat — track-hold of range-scaled noise on trigger"
+    (check examples.gsot.56-random-steps/random-steps)))
