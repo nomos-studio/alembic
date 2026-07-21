@@ -1,6 +1,6 @@
 ; SPDX-License-Identifier: EPL-2.0
 (ns alembic.gsot-test
-  "Validation suite for Alembic GSOT examples — Chapter 2, pp.22-55.
+  "Validation suite for Alembic GSOT examples — Chapters 2-3, pp.22-58.
 
   Every example must:
     1. emit-faust — produce a non-empty Faust DSP string
@@ -34,7 +34,19 @@
             [examples.gsot.22-ramp-div-musical]
             [examples.gsot.23-ramp-bursts]
             [examples.gsot.24-ramp-bursts-to-trigs]
-            [examples.gsot.25-ramp-bursts-shaped]))
+            [examples.gsot.25-ramp-bursts-shaped]
+            ;; Chapter 3 — Unit shaping (p.58)
+            [examples.gsot.26-unit-triangle]
+            [examples.gsot.27-unit-trapezoid]
+            [examples.gsot.28-unit-kink]
+            [examples.gsot.29-unit-lfo]
+            [examples.gsot.30-unit-pow]
+            [examples.gsot.31-unit-arc]
+            [examples.gsot.32-unit-cubic]
+            [examples.gsot.33-unit-logistic]
+            [examples.gsot.34-unit-ease-exp]
+            [examples.gsot.35-unit-welch]
+            [examples.gsot.36-unit-tukey]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -138,3 +150,51 @@
 (deftest gsot-25-ramp-bursts-shaped
   (testing "p.55 go.ramp_bursts_shaped — amplitude-weighted burst ramp (Chapter 2 close)"
     (check examples.gsot.25-ramp-bursts-shaped/ramp-bursts-shaped)))
+
+;; ---------------------------------------------------------------------------
+;; Chapter 3 — Unit shaping (p.58)
+;; ---------------------------------------------------------------------------
+
+(deftest gsot-26-unit-triangle
+  (testing "p.58 go.unit.triangle — 1 - |2x-1|"
+    (check examples.gsot.26-unit-triangle/unit-triangle)))
+
+(deftest gsot-27-unit-trapezoid
+  (testing "p.58 go.unit.trapezoid — piecewise linear rise-hold-fall"
+    (check examples.gsot.27-unit-trapezoid/unit-trapezoid)))
+
+(deftest gsot-28-unit-kink
+  (testing "p.58 go.unit.kink — slope-change ramp with variable kink point"
+    (check examples.gsot.28-unit-kink/unit-kink)))
+
+(deftest gsot-29-unit-lfo
+  (testing "p.58 go.unit.lfo — 0.5*(1-cos(2π·x)) raised cosine"
+    (check examples.gsot.29-unit-lfo/unit-lfo)))
+
+(deftest gsot-30-unit-pow
+  (testing "p.58 go.unit.pow — x^p power-law curve"
+    (check examples.gsot.30-unit-pow/unit-pow)))
+
+(deftest gsot-31-unit-arc
+  (testing "p.58 go.unit.arc — sqrt(x*(2-x)) quarter-circle arc"
+    (check examples.gsot.31-unit-arc/unit-arc)))
+
+(deftest gsot-32-unit-cubic
+  (testing "p.58 go.unit.cubic — 3x²-2x³ smoothstep S-curve"
+    (check examples.gsot.32-unit-cubic/unit-cubic)))
+
+(deftest gsot-33-unit-logistic
+  (testing "p.58 go.unit.logistic — 1/(1+exp(-k(x-0.5))) sigmoid"
+    (check examples.gsot.33-unit-logistic/unit-logistic)))
+
+(deftest gsot-34-unit-ease-exp
+  (testing "p.58 go.unit.ease.exp — (exp(k·x)-1)/(exp(k)-1) exponential ease"
+    (check examples.gsot.34-unit-ease-exp/unit-ease-exp)))
+
+(deftest gsot-35-unit-welch
+  (testing "p.58 go.unit.welch — 4x(1-x) parabolic arch"
+    (check examples.gsot.35-unit-welch/unit-welch)))
+
+(deftest gsot-36-unit-tukey
+  (testing "p.58 go.unit.tukey — cosine-tapered window with flat top"
+    (check examples.gsot.36-unit-tukey/unit-tukey)))
