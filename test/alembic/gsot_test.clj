@@ -1,6 +1,6 @@
 ; SPDX-License-Identifier: EPL-2.0
 (ns alembic.gsot-test
-  "Validation suite for Alembic GSOT examples — Chapter 2, pp.22-41.
+  "Validation suite for Alembic GSOT examples — Chapter 2, pp.22-55.
 
   Every example must:
     1. emit-faust — produce a non-empty Faust DSP string
@@ -28,7 +28,13 @@
             [examples.gsot.16-ramp-rotate]
             [examples.gsot.17-ramp-to-slope]
             [examples.gsot.18-ramp-to-freq]
-            [examples.gsot.19-ramp-to-trig-gendsp]))
+            [examples.gsot.19-ramp-to-trig-gendsp]
+            [examples.gsot.20-ramp-div-simple]
+            [examples.gsot.21-ramp-div]
+            [examples.gsot.22-ramp-div-musical]
+            [examples.gsot.23-ramp-bursts]
+            [examples.gsot.24-ramp-bursts-to-trigs]
+            [examples.gsot.25-ramp-bursts-shaped]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -104,3 +110,31 @@
 (deftest gsot-19-ramp-to-trig-gendsp
   (testing "pp.43-45 ramp_to_trig.maxpat + go.ramp2trig — processor form"
     (check examples.gsot.19-ramp-to-trig-gendsp/ramp-to-trig-gendsp)))
+
+(deftest gsot-20-ramp-div-simple
+  (testing "p.46 go.ramp.div.simple — freq-detection division, free-running phasor"
+    (check examples.gsot.20-ramp-div-simple/ramp-div-simple)))
+
+(deftest gsot-21-ramp-div
+  (testing "p.47 go.ramp.div — phase-locked division via trigger counter mod N"
+    (check examples.gsot.21-ramp-div/ramp-div)))
+
+(deftest gsot-22-ramp-div-musical
+  (testing "pp.48-49 go.ramp.div musical context — note-value subdivisions of beat ramp"
+    (check examples.gsot.22-ramp-div-musical/ramp-div-musical)))
+
+;; ---------------------------------------------------------------------------
+;; Chapter 2 close — ramp bursts (pp.53-55)
+;; ---------------------------------------------------------------------------
+
+(deftest gsot-23-ramp-bursts
+  (testing "p.53 ramp_bursts.maxpat — N fast sub-ramps within a burst window"
+    (check examples.gsot.23-ramp-bursts/ramp-bursts)))
+
+(deftest gsot-24-ramp-bursts-to-trigs
+  (testing "p.54 go.ramp_bursts2trigs — trigger pulses from burst ramp"
+    (check examples.gsot.24-ramp-bursts-to-trigs/ramp-bursts-to-trigs)))
+
+(deftest gsot-25-ramp-bursts-shaped
+  (testing "p.55 go.ramp_bursts_shaped — amplitude-weighted burst ramp (Chapter 2 close)"
+    (check examples.gsot.25-ramp-bursts-shaped/ramp-bursts-shaped)))
