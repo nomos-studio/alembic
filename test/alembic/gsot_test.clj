@@ -190,7 +190,17 @@
             [examples.gsot.114-biquad-ap]
             [examples.gsot.115-biquad-ls]
             [examples.gsot.116-biquad-hs]
-            [examples.gsot.117-biquad-coeffs]))
+            [examples.gsot.117-biquad-coeffs]
+            ;; Chapter 6 — 4th-order biquad cascades + morphing cascade (pp.182-183)
+            [examples.gsot.118-biquad4-lp]
+            [examples.gsot.119-biquad4-hp]
+            [examples.gsot.120-biquad4-bp]
+            [examples.gsot.121-biquad4-res]
+            [examples.gsot.122-biquad4-np]
+            [examples.gsot.123-biquad4-ap]
+            [examples.gsot.124-biquad4-ls]
+            [examples.gsot.125-biquad4-hs]
+            [examples.gsot.126-morphing-biquad-cascade]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -710,3 +720,39 @@
 (deftest gsot-117-biquad-coeffs
   (testing "pp.181 go.biquad.coeffs.gendsp/biquad-coefficients.maxpat — type selector 0-7 (LP/HP/BP/RES/NP/AP/LS/HS) via select2 trees; unified DF-II biquad"
     (check examples.gsot.117-biquad-coeffs/biquad-coeffs)))
+
+(deftest gsot-118-biquad4-lp
+  (testing "pp.182-183 go.biquad4.lp — two cascaded LP biquads; H4=H2²; -80dB/decade; shared coefficients, independent DF-II state registers"
+    (check examples.gsot.118-biquad4-lp/biquad4-lp)))
+
+(deftest gsot-119-biquad4-hp
+  (testing "pp.182-183 go.biquad4.hp — two cascaded HP biquads; complement of biquad4-lp"
+    (check examples.gsot.119-biquad4-hp/biquad4-hp)))
+
+(deftest gsot-120-biquad4-bp
+  (testing "pp.182-183 go.biquad4.bp — two cascaded BP biquads; b1=0 per stage; narrower pass band than single stage"
+    (check examples.gsot.120-biquad4-bp/biquad4-bp)))
+
+(deftest gsot-121-biquad4-res
+  (testing "pp.182-183 go.biquad4.res — two cascaded peaking EQ stages; total gain = 2×gain-per-stage in dB"
+    (check examples.gsot.121-biquad4-res/biquad4-res)))
+
+(deftest gsot-122-biquad4-np
+  (testing "pp.182-183 go.biquad4.np — two cascaded notch stages; deeper null; robust to coefficient quantisation"
+    (check examples.gsot.122-biquad4-np/biquad4-np)))
+
+(deftest gsot-123-biquad4-ap
+  (testing "pp.182-183 go.biquad4.ap — two cascaded 2nd-order allpass; flat magnitude; doubled phase shift (-2π at fc)"
+    (check examples.gsot.123-biquad4-ap/biquad4-ap)))
+
+(deftest gsot-124-biquad4-ls
+  (testing "pp.182-183 go.biquad4.ls — two cascaded low-shelf stages; steeper transition; total gain = 2×gain-per-stage"
+    (check examples.gsot.124-biquad4-ls/biquad4-ls)))
+
+(deftest gsot-125-biquad4-hs
+  (testing "pp.182-183 go.biquad4.hs — two cascaded high-shelf stages; LS/HS cw-sign dual"
+    (check examples.gsot.125-biquad4-hs/biquad4-hs)))
+
+(deftest gsot-126-morphing-biquad-cascade
+  (testing "pp.182-183 morphing_biquad_cascade.maxpat — LP↔HP morph; closed-form b0=(1+cw*(2m-1))/(2a0), b1=(1-cw-2m)/a0; shared a1/a2; two-stage cascade"
+    (check examples.gsot.126-morphing-biquad-cascade/morphing-biquad-cascade)))
