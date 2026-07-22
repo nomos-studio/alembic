@@ -162,7 +162,9 @@
             ;; Chapter 5 — Quantization as timbral shape: phasor → Euclidean staircase waveform (pp.157)
             [examples.gsot.98-quantizing-timbre]
             ;; Chapter 5 — Audio bitcrusher: audio [-1,1] → N-level Euclidean quantisation (pp.158)
-            [examples.gsot.99-quantizing-audio-bitcrush]))
+            [examples.gsot.99-quantizing-audio-bitcrush]
+            ;; Chapter 6 — One-pole lowpass filter: (1-a)*x[n] + a*y[n-1]; balance of time (pp.159-163)
+            [examples.gsot.100-onepole-basic]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -606,3 +608,11 @@
 (deftest gsot-99-quantizing-audio-bitcrush
   (testing "pp.158 quantizing-audio-bitcrush.maxpat — audio [-1,1) → N Euclidean quantisation levels via inverse digitized ratio; smooth interpolates adjacent levels; N=12 smooth=1 is passthrough"
     (check examples.gsot.99-quantizing-audio-bitcrush/quantizing-audio-bitcrush)))
+
+;; ---------------------------------------------------------------------------
+;; Chapter 6 — Filters, Diagrams, and the Balance of Time
+;; ---------------------------------------------------------------------------
+
+(deftest gsot-100-onepole-basic
+  (testing "pp.159-163 go.onepole.basic.gendsp — one-pole IIR LP: y[n]=(1-a)*x[n]+a*y[n-1]; a=balance of time; single ~_ feedback; pole at z=a"
+    (check examples.gsot.100-onepole-basic/onepole-basic)))
