@@ -131,7 +131,9 @@
             ;; Chapter 5 — Binary shift register; Bernoulli input with fixed weight (pp.129-130)
             [examples.gsot.81-shift-register-weighted]
             ;; Chapter 5 — Binary shift register; per-trigger randomised weight (pp.130)
-            [examples.gsot.82-shift-register-weighted-random]))
+            [examples.gsot.82-shift-register-weighted-random]
+            ;; Chapter 5 — Evolving loops: LFSR XOR feedback weighted vs random (pp.131-132)
+            [examples.gsot.83-shift-register-weighted-xor]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -507,3 +509,7 @@
 (deftest gsot-82-shift-register-weighted-random
   (testing "pp.130-131 shift-register-weighted-random.maxpat — binary shift register; per-trigger random weight from centre±spread"
     (check examples.gsot.82-shift-register-weighted-random/shift-register-weighted-random)))
+
+(deftest gsot-83-shift-register-weighted-xor
+  (testing "pp.131-132 shift-register-weighted-xor.maxpat — LFSR XOR feedback (x^8+x^4+x^3+x^2+1, period 255) weighted vs Bernoulli random; packed integer state"
+    (check examples.gsot.83-shift-register-weighted-xor/shift-register-weighted-xor)))
