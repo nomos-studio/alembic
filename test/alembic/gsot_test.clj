@@ -83,7 +83,9 @@
             ;; Chapter 4 — Smooth stepped random (p.94)
             [examples.gsot.57-random-smoothed]
             ;; Chapter 4 — Spline interpolated random steps (p.95)
-            [examples.gsot.58-spline-smoothed]))
+            [examples.gsot.58-spline-smoothed]
+            ;; Chapter 4 — Probability gate (p.96)
+            [examples.gsot.59-random-chance]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -363,3 +365,7 @@
 (deftest gsot-58-spline-smoothed
   (testing "p.95 go.shift.spline6.gendsp — Catmull-Rom spline on 6-stage shift register"
     (check examples.gsot.58-spline-smoothed/spline-smoothed)))
+
+(deftest gsot-59-random-chance
+  (testing "p.96 go.chance.gendsp / random_chance.maxpat — probability-gated trigger"
+    (check examples.gsot.59-random-chance/random-chance)))
