@@ -172,7 +172,11 @@
             ;; Chapter 6 — One-pole LP, Hz parameterization: a=exp(-2π*fc/SR); two-node coefficient+filter (pp.173)
             [examples.gsot.103-onepole-basic-hz]
             ;; Chapter 6 — Allpass filter: flat amplitude, phase-shifting; x[n-1] via @1, y[n-1] via ~_ (pp.175)
-            [examples.gsot.104-allpass]))
+            [examples.gsot.104-allpass]
+            ;; Chapter 6 — 4-stage phaser: 4 allpass in series + dry/wet mix; 2 notches per sweep (pp.176)
+            [examples.gsot.105-phaser-4stage]
+            ;; Chapter 6 — 8-stage phaser: 8 allpass in series + dry/wet mix; 4 notches per sweep (pp.177)
+            [examples.gsot.106-phaser-8stage]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -640,3 +644,11 @@
 (deftest gsot-104-allpass
   (testing "pp.175 go.allpass.gendsp — first-order allpass: y[n]=a*x[n]+x[n-1]-a*y[n-1]; x[n-1] via @1 feedforward, y[n-1] via ~_ feedback; flat amplitude, frequency-dependent phase shift"
     (check examples.gsot.104-allpass/allpass)))
+
+(deftest gsot-105-phaser-4stage
+  (testing "pp.176 phaser-4stage.maxpat — 4 allpass stages in series (8 state elements); shared coefficient; dry/wet mix; 2 notches per sweep"
+    (check examples.gsot.105-phaser-4stage/phaser-4stage)))
+
+(deftest gsot-106-phaser-8stage
+  (testing "pp.177 phaser-8stage.maxpat — 8 allpass stages in series (16 state elements); shared coefficient; dry/wet mix; 4 notches per sweep; vintage thick phaser character"
+    (check examples.gsot.106-phaser-8stage/phaser-8stage)))
