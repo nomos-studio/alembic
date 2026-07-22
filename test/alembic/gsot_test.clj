@@ -87,7 +87,9 @@
             ;; Chapter 4 — Probability gate (p.96)
             [examples.gsot.59-random-chance]
             ;; Chapter 4 — Bernoulli gate (p.97)
-            [examples.gsot.60-bernoulli-gate]))
+            [examples.gsot.60-bernoulli-gate]
+            ;; Chapter 4 — Random periods (p.98)
+            [examples.gsot.61-random-periods]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -375,3 +377,7 @@
 (deftest gsot-60-bernoulli-gate
   (testing "p.97 go.bern.gendsp / random_bernoulli-gate.maxpat — two-output trigger router"
     (check examples.gsot.60-bernoulli-gate/bernoulli-gate)))
+
+(deftest gsot-61-random-periods
+  (testing "p.98 random_periods.maxpat — random-length period counter/phasor with trig-out"
+    (check examples.gsot.61-random-periods/random-periods)))
