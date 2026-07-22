@@ -144,7 +144,9 @@
             [examples.gsot.88-bit-wrap]
             [examples.gsot.89-bit-extract]
             ;; Chapter 5 — Rotating a bit sequence: trigger-driven accumulating rotation (pp.141-142)
-            [examples.gsot.90-bit-rotate]))
+            [examples.gsot.90-bit-rotate]
+            ;; Chapter 5 — Euclidean rhythms via digitized ratio: floor(s*N/K) gate (pp.142-148)
+            [examples.gsot.91-euclidean-rhythms]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -552,3 +554,7 @@
 (deftest gsot-90-bit-rotate
   (testing "pp.141-142 go.bit.rotate.gendsp — trigger-driven accumulating circular rotation; counter 0-7 cycles through all 8 positions"
     (check examples.gsot.90-bit-rotate/bit-rotate)))
+
+(deftest gsot-91-euclidean-rhythms
+  (testing "pp.142-148 euclidean_rhythms.maxpat — digitized ratio floor(s*N/K) generates maximally-even N-beat/K-step gate; wrap detection for step 0"
+    (check examples.gsot.91-euclidean-rhythms/euclidean-rhythms)))
