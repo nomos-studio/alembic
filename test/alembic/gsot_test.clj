@@ -117,7 +117,9 @@
             ;; Chapter 4 — Chaotic tempo clock: logistic map drives phasor rate (pp.119-120)
             [examples.gsot.74-chaos-tempo-nonrobotic]
             ;; Chapter 4 — Lorenz with audio injected into x equation (pp.121)
-            [examples.gsot.75-chaos-lorenz-audioinjection]))
+            [examples.gsot.75-chaos-lorenz-audioinjection]
+            ;; Chapter 5 — 8-step pitch sequencer with bitmask gate logic (pp.123-125)
+            [examples.gsot.76-mixer-sequencer]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -465,3 +467,7 @@
 (deftest gsot-75-chaos-lorenz-audioinjection
   (testing "pp.121 chaos_Lorenz_audioinjection.maxpat — audio signal injected into Lorenz x equation; chaotic nonlinear coupling"
     (check examples.gsot.75-chaos-lorenz-audioinjection/chaos-lorenz-audioinjection)))
+
+(deftest gsot-76-mixer-sequencer
+  (testing "pp.123-125 mixer-sequencer.maxpat — 8-step pitch sequencer; bitmask gate enable; binary-tree select2 pitch lookup"
+    (check examples.gsot.76-mixer-sequencer/mixer-sequencer)))
