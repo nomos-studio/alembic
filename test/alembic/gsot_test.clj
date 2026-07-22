@@ -142,7 +142,9 @@
             [examples.gsot.86-bit-unpack8]
             [examples.gsot.87-bit-shift]
             [examples.gsot.88-bit-wrap]
-            [examples.gsot.89-bit-extract]))
+            [examples.gsot.89-bit-extract]
+            ;; Chapter 5 — Rotating a bit sequence: trigger-driven accumulating rotation (pp.141-142)
+            [examples.gsot.90-bit-rotate]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -546,3 +548,7 @@
 (deftest gsot-89-bit-extract
   (testing "pp.141 go.bit.extract.gendsp — extract :width-bit field from 8-bit integer at :offset; generalises single-bit extraction"
     (check examples.gsot.89-bit-extract/bit-extract)))
+
+(deftest gsot-90-bit-rotate
+  (testing "pp.141-142 go.bit.rotate.gendsp — trigger-driven accumulating circular rotation; counter 0-7 cycles through all 8 positions"
+    (check examples.gsot.90-bit-rotate/bit-rotate)))
