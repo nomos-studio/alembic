@@ -79,7 +79,11 @@
             [examples.gsot.54-noise-basic]
             ;; Chapter 4 — Random range and random steps (p.93)
             [examples.gsot.55-random-range]
-            [examples.gsot.56-random-steps]))
+            [examples.gsot.56-random-steps]
+            ;; Chapter 4 — Smooth stepped random (p.94)
+            [examples.gsot.57-random-smoothed]
+            ;; Chapter 4 — Spline interpolated random steps (p.95)
+            [examples.gsot.58-spline-smoothed]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -351,3 +355,11 @@
 (deftest gsot-56-random-steps
   (testing "p.93 random_steps.maxpat — track-hold of range-scaled noise on trigger"
     (check examples.gsot.56-random-steps/random-steps)))
+
+(deftest gsot-57-random-smoothed
+  (testing "p.94 random_smoothed.maxpat — linear interp between random steps via phasor phase"
+    (check examples.gsot.57-random-smoothed/random-smoothed)))
+
+(deftest gsot-58-spline-smoothed
+  (testing "p.95 go.shift.spline6.gendsp — Catmull-Rom spline on 6-stage shift register"
+    (check examples.gsot.58-spline-smoothed/spline-smoothed)))
