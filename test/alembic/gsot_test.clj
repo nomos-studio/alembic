@@ -150,7 +150,11 @@
             ;; Chapter 5 — Euclidean ratchets: R gate pulses per beat via countdown register (pp.149)
             [examples.gsot.92-euclidean-ratchets]
             ;; Chapter 5 — Euclidean LFO: fractional digitized ratio as sawtooth (pp.149)
-            [examples.gsot.93-euclidean-lfo]))
+            [examples.gsot.93-euclidean-lfo]
+            ;; Chapter 5 — Pitch spaces: integer index → chromatic MIDI → Hz (pp.150-151)
+            [examples.gsot.94-pitch]
+            ;; Chapter 5 — Quantization: float degree → diatonic major scale → Hz (pp.151-152)
+            [examples.gsot.95-pitch-quantized]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -570,3 +574,11 @@
 (deftest gsot-93-euclidean-lfo
   (testing "pp.149 euclidean_LFO.maxpat — fractional part of digitized ratio; sawtooth resetting at Euclidean beat positions; drop amplitude encodes gap length"
     (check examples.gsot.93-euclidean-lfo/euclidean-lfo)))
+
+(deftest gsot-94-pitch
+  (testing "pp.150-151 pitch.maxpat — chromatic pitch space: integer index → MIDI note (root + index semitones) → Hz via equal temperament"
+    (check examples.gsot.94-pitch/pitch)))
+
+(deftest gsot-95-pitch-quantized
+  (testing "pp.151-152 pitch-quantized.maxpat — diatonic pitch space: float degree → rint → major scale select2 lookup → Hz; correct octave wrapping for all integer degrees"
+    (check examples.gsot.95-pitch-quantized/pitch-quantized)))
