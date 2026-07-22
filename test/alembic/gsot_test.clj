@@ -113,7 +113,9 @@
             ;; Chapter 4 — Abstract chaos step; covers Lorenz/Lu-Chen family (pp.117)
             [examples.gsot.72-go-chaos]
             ;; Chapter 4 — Lu-Chen attractor, hardwired go.chaos variant (pp.118)
-            [examples.gsot.73-go-chaos-liu-chen]))
+            [examples.gsot.73-go-chaos-liu-chen]
+            ;; Chapter 4 — Chaotic tempo clock: logistic map drives phasor rate (pp.119-120)
+            [examples.gsot.74-chaos-tempo-nonrobotic]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -453,3 +455,7 @@
 (deftest gsot-73-go-chaos-liu-chen
   (testing "pp.118 go.chaos.liu_chen.gendsp — Lu-Chen attractor with hardwired coefficients (a=36, b=0, c=20, d=3)"
     (check examples.gsot.73-go-chaos-liu-chen/go-chaos-liu-chen)))
+
+(deftest gsot-74-chaos-tempo-nonrobotic
+  (testing "pp.119-120 chaos.tempo.nonrobotic.maxpat — logistic map drives chaotic phasor rate for natural tempo looseness"
+    (check examples.gsot.74-chaos-tempo-nonrobotic/chaos-tempo-nonrobotic)))
