@@ -180,7 +180,17 @@
             ;; Chapter 6 — allpass Hz: bilinear transform coefficient from cutoff frequency (pp.178)
             [examples.gsot.107-allpass-hz]
             ;; Chapter 6 — biquad: second-order IIR, Direct Form II, 5 coefficients (pp.178-180)
-            [examples.gsot.108-biquad]))
+            [examples.gsot.108-biquad]
+            ;; Chapter 6 — biquad coefficient patches: 8 typed filters + type-selector (pp.181)
+            [examples.gsot.109-biquad-lp]
+            [examples.gsot.110-biquad-hp]
+            [examples.gsot.111-biquad-bp]
+            [examples.gsot.112-biquad-res]
+            [examples.gsot.113-biquad-np]
+            [examples.gsot.114-biquad-ap]
+            [examples.gsot.115-biquad-ls]
+            [examples.gsot.116-biquad-hs]
+            [examples.gsot.117-biquad-coeffs]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -664,3 +674,39 @@
 (deftest gsot-108-biquad
   (testing "pp.178-180 go.biquad.gendsp — second-order IIR; Direct Form II: w=(in-a1*_-a2*_@1)~_, out=b0*w+b1*w@1+b2*w@2; 5 coefficients b0/b1/b2/a1/a2"
     (check examples.gsot.108-biquad/biquad)))
+
+(deftest gsot-109-biquad-lp
+  (testing "pp.181 go.biquad.lp — RBJ LP: b0=b2=(1-cw)/(2*a0), b1=(1-cw)/a0; Butterworth at Q=0.707"
+    (check examples.gsot.109-biquad-lp/biquad-lp)))
+
+(deftest gsot-110-biquad-hp
+  (testing "pp.181 go.biquad.hp — RBJ HP: b0=b2=(1+cw)/(2*a0), b1=-(1+cw)/a0; LP/HP complement"
+    (check examples.gsot.110-biquad-hp/biquad-hp)))
+
+(deftest gsot-111-biquad-bp
+  (testing "pp.181 go.biquad.bp — RBJ BP constant skirt: b0=sw/(2*a0), b1=0, b2=-b0; output=b0*(w-w@2)"
+    (check examples.gsot.111-biquad-bp/biquad-bp)))
+
+(deftest gsot-112-biquad-res
+  (testing "pp.181 go.biquad.res — RBJ peaking EQ: A=10^(gain/40); a0=1+alpha/A; b0=(1+alpha*A)/a0"
+    (check examples.gsot.112-biquad-res/biquad-res)))
+
+(deftest gsot-113-biquad-np
+  (testing "pp.181 go.biquad.np — RBJ notch: b0=b2=1/a0, b1=a1=-2cw/a0; perfect null at fc"
+    (check examples.gsot.113-biquad-np/biquad-np)))
+
+(deftest gsot-114-biquad-ap
+  (testing "pp.181 go.biquad.ap — RBJ 2nd-order allpass: b0=(1-alpha)/a0, b2=1.0; flat amplitude, phase shift"
+    (check examples.gsot.114-biquad-ap/biquad-ap)))
+
+(deftest gsot-115-biquad-ls
+  (testing "pp.181 go.biquad.ls — RBJ low shelf: A=10^(gain/40), sAa=2*sqrt(A)*alpha; separate a0 formula"
+    (check examples.gsot.115-biquad-ls/biquad-ls)))
+
+(deftest gsot-116-biquad-hs
+  (testing "pp.181 go.biquad.hs — RBJ high shelf: LP shelf reflected to high frequencies; LS/HS are cw-sign duals"
+    (check examples.gsot.116-biquad-hs/biquad-hs)))
+
+(deftest gsot-117-biquad-coeffs
+  (testing "pp.181 go.biquad.coeffs.gendsp/biquad-coefficients.maxpat — type selector 0-7 (LP/HP/BP/RES/NP/AP/LS/HS) via select2 trees; unified DF-II biquad"
+    (check examples.gsot.117-biquad-coeffs/biquad-coeffs)))
