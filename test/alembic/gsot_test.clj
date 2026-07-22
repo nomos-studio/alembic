@@ -101,7 +101,9 @@
             ;; Chapter 4 — Random integers / quantized random (p.103)
             [examples.gsot.66-random-integer]
             ;; Chapter 4 — Urn model approximation (pp.104-109)
-            [examples.gsot.67-random-urn]))
+            [examples.gsot.67-random-urn]
+            ;; Chapter 4 — Flexible urn: manual reshuffle + no-repeat (pp.110-111)
+            [examples.gsot.68-random-urn-flexible]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -417,3 +419,7 @@
 (deftest gsot-67-random-urn
   (testing "pp.104-109 random_urn.maxpat — rotating-permutation urn approximation (data.deck not expressible in Faust)"
     (check examples.gsot.67-random-urn/random-urn)))
+
+(deftest gsot-68-random-urn-flexible
+  (testing "pp.110-111 random_urn.maxpat extended — manual reshuffle trigger + no-immediate-repeat"
+    (check examples.gsot.68-random-urn-flexible/random-urn-flexible)))
