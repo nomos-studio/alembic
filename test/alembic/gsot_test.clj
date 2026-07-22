@@ -115,7 +115,9 @@
             ;; Chapter 4 — Lu-Chen attractor, hardwired go.chaos variant (pp.118)
             [examples.gsot.73-go-chaos-liu-chen]
             ;; Chapter 4 — Chaotic tempo clock: logistic map drives phasor rate (pp.119-120)
-            [examples.gsot.74-chaos-tempo-nonrobotic]))
+            [examples.gsot.74-chaos-tempo-nonrobotic]
+            ;; Chapter 4 — Lorenz with audio injected into x equation (pp.121)
+            [examples.gsot.75-chaos-lorenz-audioinjection]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -459,3 +461,7 @@
 (deftest gsot-74-chaos-tempo-nonrobotic
   (testing "pp.119-120 chaos.tempo.nonrobotic.maxpat — logistic map drives chaotic phasor rate for natural tempo looseness"
     (check examples.gsot.74-chaos-tempo-nonrobotic/chaos-tempo-nonrobotic)))
+
+(deftest gsot-75-chaos-lorenz-audioinjection
+  (testing "pp.121 chaos_Lorenz_audioinjection.maxpat — audio signal injected into Lorenz x equation; chaotic nonlinear coupling"
+    (check examples.gsot.75-chaos-lorenz-audioinjection/chaos-lorenz-audioinjection)))
