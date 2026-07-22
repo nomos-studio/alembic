@@ -176,7 +176,9 @@
             ;; Chapter 6 — 4-stage phaser: 4 allpass in series + dry/wet mix; 2 notches per sweep (pp.176)
             [examples.gsot.105-phaser-4stage]
             ;; Chapter 6 — 8-stage phaser: 8 allpass in series + dry/wet mix; 4 notches per sweep (pp.177)
-            [examples.gsot.106-phaser-8stage]))
+            [examples.gsot.106-phaser-8stage]
+            ;; Chapter 6 — allpass Hz: bilinear transform coefficient from cutoff frequency (pp.178)
+            [examples.gsot.107-allpass-hz]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -652,3 +654,7 @@
 (deftest gsot-106-phaser-8stage
   (testing "pp.177 phaser-8stage.maxpat — 8 allpass stages in series (16 state elements); shared coefficient; dry/wet mix; 4 notches per sweep; vintage thick phaser character"
     (check examples.gsot.106-phaser-8stage/phaser-8stage)))
+
+(deftest gsot-107-allpass-hz
+  (testing "pp.178 go.allpass.hz.gendsp — Hz-parameterized first-order allpass; bilinear transform a=(tan(π·fc/SR)−1)/(tan(π·fc/SR)+1); −π/2 phase shift at fc"
+    (check examples.gsot.107-allpass-hz/allpass-hz)))
