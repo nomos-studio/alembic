@@ -95,7 +95,9 @@
             ;; Chapter 4 — Uniform vs normal comparison (p.101)
             [examples.gsot.63-random-distributions]
             ;; Chapter 4 — Random walk (p.101-102)
-            [examples.gsot.64-random-walk]))
+            [examples.gsot.64-random-walk]
+            ;; Chapter 4 — Bounded random walk with fold reflection (p.103)
+            [examples.gsot.65-random-walk-bounded]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -399,3 +401,7 @@
 (deftest gsot-64-random-walk
   (testing "p.101-102 random_walks.maxpat — trigger-gated accumulating random walk"
     (check examples.gsot.64-random-walk/random-walk)))
+
+(deftest gsot-65-random-walk-bounded
+  (testing "p.103 random_walk_bounded.maxpat — fold-reflected bounded random walk"
+    (check examples.gsot.65-random-walk-bounded/random-walk-bounded)))
