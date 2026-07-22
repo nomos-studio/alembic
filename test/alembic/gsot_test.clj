@@ -125,7 +125,9 @@
             ;; Chapter 5 — 2-stage shift register subpatch (pp.127)
             [examples.gsot.78-go-shiftregister2]
             ;; Chapter 5 — 8-stage shift register subpatch; temporal canon (pp.127)
-            [examples.gsot.79-go-shiftregister8]))
+            [examples.gsot.79-go-shiftregister8]
+            ;; Chapter 5 — Shift register canon with selectable imitation interval (pp.128)
+            [examples.gsot.80-shift-register]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -489,3 +491,7 @@
 (deftest gsot-79-go-shiftregister8
   (testing "pp.127 go.shiftregister8.gendsp — 8-stage shift register; all stages simultaneously available for temporal canon"
     (check examples.gsot.79-go-shiftregister8/go-shiftregister8)))
+
+(deftest gsot-80-shift-register
+  (testing "pp.128 shift-register.maxpat — 2-voice canon; v1=stage 0, v2=stage :canon (1-7); selectable imitation interval"
+    (check examples.gsot.80-shift-register/shift-register)))
