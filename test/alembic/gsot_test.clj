@@ -105,7 +105,15 @@
             ;; Chapter 4 — Flexible urn: manual reshuffle + no-repeat (pp.110-111)
             [examples.gsot.68-random-urn-flexible]
             ;; Chapter 4 — Lorenz attractor as chaotic DSP source (pp.112-114)
-            [examples.gsot.69-chaos-lorenz]))
+            [examples.gsot.69-chaos-lorenz]
+            ;; Chapter 4 — Running min/max tracker (pp.115-116)
+            [examples.gsot.70-limits]
+            ;; Chapter 4 — Auto-normalise using tracked limits (pp.116)
+            [examples.gsot.71-autolimit]
+            ;; Chapter 4 — Abstract chaos step; covers Lorenz/Lu-Chen family (pp.117)
+            [examples.gsot.72-go-chaos]
+            ;; Chapter 4 — Lu-Chen attractor, hardwired go.chaos variant (pp.118)
+            [examples.gsot.73-go-chaos-liu-chen]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -429,3 +437,19 @@
 (deftest gsot-69-chaos-lorenz
   (testing "pp.112-114 chaos_Lorenz.maxpat — Lorenz attractor Euler step (3-in / 3-out; self-oscillation via external feedback)"
     (check examples.gsot.69-chaos-lorenz/chaos-lorenz)))
+
+(deftest gsot-70-limits
+  (testing "pp.115-116 go.limits.gendsp — running min/max tracker with per-sample decay"
+    (check examples.gsot.70-limits/limits)))
+
+(deftest gsot-71-autolimit
+  (testing "pp.116 go.autolimit.gendsp — auto-normalise unbounded signal to [-1,1] via tracked limits"
+    (check examples.gsot.71-autolimit/autolimit)))
+
+(deftest gsot-72-go-chaos
+  (testing "pp.117 go.chaos / Liu-Chen.maxpat — abstract chaos step unifying Lorenz and Lu-Chen families"
+    (check examples.gsot.72-go-chaos/go-chaos)))
+
+(deftest gsot-73-go-chaos-liu-chen
+  (testing "pp.118 go.chaos.liu_chen.gendsp — Lu-Chen attractor with hardwired coefficients (a=36, b=0, c=20, d=3)"
+    (check examples.gsot.73-go-chaos-liu-chen/go-chaos-liu-chen)))
