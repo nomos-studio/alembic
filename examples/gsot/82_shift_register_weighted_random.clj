@@ -1,6 +1,6 @@
 ; SPDX-License-Identifier: EPL-2.0
 (ns examples.gsot.82-shift-register-weighted-random
-  "GSOT pp.130 — shift-register-weighted-random.maxpat.
+  "GSOT pp.130-131 — shift-register-weighted-random.maxpat.
 
   Extends shift-register-weighted (example 81) by randomising the weight
   itself on each trigger.  The effective fill probability varies from

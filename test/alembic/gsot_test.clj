@@ -505,5 +505,5 @@
     (check examples.gsot.81-shift-register-weighted/shift-register-weighted)))
 
 (deftest gsot-82-shift-register-weighted-random
-  (testing "pp.130 shift-register-weighted-random.maxpat — binary shift register; per-trigger random weight from centre±spread"
+  (testing "pp.130-131 shift-register-weighted-random.maxpat — binary shift register; per-trigger random weight from centre±spread"
     (check examples.gsot.82-shift-register-weighted-random/shift-register-weighted-random)))
