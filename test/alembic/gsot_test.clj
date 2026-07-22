@@ -156,7 +156,9 @@
             ;; Chapter 5 — Quantization: float degree → diatonic major scale → Hz (pp.151-152)
             [examples.gsot.95-pitch-quantized]
             ;; Chapter 5 — Euclidean scales: inverse digitized ratio maps N-note maximally-even scale (pp.153-154)
-            [examples.gsot.96-quantizing-pitch]))
+            [examples.gsot.96-quantizing-pitch]
+            ;; Chapter 5 — Smooth-stepped quantization: lerp between hard floor and continuous ratio (pp.155-157)
+            [examples.gsot.97-quantizing-pitch-smoothed]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -588,3 +590,7 @@
 (deftest gsot-96-quantizing-pitch
   (testing "pp.153-154 quantizing-pitch.maxpat — inverse digitized ratio floor(12*i/N) maps degree index to maximally-even N-note scale; N=1-8 generates octave/tritone/augmented/diminished/pentatonic/whole-tone/diatonic/octatonic"
     (check examples.gsot.96-quantizing-pitch/quantizing-pitch)))
+
+(deftest gsot-97-quantizing-pitch-smoothed
+  (testing "pp.155-157 quantizing-pitch-smoothed.maxpat — lerp(floor(ratio), ratio, smooth) blends hard-quantized Euclidean scale (smooth=0) to continuous linear interpolation (smooth=1); frac encodes position within each scale step"
+    (check examples.gsot.97-quantizing-pitch-smoothed/quantizing-pitch-smoothed)))
