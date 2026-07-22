@@ -119,7 +119,9 @@
             ;; Chapter 4 — Lorenz with audio injected into x equation (pp.121)
             [examples.gsot.75-chaos-lorenz-audioinjection]
             ;; Chapter 5 — 8-step pitch sequencer with bitmask gate logic (pp.123-125)
-            [examples.gsot.76-mixer-sequencer]))
+            [examples.gsot.76-mixer-sequencer]
+            ;; Chapter 5 — Step sequencer that captures its sequence from cv-in via S&H (pp.126)
+            [examples.gsot.77-latched-sequencer]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -471,3 +473,7 @@
 (deftest gsot-76-mixer-sequencer
   (testing "pp.123-125 mixer-sequencer.maxpat — 8-step pitch sequencer; bitmask gate enable; binary-tree select2 pitch lookup"
     (check examples.gsot.76-mixer-sequencer/mixer-sequencer)))
+
+(deftest gsot-77-latched-sequencer
+  (testing "pp.126 latched-sequencer.maxpat — 8 per-step S&H cells capture cv-in on each step trigger; sequence fills in over time"
+    (check examples.gsot.77-latched-sequencer/latched-sequencer)))
