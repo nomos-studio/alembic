@@ -127,7 +127,11 @@
             ;; Chapter 5 — 8-stage shift register subpatch; temporal canon (pp.127)
             [examples.gsot.79-go-shiftregister8]
             ;; Chapter 5 — Shift register canon with selectable imitation interval (pp.128)
-            [examples.gsot.80-shift-register]))
+            [examples.gsot.80-shift-register]
+            ;; Chapter 5 — Binary shift register; Bernoulli input with fixed weight (pp.129-130)
+            [examples.gsot.81-shift-register-weighted]
+            ;; Chapter 5 — Binary shift register; per-trigger randomised weight (pp.130)
+            [examples.gsot.82-shift-register-weighted-random]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -495,3 +499,11 @@
 (deftest gsot-80-shift-register
   (testing "pp.128 shift-register.maxpat — 2-voice canon; v1=stage 0, v2=stage :canon (1-7); selectable imitation interval"
     (check examples.gsot.80-shift-register/shift-register)))
+
+(deftest gsot-81-shift-register-weighted
+  (testing "pp.129-130 shift-register-weighted.maxpat — binary shift register; Bernoulli(weight) new-bit; 8 simultaneous gate streams"
+    (check examples.gsot.81-shift-register-weighted/shift-register-weighted)))
+
+(deftest gsot-82-shift-register-weighted-random
+  (testing "pp.130 shift-register-weighted-random.maxpat — binary shift register; per-trigger random weight from centre±spread"
+    (check examples.gsot.82-shift-register-weighted-random/shift-register-weighted-random)))
