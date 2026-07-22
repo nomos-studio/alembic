@@ -99,7 +99,9 @@
             ;; Chapter 4 — Bounded random walk with fold reflection (p.103)
             [examples.gsot.65-random-walk-bounded]
             ;; Chapter 4 — Random integers / quantized random (p.103)
-            [examples.gsot.66-random-integer]))
+            [examples.gsot.66-random-integer]
+            ;; Chapter 4 — Urn model approximation (pp.104-109)
+            [examples.gsot.67-random-urn]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -411,3 +413,7 @@
 (deftest gsot-66-random-integer
   (testing "p.103 go.random.gendsp / random_integer.maxpat — discrete uniform integer on trigger"
     (check examples.gsot.66-random-integer/random-integer)))
+
+(deftest gsot-67-random-urn
+  (testing "pp.104-109 random_urn.maxpat — rotating-permutation urn approximation (data.deck not expressible in Faust)"
+    (check examples.gsot.67-random-urn/random-urn)))
