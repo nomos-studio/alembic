@@ -164,7 +164,11 @@
             ;; Chapter 5 — Audio bitcrusher: audio [-1,1] → N-level Euclidean quantisation (pp.158)
             [examples.gsot.99-quantizing-audio-bitcrush]
             ;; Chapter 6 — One-pole lowpass filter: (1-a)*x[n] + a*y[n-1]; balance of time (pp.159-163)
-            [examples.gsot.100-onepole-basic]))
+            [examples.gsot.100-onepole-basic]
+            ;; Chapter 6 — Vactrol LPG subpatch: asymmetric env follower drives one-pole coeff and VCA (pp.169-170)
+            [examples.gsot.101-vactrol]
+            ;; Chapter 6 — Lowpass gate: complete LPG patch; gate + audio → vactrol → gated filtered output (pp.171)
+            [examples.gsot.102-lowpass-gate]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -616,3 +620,11 @@
 (deftest gsot-100-onepole-basic
   (testing "pp.159-163 go.onepole.basic.gendsp — one-pole IIR LP: y[n]=(1-a)*x[n]+a*y[n-1]; a=balance of time; single ~_ feedback; pole at z=a"
     (check examples.gsot.100-onepole-basic/onepole-basic)))
+
+(deftest gsot-101-vactrol
+  (testing "pp.169-170 go.vactrol.gendsp — vactrol LPG subpatch: asymmetric one-pole env follower (fast attack/slow release) drives filter coeff (1-env)*0.999 and VCA (×env); 0.999 ceiling ensures drain at gate=0"
+    (check examples.gsot.101-vactrol/vactrol)))
+
+(deftest gsot-102-lowpass-gate
+  (testing "pp.171 lowpass-gate.maxpat — complete LPG: gate + audio in; vactrol envelope; LP filter + VCA from same env; separate LP-only and gate-only mix controls"
+    (check examples.gsot.102-lowpass-gate/lowpass-gate)))
