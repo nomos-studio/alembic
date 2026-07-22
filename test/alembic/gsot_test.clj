@@ -137,7 +137,12 @@
             ;; Chapter 5 — Binary decoding: 8 shift register bits → integer index (pp.134-135)
             [examples.gsot.84-binary-decode]
             ;; Chapter 5 — Integers as patterns: counter reads integer bitmask into shift register (pp.136-139)
-            [examples.gsot.85-shift-register-integer]))
+            [examples.gsot.85-shift-register-integer]
+            ;; Chapter 5 — Bit primitives: unpack, shift, wrap, extract (pp.140-141)
+            [examples.gsot.86-bit-unpack8]
+            [examples.gsot.87-bit-shift]
+            [examples.gsot.88-bit-wrap]
+            [examples.gsot.89-bit-extract]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -525,3 +530,19 @@
 (deftest gsot-85-shift-register-integer
   (testing "pp.136-139 shift-register-integer.maxpat — integer bitmask as step pattern; counter reads bits into shift register; deterministic canon voices"
     (check examples.gsot.85-shift-register-integer/shift-register-integer)))
+
+(deftest gsot-86-bit-unpack8
+  (testing "pp.140 go.bit.unpack8.gendsp — unpack integer to 8 binary signals; inverse of binary-decode (example 84)"
+    (check examples.gsot.86-bit-unpack8/bit-unpack8)))
+
+(deftest gsot-87-bit-shift
+  (testing "pp.140 go.bit.shift.gendsp — left/right shift of 8-bit integer by signed :amount; zeros fill vacated positions"
+    (check examples.gsot.87-bit-shift/bit-shift)))
+
+(deftest gsot-88-bit-wrap
+  (testing "pp.141 go.bit.wrap.gendsp — circular left rotation of 8-bit integer; bits wrap from MSB to LSB; preserves step density"
+    (check examples.gsot.88-bit-wrap/bit-wrap)))
+
+(deftest gsot-89-bit-extract
+  (testing "pp.141 go.bit.extract.gendsp — extract :width-bit field from 8-bit integer at :offset; generalises single-bit extraction"
+    (check examples.gsot.89-bit-extract/bit-extract)))
