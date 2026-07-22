@@ -154,7 +154,9 @@
             ;; Chapter 5 — Pitch spaces: integer index → chromatic MIDI → Hz (pp.150-151)
             [examples.gsot.94-pitch]
             ;; Chapter 5 — Quantization: float degree → diatonic major scale → Hz (pp.151-152)
-            [examples.gsot.95-pitch-quantized]))
+            [examples.gsot.95-pitch-quantized]
+            ;; Chapter 5 — Euclidean scales: inverse digitized ratio maps N-note maximally-even scale (pp.153-154)
+            [examples.gsot.96-quantizing-pitch]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -582,3 +584,7 @@
 (deftest gsot-95-pitch-quantized
   (testing "pp.151-152 pitch-quantized.maxpat — diatonic pitch space: float degree → rint → major scale select2 lookup → Hz; correct octave wrapping for all integer degrees"
     (check examples.gsot.95-pitch-quantized/pitch-quantized)))
+
+(deftest gsot-96-quantizing-pitch
+  (testing "pp.153-154 quantizing-pitch.maxpat — inverse digitized ratio floor(12*i/N) maps degree index to maximally-even N-note scale; N=1-8 generates octave/tritone/augmented/diminished/pentatonic/whole-tone/diatonic/octatonic"
+    (check examples.gsot.96-quantizing-pitch/quantizing-pitch)))
