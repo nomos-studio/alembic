@@ -121,7 +121,11 @@
             ;; Chapter 5 — 8-step pitch sequencer with bitmask gate logic (pp.123-125)
             [examples.gsot.76-mixer-sequencer]
             ;; Chapter 5 — Step sequencer that captures its sequence from cv-in via S&H (pp.126)
-            [examples.gsot.77-latched-sequencer]))
+            [examples.gsot.77-latched-sequencer]
+            ;; Chapter 5 — 2-stage shift register subpatch (pp.127)
+            [examples.gsot.78-go-shiftregister2]
+            ;; Chapter 5 — 8-stage shift register subpatch; temporal canon (pp.127)
+            [examples.gsot.79-go-shiftregister8]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -477,3 +481,11 @@
 (deftest gsot-77-latched-sequencer
   (testing "pp.126 latched-sequencer.maxpat — 8 per-step S&H cells capture cv-in on each step trigger; sequence fills in over time"
     (check examples.gsot.77-latched-sequencer/latched-sequencer)))
+
+(deftest gsot-78-go-shiftregister2
+  (testing "pp.127 go.shiftregister2.gendsp — 2-stage shift register; s1 lags s0 by one trigger event via @1 delay"
+    (check examples.gsot.78-go-shiftregister2/go-shiftregister2)))
+
+(deftest gsot-79-go-shiftregister8
+  (testing "pp.127 go.shiftregister8.gendsp — 8-stage shift register; all stages simultaneously available for temporal canon"
+    (check examples.gsot.79-go-shiftregister8/go-shiftregister8)))
