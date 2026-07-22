@@ -103,7 +103,9 @@
             ;; Chapter 4 — Urn model approximation (pp.104-109)
             [examples.gsot.67-random-urn]
             ;; Chapter 4 — Flexible urn: manual reshuffle + no-repeat (pp.110-111)
-            [examples.gsot.68-random-urn-flexible]))
+            [examples.gsot.68-random-urn-flexible]
+            ;; Chapter 4 — Lorenz attractor as chaotic DSP source (pp.112-114)
+            [examples.gsot.69-chaos-lorenz]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -423,3 +425,7 @@
 (deftest gsot-68-random-urn-flexible
   (testing "pp.110-111 random_urn.maxpat extended — manual reshuffle trigger + no-immediate-repeat"
     (check examples.gsot.68-random-urn-flexible/random-urn-flexible)))
+
+(deftest gsot-69-chaos-lorenz
+  (testing "pp.112-114 chaos_Lorenz.maxpat — Lorenz attractor Euler step (3-in / 3-out; self-oscillation via external feedback)"
+    (check examples.gsot.69-chaos-lorenz/chaos-lorenz)))
