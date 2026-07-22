@@ -135,7 +135,9 @@
             ;; Chapter 5 — Evolving loops: LFSR XOR feedback weighted vs random (pp.131-132)
             [examples.gsot.83-shift-register-weighted-xor]
             ;; Chapter 5 — Binary decoding: 8 shift register bits → integer index (pp.134-135)
-            [examples.gsot.84-binary-decode]))
+            [examples.gsot.84-binary-decode]
+            ;; Chapter 5 — Integers as patterns: counter reads integer bitmask into shift register (pp.136-139)
+            [examples.gsot.85-shift-register-integer]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -519,3 +521,7 @@
 (deftest gsot-84-binary-decode
   (testing "pp.134-135 binary decoding — 8 shift register bits weighted-summed to integer index [0,255]; pseudo-random melodic index from LFSR stages"
     (check examples.gsot.84-binary-decode/binary-decode)))
+
+(deftest gsot-85-shift-register-integer
+  (testing "pp.136-139 shift-register-integer.maxpat — integer bitmask as step pattern; counter reads bits into shift register; deterministic canon voices"
+    (check examples.gsot.85-shift-register-integer/shift-register-integer)))
