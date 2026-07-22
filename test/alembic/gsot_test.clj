@@ -178,7 +178,9 @@
             ;; Chapter 6 — 8-stage phaser: 8 allpass in series + dry/wet mix; 4 notches per sweep (pp.177)
             [examples.gsot.106-phaser-8stage]
             ;; Chapter 6 — allpass Hz: bilinear transform coefficient from cutoff frequency (pp.178)
-            [examples.gsot.107-allpass-hz]))
+            [examples.gsot.107-allpass-hz]
+            ;; Chapter 6 — biquad: second-order IIR, Direct Form II, 5 coefficients (pp.178-180)
+            [examples.gsot.108-biquad]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -658,3 +660,7 @@
 (deftest gsot-107-allpass-hz
   (testing "pp.178 go.allpass.hz.gendsp — Hz-parameterized first-order allpass; bilinear transform a=(tan(π·fc/SR)−1)/(tan(π·fc/SR)+1); −π/2 phase shift at fc"
     (check examples.gsot.107-allpass-hz/allpass-hz)))
+
+(deftest gsot-108-biquad
+  (testing "pp.178-180 go.biquad.gendsp — second-order IIR; Direct Form II: w=(in-a1*_-a2*_@1)~_, out=b0*w+b1*w@1+b2*w@2; 5 coefficients b0/b1/b2/a1/a2"
+    (check examples.gsot.108-biquad/biquad)))
