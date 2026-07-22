@@ -97,7 +97,9 @@
             ;; Chapter 4 — Random walk (p.101-102)
             [examples.gsot.64-random-walk]
             ;; Chapter 4 — Bounded random walk with fold reflection (p.103)
-            [examples.gsot.65-random-walk-bounded]))
+            [examples.gsot.65-random-walk-bounded]
+            ;; Chapter 4 — Random integers / quantized random (p.103)
+            [examples.gsot.66-random-integer]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -405,3 +407,7 @@
 (deftest gsot-65-random-walk-bounded
   (testing "p.103 random_walk_bounded.maxpat — fold-reflected bounded random walk"
     (check examples.gsot.65-random-walk-bounded/random-walk-bounded)))
+
+(deftest gsot-66-random-integer
+  (testing "p.103 go.random.gendsp / random_integer.maxpat — discrete uniform integer on trigger"
+    (check examples.gsot.66-random-integer/random-integer)))
