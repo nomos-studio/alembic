@@ -93,7 +93,9 @@
             ;; Chapter 4 — Normal distribution noise (p.100)
             [examples.gsot.62-normal-noise]
             ;; Chapter 4 — Uniform vs normal comparison (p.101)
-            [examples.gsot.63-random-distributions]))
+            [examples.gsot.63-random-distributions]
+            ;; Chapter 4 — Random walk (p.101-102)
+            [examples.gsot.64-random-walk]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -393,3 +395,7 @@
 (deftest gsot-63-random-distributions
   (testing "p.101 random_distributions.maxpat — uniform vs normal side-by-side comparison"
     (check examples.gsot.63-random-distributions/random-distributions)))
+
+(deftest gsot-64-random-walk
+  (testing "p.101-102 random_walks.maxpat — trigger-gated accumulating random walk"
+    (check examples.gsot.64-random-walk/random-walk)))
