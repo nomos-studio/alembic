@@ -170,7 +170,9 @@
             ;; Chapter 6 — Lowpass gate: complete LPG patch; gate + audio → vactrol → gated filtered output (pp.171)
             [examples.gsot.102-lowpass-gate]
             ;; Chapter 6 — One-pole LP, Hz parameterization: a=exp(-2π*fc/SR); two-node coefficient+filter (pp.173)
-            [examples.gsot.103-onepole-basic-hz]))
+            [examples.gsot.103-onepole-basic-hz]
+            ;; Chapter 6 — Allpass filter: flat amplitude, phase-shifting; x[n-1] via @1, y[n-1] via ~_ (pp.175)
+            [examples.gsot.104-allpass]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -634,3 +636,7 @@
 (deftest gsot-103-onepole-basic-hz
   (testing "pp.173 go.onepole.basic_hz.gendsp — Hz-parameterized one-pole LP: a=exp(-2π*fc/ma.SR); two-node pattern (Hz→coeff, coeff→filter); same DSP as ex.100, musical interface"
     (check examples.gsot.103-onepole-basic-hz/onepole-basic-hz)))
+
+(deftest gsot-104-allpass
+  (testing "pp.175 go.allpass.gendsp — first-order allpass: y[n]=a*x[n]+x[n-1]-a*y[n-1]; x[n-1] via @1 feedforward, y[n-1] via ~_ feedback; flat amplitude, frequency-dependent phase shift"
+    (check examples.gsot.104-allpass/allpass)))
