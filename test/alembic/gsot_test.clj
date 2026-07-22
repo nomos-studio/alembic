@@ -146,7 +146,11 @@
             ;; Chapter 5 — Rotating a bit sequence: trigger-driven accumulating rotation (pp.141-142)
             [examples.gsot.90-bit-rotate]
             ;; Chapter 5 — Euclidean rhythms via digitized ratio: floor(s*N/K) gate (pp.142-148)
-            [examples.gsot.91-euclidean-rhythms]))
+            [examples.gsot.91-euclidean-rhythms]
+            ;; Chapter 5 — Euclidean ratchets: R gate pulses per beat via countdown register (pp.149)
+            [examples.gsot.92-euclidean-ratchets]
+            ;; Chapter 5 — Euclidean LFO: fractional digitized ratio as sawtooth (pp.149)
+            [examples.gsot.93-euclidean-lfo]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -558,3 +562,11 @@
 (deftest gsot-91-euclidean-rhythms
   (testing "pp.142-148 euclidean_rhythms.maxpat — digitized ratio floor(s*N/K) generates maximally-even N-beat/K-step gate; wrap detection for step 0"
     (check examples.gsot.91-euclidean-rhythms/euclidean-rhythms)))
+
+(deftest gsot-92-euclidean-ratchets
+  (testing "pp.149 euclidean_ratchets.maxpat — countdown register fires R pulses per beat; trigger-gated load-or-decrement; restarts cleanly on overlapping beats"
+    (check examples.gsot.92-euclidean-ratchets/euclidean-ratchets)))
+
+(deftest gsot-93-euclidean-lfo
+  (testing "pp.149 euclidean_LFO.maxpat — fractional part of digitized ratio; sawtooth resetting at Euclidean beat positions; drop amplitude encodes gap length"
+    (check examples.gsot.93-euclidean-lfo/euclidean-lfo)))
