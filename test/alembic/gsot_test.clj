@@ -85,7 +85,9 @@
             ;; Chapter 4 — Spline interpolated random steps (p.95)
             [examples.gsot.58-spline-smoothed]
             ;; Chapter 4 — Probability gate (p.96)
-            [examples.gsot.59-random-chance]))
+            [examples.gsot.59-random-chance]
+            ;; Chapter 4 — Bernoulli gate (p.97)
+            [examples.gsot.60-bernoulli-gate]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -369,3 +371,7 @@
 (deftest gsot-59-random-chance
   (testing "p.96 go.chance.gendsp / random_chance.maxpat — probability-gated trigger"
     (check examples.gsot.59-random-chance/random-chance)))
+
+(deftest gsot-60-bernoulli-gate
+  (testing "p.97 go.bern.gendsp / random_bernoulli-gate.maxpat — two-output trigger router"
+    (check examples.gsot.60-bernoulli-gate/bernoulli-gate)))
