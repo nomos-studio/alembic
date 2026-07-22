@@ -158,7 +158,11 @@
             ;; Chapter 5 — Euclidean scales: inverse digitized ratio maps N-note maximally-even scale (pp.153-154)
             [examples.gsot.96-quantizing-pitch]
             ;; Chapter 5 — Smooth-stepped quantization: lerp between hard floor and continuous ratio (pp.155-157)
-            [examples.gsot.97-quantizing-pitch-smoothed]))
+            [examples.gsot.97-quantizing-pitch-smoothed]
+            ;; Chapter 5 — Quantization as timbral shape: phasor → Euclidean staircase waveform (pp.157)
+            [examples.gsot.98-quantizing-timbre]
+            ;; Chapter 5 — Audio bitcrusher: audio [-1,1] → N-level Euclidean quantisation (pp.158)
+            [examples.gsot.99-quantizing-audio-bitcrush]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -594,3 +598,11 @@
 (deftest gsot-97-quantizing-pitch-smoothed
   (testing "pp.155-157 quantizing-pitch-smoothed.maxpat — lerp(floor(ratio), ratio, smooth) blends hard-quantized Euclidean scale (smooth=0) to continuous linear interpolation (smooth=1); frac encodes position within each scale step"
     (check examples.gsot.97-quantizing-pitch-smoothed/quantizing-pitch-smoothed)))
+
+(deftest gsot-98-quantizing-timbre
+  (testing "pp.157 quantizing-timbre.maxpat — phasor [0,1) → Euclidean N-step staircase waveform; smooth=0 hard steps, smooth=1 linear sawtooth; N cancels in ratio so all N converge at smooth=1"
+    (check examples.gsot.98-quantizing-timbre/quantizing-timbre)))
+
+(deftest gsot-99-quantizing-audio-bitcrush
+  (testing "pp.158 quantizing-audio-bitcrush.maxpat — audio [-1,1) → N Euclidean quantisation levels via inverse digitized ratio; smooth interpolates adjacent levels; N=12 smooth=1 is passthrough"
+    (check examples.gsot.99-quantizing-audio-bitcrush/quantizing-audio-bitcrush)))
