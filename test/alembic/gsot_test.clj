@@ -89,7 +89,11 @@
             ;; Chapter 4 — Bernoulli gate (p.97)
             [examples.gsot.60-bernoulli-gate]
             ;; Chapter 4 — Random periods (p.98)
-            [examples.gsot.61-random-periods]))
+            [examples.gsot.61-random-periods]
+            ;; Chapter 4 — Normal distribution noise (p.100)
+            [examples.gsot.62-normal-noise]
+            ;; Chapter 4 — Uniform vs normal comparison (p.101)
+            [examples.gsot.63-random-distributions]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -381,3 +385,11 @@
 (deftest gsot-61-random-periods
   (testing "p.98 random_periods.maxpat — random-length period counter/phasor with trig-out"
     (check examples.gsot.61-random-periods/random-periods)))
+
+(deftest gsot-62-normal-noise
+  (testing "p.100 go.noise.normal.gendsp — CLT sum-of-12 approximately N(mu, sigma²)"
+    (check examples.gsot.62-normal-noise/normal-noise)))
+
+(deftest gsot-63-random-distributions
+  (testing "p.101 random_distributions.maxpat — uniform vs normal side-by-side comparison"
+    (check examples.gsot.63-random-distributions/random-distributions)))
