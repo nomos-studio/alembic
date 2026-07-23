@@ -231,7 +231,11 @@
             ;; Chapter 7 — Parameter smoothing: one-pole lag on delay time; click-free transitions (pp.206-207)
             [examples.gsot.143-delay-param-smoothed]
             ;; Chapter 7 — Doppler morph: blend two delay targets; smooth transition = pitch shift (p.208)
-            [examples.gsot.144-delay-morphed-times]))
+            [examples.gsot.144-delay-morphed-times]
+            ;; Chapter 7 — Two-tap crossfade: smooth crossfade GAIN (not delay time) = no pitch shift (pp.209-210)
+            [examples.gsot.145-delay-morphed-times-no-pitch-change]
+            ;; Chapter 7 — Background change abstraction: auto crossfade on :tg change via _@1 detection (p.211)
+            [examples.gsot.146-go-background-change]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -859,3 +863,11 @@
 (deftest gsot-144-delay-morphed-times
   (testing "p.208 delay_morphed_times — two delay targets ta/tb blended by :mo; smooth transition = Doppler pitch shift; :st controls rate"
     (check examples.gsot.144-delay-morphed-times/delay-morphed-times)))
+
+(deftest gsot-145-delay-morphed-times-no-pitch-change
+  (testing "pp.209-210 delay_morphed_times_no_pitch_change — smooth crossfade GAIN not delay time; two fixed taps dla/dlb; no read-pointer movement"
+    (check examples.gsot.145-delay-morphed-times-no-pitch-change/delay-morphed-times-no-pitch-change)))
+
+(deftest gsot-146-go-background-change
+  (testing "p.211 go.background.change — auto crossfade on :tg change; _@1 detection; sample-hold via select2~; xfg ramps 0→1 over :cf ms"
+    (check examples.gsot.146-go-background-change/go-background-change)))
