@@ -243,7 +243,13 @@
             ;; Chapter 8 — Enharmonic comb: two feedforward taps at inharmonic delay ratios (pp.217-218)
             [examples.gsot.149-comb-enharmonic]
             ;; Alembic extension — Dispersive feedback comb: allpass inharmonicity in feedback path
-            [examples.gsot.150-comb-enharmonic-dispersive]))
+            [examples.gsot.150-comb-enharmonic-dispersive]
+            ;; Chapter 8 — Karplus-Strong basic: two-point averaging LP in feedback, integer delay (pp.218-219)
+            [examples.gsot.151-string-basic]
+            ;; Chapter 8 — K-S pitch-corrected: de.fdelay, D=SR/hz-1.5 compensates averaging group delay (p.220)
+            [examples.gsot.152-string-pitched]
+            ;; Chapter 8 — K-S variable feedback: (1-dp)*s+dp*s@1; dp controls brightness; pitch-corrected (p.221)
+            [examples.gsot.153-string-feedback-control]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -895,3 +901,15 @@
 (deftest gsot-150-comb-enharmonic-dispersive
   (testing "Alembic ext — dispersive feedback comb; first-order allpass in ~ _ loop; :bp controls inharmonicity"
     (check examples.gsot.150-comb-enharmonic-dispersive/comb-enharmonic-dispersive)))
+
+(deftest gsot-151-string-basic
+  (testing "pp.218-219 string_basic — K-S: 0.5*(s+s@1) averaging in ~ _ loop; integer delay D=SR/hz-1"
+    (check examples.gsot.151-string-basic/string-basic)))
+
+(deftest gsot-152-string-pitched
+  (testing "p.220 string_pitched — pitch-corrected K-S: de.fdelay, D=SR/hz-1.5 compensates averaging 0.5-sample group delay"
+    (check examples.gsot.152-string-pitched/string-pitched)))
+
+(deftest gsot-153-string-feedback-control
+  (testing "p.221 string_feedback_control — variable K-S LP: (1-dp)*s+dp*s@1; dp=0 bright, dp=0.5 canonical, dp=0.99 dark; pitch-corrected"
+    (check examples.gsot.153-string-feedback-control/string-feedback-control)))
