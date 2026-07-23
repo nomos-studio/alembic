@@ -225,7 +225,9 @@
             ;; Chapter 7 — Filtered feedback: one-pole LP in loop; high freqs decay faster (pp.202-203)
             [examples.gsot.140-delay-feedback-filtered]
             ;; Chapter 7 — DC blocking in filtered feedback loop; zero at z=1, R=0.9999 (p.203)
-            [examples.gsot.141-delay-feedback-filtered-dcblock]))
+            [examples.gsot.141-delay-feedback-filtered-dcblock]
+            ;; Chapter 7 — Saturating feedback limiter: tanh(dr*signal) in loop; bounded, harmonic (p.204)
+            [examples.gsot.142-delay-feedback-saturated]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -841,3 +843,7 @@
 (deftest gsot-141-delay-feedback-filtered-dcblock
   (testing "p.203 delay_feedback_filtered_dcblock — LP + DC blocker in feedback; y=(x-x@1)+0.9999*y; zero at DC; 3 independent ~ states"
     (check examples.gsot.141-delay-feedback-filtered-dcblock/delay-feedback-filtered-dcblock)))
+
+(deftest gsot-142-delay-feedback-saturated
+  (testing "p.204 delay_feedback_saturated — tanh(dr*signal) soft-clip in feedback; LP+DC+sat chain; tanh stateless; 3 ~ states from LP/DC/outer loop"
+    (check examples.gsot.142-delay-feedback-saturated/delay-feedback-saturated)))
