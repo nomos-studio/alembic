@@ -257,7 +257,11 @@
             ;; Chapter 8 — Allpass interpolation: a=(1-f)/(1+f); flat magnitude, consistent timbre vs. linear (pp.223-226)
             [examples.gsot.156-string-interp-allpass]
             ;; Ch.8 Frequent Modulations — AM: in*(1+mx*osc(fc)); RM=no DC offset; sideband maths (pp.227-228)
-            [examples.gsot.157-am]))
+            [examples.gsot.157-am]
+            ;; Ch.8 — AM-depth: in*(bs+dp*osc); :bs=1→AM, :bs=0→RM; over-modulation (:dp>1) for distortion (pp.229-230)
+            [examples.gsot.158-am-depth]
+            ;; Ch.8 — AMRM: explicit AM/RM outputs + morph; AM=RM+dry; sideband amplitudes equal in both (p.232)
+            [examples.gsot.159-amrm]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -937,3 +941,11 @@
 (deftest gsot-157-am
   (testing "pp.227-228 AM — in*(1+mx*osc(fc)); mx=0 dry, mx=1 full AM; RM=AM minus DC; sidebands at fi±fc"
     (check examples.gsot.157-am/am)))
+
+(deftest gsot-158-am-depth
+  (testing "pp.229-230 AM-depth — in*(bs+dp*osc); :bs=1→AM, :bs=0→RM; over-modulation :dp>1 adds harmonic distortion"
+    (check examples.gsot.158-am-depth/am-depth)))
+
+(deftest gsot-159-amrm
+  (testing "p.232 AMRM — explicit :am/:rm/:out outputs; morph (1-mr)*am+mr*rm; AM=RM+dry; sideband amplitudes equal"
+    (check examples.gsot.159-amrm/amrm)))
