@@ -269,7 +269,11 @@
             ;; Ch.8 — FMPM-enveloped: AR envelope on β and amplitude; timbral decay from dense→pure sine (pp.234-235)
             [examples.gsot.162-fmpm-enveloped]
             ;; Ch.8 — FMPM-harmonicity: fm=fc×rt; integer rt=harmonic, irrational=metallic; C:M ratio table (p.236)
-            [examples.gsot.163-fmpm-harmonicity]))
+            [examples.gsot.163-fmpm-harmonicity]
+            ;; Ch.8 — parallel-carriers: one mod→two carriers; fc1=fm×r1, fc2=fm×r2; :mx blend; DX7 alg.5 pattern (p.238)
+            [examples.gsot.164-fmpm-parallel-carriers]
+            ;; Ch.8 — parallel-modulators: two mods→one carrier; intermod at fc+p×fm1+q×fm2; per-mod index (p.238)
+            [examples.gsot.165-fmpm-parallel-modulators]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -973,3 +977,11 @@
 (deftest gsot-163-fmpm-harmonicity
   (testing "p.236 FMPM-harmonicity — fm=fc×rt; integer rt=harmonic series, irrational=inharmonic/metallic; C:M ratio sweep"
     (check examples.gsot.163-fmpm-harmonicity/fmpm-harmonicity)))
+
+(deftest gsot-164-fmpm-parallel-carriers
+  (testing "p.238 parallel-carriers — one mod drives fc1=fm×r1 and fc2=fm×r2; :mx blend; sidebands interleaved by ratio"
+    (check examples.gsot.164-fmpm-parallel-carriers/fmpm-parallel-carriers)))
+
+(deftest gsot-165-fmpm-parallel-modulators
+  (testing "p.238 parallel-modulators — fm1=fc×r1, fm2=fc×r2 sum into one carrier; intermod at fc+p×fm1+q×fm2; per-mod ix"
+    (check examples.gsot.165-fmpm-parallel-modulators/fmpm-parallel-modulators)))
