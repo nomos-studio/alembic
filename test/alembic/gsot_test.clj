@@ -267,7 +267,9 @@
             ;; Ch.8 — FMPM: FM (mod→freq) vs PM (mod→phase) morph; Bessel sidebands; Chowning β=ix convention (pp.232-233)
             [examples.gsot.161-fmpm]
             ;; Ch.8 — FMPM-enveloped: AR envelope on β and amplitude; timbral decay from dense→pure sine (pp.234-235)
-            [examples.gsot.162-fmpm-enveloped]))
+            [examples.gsot.162-fmpm-enveloped]
+            ;; Ch.8 — FMPM-harmonicity: fm=fc×rt; integer rt=harmonic, irrational=metallic; C:M ratio table (p.236)
+            [examples.gsot.163-fmpm-harmonicity]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -967,3 +969,7 @@
 (deftest gsot-162-fmpm-enveloped
   (testing "pp.234-235 FMPM-enveloped — AR gate→env; iy=ix*env; env*sin(FM/PM(iy)); β decay drives timbral arc dense→sine"
     (check examples.gsot.162-fmpm-enveloped/fmpm-enveloped)))
+
+(deftest gsot-163-fmpm-harmonicity
+  (testing "p.236 FMPM-harmonicity — fm=fc×rt; integer rt=harmonic series, irrational=inharmonic/metallic; C:M ratio sweep"
+    (check examples.gsot.163-fmpm-harmonicity/fmpm-harmonicity)))
