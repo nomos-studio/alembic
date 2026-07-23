@@ -251,7 +251,9 @@
             ;; Chapter 8 — K-S variable feedback: (1-dp)*s+dp*s@1; dp controls brightness; pitch-corrected (p.221)
             [examples.gsot.153-string-feedback-control]
             ;; Chapter 8 — K-S inverted feedback: y=x-g*lp(y[n-D]); odd harmonics only; fundamental at :hz/2 (p.221)
-            [examples.gsot.154-string-inverted-feedback]))
+            [examples.gsot.154-string-inverted-feedback]
+            ;; Chapter 8 — K-S RT60 damping: fb=pow(0.001,1000/(hz×dc)); decay time independent of pitch (pp.222-223)
+            [examples.gsot.155-string-damping]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -919,3 +921,7 @@
 (deftest gsot-154-string-inverted-feedback
   (testing "p.221 string_inverted_feedback — negated K-S feedback; odd harmonics only; resonant fundamental at :hz/2; default :hz=440 → A3"
     (check examples.gsot.154-string-inverted-feedback/string-inverted-feedback)))
+
+(deftest gsot-155-string-damping
+  (testing "pp.222-223 string_damping — RT60 reparameterisation: fb=pow(0.001,1000/(hz×dc)); pitch-independent decay time"
+    (check examples.gsot.155-string-damping/string-damping)))
