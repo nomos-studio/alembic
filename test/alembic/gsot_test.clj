@@ -253,7 +253,9 @@
             ;; Chapter 8 — K-S inverted feedback: y=x-g*lp(y[n-D]); odd harmonics only; fundamental at :hz/2 (p.221)
             [examples.gsot.154-string-inverted-feedback]
             ;; Chapter 8 — K-S RT60 damping: fb=pow(0.001,1000/(hz×dc)); decay time independent of pitch (pp.222-223)
-            [examples.gsot.155-string-damping]))
+            [examples.gsot.155-string-damping]
+            ;; Chapter 8 — Allpass interpolation: a=(1-f)/(1+f); flat magnitude, consistent timbre vs. linear (pp.223-226)
+            [examples.gsot.156-string-interp-allpass]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -925,3 +927,7 @@
 (deftest gsot-155-string-damping
   (testing "pp.222-223 string_damping — RT60 reparameterisation: fb=pow(0.001,1000/(hz×dc)); pitch-independent decay time"
     (check examples.gsot.155-string-damping/string-damping)))
+
+(deftest gsot-156-string-interp-allpass
+  (testing "pp.223-226 delay_interpolation_types — allpass interp: a=(1-f)/(1+f); flat magnitude; nested ~ _ for allpass state"
+    (check examples.gsot.156-string-interp-allpass/string-interp-allpass)))
