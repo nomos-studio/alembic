@@ -285,7 +285,9 @@
             ;; Ch.8 — cross-feedback-filtered: unity-gain LP on each feedback path; tames chaos; extends usable :i1/:i2 range (p.247)
             [examples.gsot.170-pm-cross-feedback-filtered]
             ;; Ch.8 — FMPM-ifod: in×(bs+FM_osc); FM signal as ring/AM modulator; ring-of-rings sidebands (pp.247-248)
-            [examples.gsot.171-fmpm-ifod]))
+            [examples.gsot.171-fmpm-ifod]
+            ;; Ch.8 — PM-noclicks: latch :ix and :rt at phasor reset (ph<ph@1); (x*rst+_*(1-rst))~_; click-suppressed PM (p.248)
+            [examples.gsot.172-pm-noclicks-latched]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -1021,3 +1023,7 @@
 (deftest gsot-171-fmpm-ifod
   (testing "pp.247-248 FMPM-ifod — in*(bs+FM_osc); FM/PM signal as AM/RM modulator; ring-of-rings at fi±(fc+n*fm)"
     (check examples.gsot.171-fmpm-ifod/fmpm-ifod)))
+
+(deftest gsot-172-pm-noclicks-latched
+  (testing "p.248 PM-noclicks-latched — rst=ph<ph@1; (x*rst+_*(1-rst))~_ latches :ix,:rt at cycle boundary; PM click suppress"
+    (check examples.gsot.172-pm-noclicks-latched/pm-noclicks-latched)))
