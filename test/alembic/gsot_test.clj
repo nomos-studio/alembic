@@ -261,7 +261,11 @@
             ;; Ch.8 — AM-depth: in*(bs+dp*osc); :bs=1→AM, :bs=0→RM; over-modulation (:dp>1) for distortion (pp.229-230)
             [examples.gsot.158-am-depth]
             ;; Ch.8 — AMRM: explicit AM/RM outputs + morph; AM=RM+dry; sideband amplitudes equal in both (p.232)
-            [examples.gsot.159-amrm]))
+            [examples.gsot.159-amrm]
+            ;; Ch.8 — sine: phase-explicit phasor→sin oscillator; PM audio input; building block for FM/PM (p.233)
+            [examples.gsot.160-sine]
+            ;; Ch.8 — FMPM: FM (mod→freq) vs PM (mod→phase) morph; Bessel sidebands; Chowning β=ix convention (pp.232-233)
+            [examples.gsot.161-fmpm]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -949,3 +953,11 @@
 (deftest gsot-159-amrm
   (testing "p.232 AMRM — explicit :am/:rm/:out outputs; morph (1-mr)*am+mr*rm; AM=RM+dry; sideband amplitudes equal"
     (check examples.gsot.159-amrm/amrm)))
+
+(deftest gsot-160-sine
+  (testing "p.233 sine — phasor→sin with explicit PM audio input; sin(2π*phasor(fc)+pm); building block for FM/PM"
+    (check examples.gsot.160-sine/sine)))
+
+(deftest gsot-161-fmpm
+  (testing "pp.232-233 FMPM — FM/PM morph; sin(2π*phasor(fc+(1-md)*ix*fm*mod)+md*ix*mod); Bessel sidebands; β=ix Chowning"
+    (check examples.gsot.161-fmpm/fmpm)))
