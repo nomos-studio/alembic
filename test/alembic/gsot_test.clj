@@ -208,7 +208,11 @@
             [examples.gsot.129-svf]
             ;; Chapter 6 — Crossover filters: 1st-order complement pair + SVF-based split (pp.191-192)
             [examples.gsot.130-crossover-simple]
-            [examples.gsot.131-crossover]))
+            [examples.gsot.131-crossover]
+            ;; Chapter 6 — Slew limiting: symmetric, asymmetric, millisecond-parameterized (pp.193-195)
+            [examples.gsot.132-slewlimit]
+            [examples.gsot.133-slewlimit2]
+            [examples.gsot.134-slewlimit-ms]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -784,3 +788,15 @@
 (deftest gsot-131-crossover
   (testing "pp.191-192 crossover.maxpat — SVF-based 2nd-order crossover; LP+HP from shared ZDF state; Q=0.707 Butterworth; two outputs ch4/ch5"
     (check examples.gsot.131-crossover/crossover)))
+
+(deftest gsot-132-slewlimit
+  (testing "pp.193-194 go.slewlimit — symmetric linear slew limiter; out=prev+clamp(in-prev,-slew,slew); ~_ feedback"
+    (check examples.gsot.132-slewlimit/slewlimit)))
+
+(deftest gsot-133-slewlimit2
+  (testing "pp.193-194 go.slewlimit2 — asymmetric slew; separate :up/:dn rates; select2(in>_,max(-dn,delta),min(up,delta))"
+    (check examples.gsot.133-slewlimit2/slewlimit2)))
+
+(deftest gsot-134-slewlimit-ms
+  (testing "p.195 go.slewlimit.ms — ms-parameterized slew; rate=1000/(ms*SR); guard max(1,ms*SR/1000) prevents div-zero"
+    (check examples.gsot.134-slewlimit-ms/slewlimit-ms)))
