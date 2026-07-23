@@ -275,7 +275,9 @@
             ;; Ch.8 — parallel-modulators: two mods→one carrier; intermod at fc+p×fm1+q×fm2; per-mod index (p.238)
             [examples.gsot.165-fmpm-parallel-modulators]
             ;; Ch.8 — FMPM-blending: (1-bl)*sine+bl*sawtooth modulator; saw≡harmonic stack; Bessel cluster superposition (pp.239-241)
-            [examples.gsot.166-fmpm-blending]))
+            [examples.gsot.166-fmpm-blending]
+            ;; Ch.8 — cascade: top mod→middle FM mod→carrier; fc+n1*fm1+n1*n2*fm2 multiplicative grid; DX7 series alg (pp.241-242)
+            [examples.gsot.167-fmpm-cascade-modulation]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -991,3 +993,7 @@
 (deftest gsot-166-fmpm-blending
   (testing "pp.239-241 FMPM-blending — (1-bl)*osc+bl*sawtooth mod; saw=harmonic stack; Bessel clusters at each harmonic of fm"
     (check examples.gsot.166-fmpm-blending/fmpm-blending)))
+
+(deftest gsot-167-fmpm-cascade-modulation
+  (testing "pp.241-242 cascade — top→middle FM→carrier; multiplicative grid fc+n1*fm1+n1*n2*fm2 vs parallel additive; DX7 series"
+    (check examples.gsot.167-fmpm-cascade-modulation/fmpm-cascade-modulation)))
