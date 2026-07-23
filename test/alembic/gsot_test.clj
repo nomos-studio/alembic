@@ -277,7 +277,9 @@
             ;; Ch.8 — FMPM-blending: (1-bl)*sine+bl*sawtooth modulator; saw≡harmonic stack; Bessel cluster superposition (pp.239-241)
             [examples.gsot.166-fmpm-blending]
             ;; Ch.8 — cascade: top mod→middle FM mod→carrier; fc+n1*fm1+n1*n2*fm2 multiplicative grid; DX7 series alg (pp.241-242)
-            [examples.gsot.167-fmpm-cascade-modulation]))
+            [examples.gsot.167-fmpm-cascade-modulation]
+            ;; Ch.8 — feedback: out[n-1]→own freq/phase via ~ _; sine→sawtooth→chaos with :ix; DX7 op1 self-feedback (pp.242-243)
+            [examples.gsot.168-fmpm-feedback]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -997,3 +999,7 @@
 (deftest gsot-167-fmpm-cascade-modulation
   (testing "pp.241-242 cascade — top→middle FM→carrier; multiplicative grid fc+n1*fm1+n1*n2*fm2 vs parallel additive; DX7 series"
     (check examples.gsot.167-fmpm-cascade-modulation/fmpm-cascade-modulation)))
+
+(deftest gsot-168-fmpm-feedback
+  (testing "pp.242-243 feedback — fmfb~_; sin(phasor(fc+(1-md)*ix*fc*x)+md*ix*x); sine→sawtooth→chaos; DX7 op1 self-fb"
+    (check examples.gsot.168-fmpm-feedback/fmpm-feedback)))
