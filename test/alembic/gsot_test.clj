@@ -215,7 +215,9 @@
             [examples.gsot.134-slewlimit-ms]
             ;; Chapter 6 — Lag generator / line: one-pole IIR parameterized in samples and ms (p.196)
             [examples.gsot.135-line-samples]
-            [examples.gsot.136-line-ms]))
+            [examples.gsot.136-line-ms]
+            ;; Chapter 7 — Feedforward delay: circular buffer, comb filter intro (pp.197-199)
+            [examples.gsot.137-delay-feedforward-basic]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -811,3 +813,7 @@
 (deftest gsot-136-line-ms
   (testing "p.196 go.line.ms — one-pole lag N=max(1,ms*SR/1000); same IIR as ex.135; sample-rate independent parameter"
     (check examples.gsot.136-line-ms/line-ms)))
+
+(deftest gsot-137-delay-feedforward-basic
+  (testing "pp.197-199 delay_feedforward_basic — de.delay circular buffer; y=dry*(1-mx)+wet*mx; feedforward/no-feedback comb filter intro"
+    (check examples.gsot.137-delay-feedforward-basic/delay-feedforward-basic)))
