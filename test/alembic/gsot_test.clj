@@ -223,7 +223,9 @@
             ;; Chapter 7 — Decay-time reparameterization: fb = pow(0.001, delay/decay) (pp.201-202)
             [examples.gsot.139-delay-feedback-decaytime]
             ;; Chapter 7 — Filtered feedback: one-pole LP in loop; high freqs decay faster (pp.202-203)
-            [examples.gsot.140-delay-feedback-filtered]))
+            [examples.gsot.140-delay-feedback-filtered]
+            ;; Chapter 7 — DC blocking in filtered feedback loop; zero at z=1, R=0.9999 (p.203)
+            [examples.gsot.141-delay-feedback-filtered-dcblock]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -835,3 +837,7 @@
 (deftest gsot-140-delay-feedback-filtered
   (testing "pp.202-203 delay_feedback_filtered — one-pole LP in feedback path; fc=exp(-2pi*hz/SR); high freqs decay faster; fi.pole ~ independent of outer fdl_loop ~"
     (check examples.gsot.140-delay-feedback-filtered/delay-feedback-filtered)))
+
+(deftest gsot-141-delay-feedback-filtered-dcblock
+  (testing "p.203 delay_feedback_filtered_dcblock — LP + DC blocker in feedback; y=(x-x@1)+0.9999*y; zero at DC; 3 independent ~ states"
+    (check examples.gsot.141-delay-feedback-filtered-dcblock/delay-feedback-filtered-dcblock)))
