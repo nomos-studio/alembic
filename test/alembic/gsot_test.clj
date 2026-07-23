@@ -221,7 +221,9 @@
             ;; Chapter 7 — Feedback delay: IIR echo loop, decaying echoes, comb peak sharpening (p.200)
             [examples.gsot.138-delay-basic-feedback]
             ;; Chapter 7 — Decay-time reparameterization: fb = pow(0.001, delay/decay) (pp.201-202)
-            [examples.gsot.139-delay-feedback-decaytime]))
+            [examples.gsot.139-delay-feedback-decaytime]
+            ;; Chapter 7 — Filtered feedback: one-pole LP in loop; high freqs decay faster (pp.202-203)
+            [examples.gsot.140-delay-feedback-filtered]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -829,3 +831,7 @@
 (deftest gsot-139-delay-feedback-decaytime
   (testing "pp.201-202 delay_feedback_decaytime — fb=pow(0.001,delay_ms/decay_ms); RT60 reparameterization; delay-independent decay control"
     (check examples.gsot.139-delay-feedback-decaytime/delay-feedback-decaytime)))
+
+(deftest gsot-140-delay-feedback-filtered
+  (testing "pp.202-203 delay_feedback_filtered — one-pole LP in feedback path; fc=exp(-2pi*hz/SR); high freqs decay faster; fi.pole ~ independent of outer fdl_loop ~"
+    (check examples.gsot.140-delay-feedback-filtered/delay-feedback-filtered)))
