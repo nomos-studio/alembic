@@ -219,7 +219,9 @@
             ;; Chapter 7 — Feedforward delay: circular buffer, comb filter intro (pp.197-199)
             [examples.gsot.137-delay-feedforward-basic]
             ;; Chapter 7 — Feedback delay: IIR echo loop, decaying echoes, comb peak sharpening (p.200)
-            [examples.gsot.138-delay-basic-feedback]))
+            [examples.gsot.138-delay-basic-feedback]
+            ;; Chapter 7 — Decay-time reparameterization: fb = pow(0.001, delay/decay) (pp.201-202)
+            [examples.gsot.139-delay-feedback-decaytime]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -823,3 +825,7 @@
 (deftest gsot-138-delay-basic-feedback
   (testing "p.200 delay_basic_feedback — IIR echo loop; y=delay(in+fb*y); stable when |fb|<1; comb peaks sharpened by feedback"
     (check examples.gsot.138-delay-basic-feedback/delay-basic-feedback)))
+
+(deftest gsot-139-delay-feedback-decaytime
+  (testing "pp.201-202 delay_feedback_decaytime — fb=pow(0.001,delay_ms/decay_ms); RT60 reparameterization; delay-independent decay control"
+    (check examples.gsot.139-delay-feedback-decaytime/delay-feedback-decaytime)))
