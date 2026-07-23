@@ -255,7 +255,9 @@
             ;; Chapter 8 — K-S RT60 damping: fb=pow(0.001,1000/(hz×dc)); decay time independent of pitch (pp.222-223)
             [examples.gsot.155-string-damping]
             ;; Chapter 8 — Allpass interpolation: a=(1-f)/(1+f); flat magnitude, consistent timbre vs. linear (pp.223-226)
-            [examples.gsot.156-string-interp-allpass]))
+            [examples.gsot.156-string-interp-allpass]
+            ;; Ch.8 Frequent Modulations — AM: in*(1+mx*osc(fc)); RM=no DC offset; sideband maths (pp.227-228)
+            [examples.gsot.157-am]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -931,3 +933,7 @@
 (deftest gsot-156-string-interp-allpass
   (testing "pp.223-226 delay_interpolation_types — allpass interp: a=(1-f)/(1+f); flat magnitude; nested ~ _ for allpass state"
     (check examples.gsot.156-string-interp-allpass/string-interp-allpass)))
+
+(deftest gsot-157-am
+  (testing "pp.227-228 AM — in*(1+mx*osc(fc)); mx=0 dry, mx=1 full AM; RM=AM minus DC; sidebands at fi±fc"
+    (check examples.gsot.157-am/am)))
