@@ -212,7 +212,10 @@
             ;; Chapter 6 — Slew limiting: symmetric, asymmetric, millisecond-parameterized (pp.193-195)
             [examples.gsot.132-slewlimit]
             [examples.gsot.133-slewlimit2]
-            [examples.gsot.134-slewlimit-ms]))
+            [examples.gsot.134-slewlimit-ms]
+            ;; Chapter 6 — Lag generator / line: one-pole IIR parameterized in samples and ms (p.196)
+            [examples.gsot.135-line-samples]
+            [examples.gsot.136-line-ms]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -800,3 +803,11 @@
 (deftest gsot-134-slewlimit-ms
   (testing "p.195 go.slewlimit.ms — ms-parameterized slew; rate=1000/(ms*SR); guard max(1,ms*SR/1000) prevents div-zero"
     (check examples.gsot.134-slewlimit-ms/slewlimit-ms)))
+
+(deftest gsot-135-line-samples
+  (testing "p.196 go.line.samples — one-pole lag a=1-1/N; out=(_+(in-_)/N)~_; N in samples; reaches 63% in N samples"
+    (check examples.gsot.135-line-samples/line-samples)))
+
+(deftest gsot-136-line-ms
+  (testing "p.196 go.line.ms — one-pole lag N=max(1,ms*SR/1000); same IIR as ex.135; sample-rate independent parameter"
+    (check examples.gsot.136-line-ms/line-ms)))
