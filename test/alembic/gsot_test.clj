@@ -249,7 +249,9 @@
             ;; Chapter 8 — K-S pitch-corrected: de.fdelay, D=SR/hz-1.5 compensates averaging group delay (p.220)
             [examples.gsot.152-string-pitched]
             ;; Chapter 8 — K-S variable feedback: (1-dp)*s+dp*s@1; dp controls brightness; pitch-corrected (p.221)
-            [examples.gsot.153-string-feedback-control]))
+            [examples.gsot.153-string-feedback-control]
+            ;; Chapter 8 — K-S inverted feedback: y=x-g*lp(y[n-D]); odd harmonics only; fundamental at :hz/2 (p.221)
+            [examples.gsot.154-string-inverted-feedback]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -913,3 +915,7 @@
 (deftest gsot-153-string-feedback-control
   (testing "p.221 string_feedback_control — variable K-S LP: (1-dp)*s+dp*s@1; dp=0 bright, dp=0.5 canonical, dp=0.99 dark; pitch-corrected"
     (check examples.gsot.153-string-feedback-control/string-feedback-control)))
+
+(deftest gsot-154-string-inverted-feedback
+  (testing "p.221 string_inverted_feedback — negated K-S feedback; odd harmonics only; resonant fundamental at :hz/2; default :hz=440 → A3"
+    (check examples.gsot.154-string-inverted-feedback/string-inverted-feedback)))
