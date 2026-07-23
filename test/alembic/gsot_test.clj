@@ -237,7 +237,13 @@
             ;; Chapter 7 — Background change abstraction: auto crossfade on :tg change via _@1 detection (p.211)
             [examples.gsot.146-go-background-change]
             ;; Chapter 7 — Multi-tap capstone: slapback + echo + filtered-echo in parallel (pp.211-212)
-            [examples.gsot.147-delay-multi-effect]))
+            [examples.gsot.147-delay-multi-effect]
+            ;; Chapter 8 — Feedforward comb filter: peaks/notches at 1/D Hz spacing (p.215)
+            [examples.gsot.148-comb-filter]
+            ;; Chapter 8 — Enharmonic comb: two feedforward taps at inharmonic delay ratios (pp.217-218)
+            [examples.gsot.149-comb-enharmonic]
+            ;; Alembic extension — Dispersive feedback comb: allpass inharmonicity in feedback path
+            [examples.gsot.150-comb-enharmonic-dispersive]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -877,3 +883,15 @@
 (deftest gsot-147-delay-multi-effect
   (testing "pp.211-213 delay_multi_effect — LFO-modulated delay, RT60 feedback, unity-DC-gain LP dampen, DC block, wet/dry mix"
     (check examples.gsot.147-delay-multi-effect/delay-multi-effect)))
+
+(deftest gsot-148-comb-filter
+  (testing "p.215 comb_filter — feedforward comb H(z)=1+g·z^{-D}; peaks/notches at 1/D Hz spacing"
+    (check examples.gsot.148-comb-filter/comb-filter)))
+
+(deftest gsot-149-comb-enharmonic
+  (testing "pp.217-218 comb_enharmonic — two feedforward taps at inharmonic ratios; default t2=t1×φ"
+    (check examples.gsot.149-comb-enharmonic/comb-enharmonic)))
+
+(deftest gsot-150-comb-enharmonic-dispersive
+  (testing "Alembic ext — dispersive feedback comb; first-order allpass in ~ _ loop; :bp controls inharmonicity"
+    (check examples.gsot.150-comb-enharmonic-dispersive/comb-enharmonic-dispersive)))
