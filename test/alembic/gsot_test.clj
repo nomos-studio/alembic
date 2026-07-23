@@ -283,7 +283,9 @@
             ;; Ch.8 — cross-feedback: osc1↔osc2 PM/FM via si.bus(2); synchronisation, phase-locking, chaos (p.246)
             [examples.gsot.169-pm-cross-feedback]
             ;; Ch.8 — cross-feedback-filtered: unity-gain LP on each feedback path; tames chaos; extends usable :i1/:i2 range (p.247)
-            [examples.gsot.170-pm-cross-feedback-filtered]))
+            [examples.gsot.170-pm-cross-feedback-filtered]
+            ;; Ch.8 — FMPM-ifod: in×(bs+FM_osc); FM signal as ring/AM modulator; ring-of-rings sidebands (pp.247-248)
+            [examples.gsot.171-fmpm-ifod]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -1015,3 +1017,7 @@
 (deftest gsot-170-pm-cross-feedback-filtered
   (testing "p.247 cross-feedback-filtered — LP (1-dp)*b:+~*(dp) on each coupling path; defers chaos; 6 state registers"
     (check examples.gsot.170-pm-cross-feedback-filtered/pm-cross-feedback-filtered)))
+
+(deftest gsot-171-fmpm-ifod
+  (testing "pp.247-248 FMPM-ifod — in*(bs+FM_osc); FM/PM signal as AM/RM modulator; ring-of-rings at fi±(fc+n*fm)"
+    (check examples.gsot.171-fmpm-ifod/fmpm-ifod)))
