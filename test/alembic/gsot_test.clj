@@ -227,7 +227,9 @@
             ;; Chapter 7 — DC blocking in filtered feedback loop; zero at z=1, R=0.9999 (p.203)
             [examples.gsot.141-delay-feedback-filtered-dcblock]
             ;; Chapter 7 — Saturating feedback limiter: tanh(dr*signal) in loop; bounded, harmonic (p.204)
-            [examples.gsot.142-delay-feedback-saturated]))
+            [examples.gsot.142-delay-feedback-saturated]
+            ;; Chapter 7 — Parameter smoothing: one-pole lag on delay time; click-free transitions (pp.206-207)
+            [examples.gsot.143-delay-param-smoothed]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -847,3 +849,7 @@
 (deftest gsot-142-delay-feedback-saturated
   (testing "p.204 delay_feedback_saturated — tanh(dr*signal) soft-clip in feedback; LP+DC+sat chain; tanh stateless; 3 ~ states from LP/DC/outer loop"
     (check examples.gsot.142-delay-feedback-saturated/delay-feedback-saturated)))
+
+(deftest gsot-143-delay-param-smoothed
+  (testing "pp.206-207 delay_param_smoothed — one-pole lag on delay-time param; k=exp(-1000/(st*SR)); smoothed ms into de.delay; Doppler glide not click"
+    (check examples.gsot.143-delay-param-smoothed/delay-param-smoothed)))
