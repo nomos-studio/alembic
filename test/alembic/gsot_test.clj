@@ -279,7 +279,11 @@
             ;; Ch.8 — cascade: top mod→middle FM mod→carrier; fc+n1*fm1+n1*n2*fm2 multiplicative grid; DX7 series alg (pp.241-242)
             [examples.gsot.167-fmpm-cascade-modulation]
             ;; Ch.8 — feedback: out[n-1]→own freq/phase via ~ _; sine→sawtooth→chaos with :ix; DX7 op1 self-feedback (pp.242-243)
-            [examples.gsot.168-fmpm-feedback]))
+            [examples.gsot.168-fmpm-feedback]
+            ;; Ch.8 — cross-feedback: osc1↔osc2 PM/FM via si.bus(2); synchronisation, phase-locking, chaos (p.246)
+            [examples.gsot.169-pm-cross-feedback]
+            ;; Ch.8 — cross-feedback-filtered: unity-gain LP on each feedback path; tames chaos; extends usable :i1/:i2 range (p.247)
+            [examples.gsot.170-pm-cross-feedback-filtered]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -1003,3 +1007,11 @@
 (deftest gsot-168-fmpm-feedback
   (testing "pp.242-243 feedback — fmfb~_; sin(phasor(fc+(1-md)*ix*fc*x)+md*ix*x); sine→sawtooth→chaos; DX7 op1 self-fb"
     (check examples.gsot.168-fmpm-feedback/fmpm-feedback)))
+
+(deftest gsot-169-pm-cross-feedback
+  (testing "p.246 cross-feedback — (xfb~si.bus(2)):>*(0.5); osc1↔osc2 PM/FM; sync/phase-lock/chaos regimes"
+    (check examples.gsot.169-pm-cross-feedback/pm-cross-feedback)))
+
+(deftest gsot-170-pm-cross-feedback-filtered
+  (testing "p.247 cross-feedback-filtered — LP (1-dp)*b:+~*(dp) on each coupling path; defers chaos; 6 state registers"
+    (check examples.gsot.170-pm-cross-feedback-filtered/pm-cross-feedback-filtered)))
