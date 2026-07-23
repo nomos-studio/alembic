@@ -217,7 +217,9 @@
             [examples.gsot.135-line-samples]
             [examples.gsot.136-line-ms]
             ;; Chapter 7 — Feedforward delay: circular buffer, comb filter intro (pp.197-199)
-            [examples.gsot.137-delay-feedforward-basic]))
+            [examples.gsot.137-delay-feedforward-basic]
+            ;; Chapter 7 — Feedback delay: IIR echo loop, decaying echoes, comb peak sharpening (p.200)
+            [examples.gsot.138-delay-basic-feedback]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -817,3 +819,7 @@
 (deftest gsot-137-delay-feedforward-basic
   (testing "pp.197-199 delay_feedforward_basic — de.delay circular buffer; y=dry*(1-mx)+wet*mx; feedforward/no-feedback comb filter intro"
     (check examples.gsot.137-delay-feedforward-basic/delay-feedforward-basic)))
+
+(deftest gsot-138-delay-basic-feedback
+  (testing "p.200 delay_basic_feedback — IIR echo loop; y=delay(in+fb*y); stable when |fb|<1; comb peaks sharpened by feedback"
+    (check examples.gsot.138-delay-basic-feedback/delay-basic-feedback)))
