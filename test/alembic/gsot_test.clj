@@ -202,7 +202,10 @@
             [examples.gsot.125-biquad4-hs]
             [examples.gsot.126-morphing-biquad-cascade]
             ;; Chapter 6 — trapezoidal one-pole: bilinear-transform, exact -3dB at fc (pp.184-188)
-            [examples.gsot.127-onepole-hz]))
+            [examples.gsot.127-onepole-hz]
+            ;; Chapter 6 — ZDF state variable filter: coefficients + full SVF body (pp.188-190)
+            [examples.gsot.128-svf-coeffs]
+            [examples.gsot.129-svf]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -762,3 +765,11 @@
 (deftest gsot-127-onepole-hz
   (testing "pp.184-188 go.onepole.hz.gendsp — trapezoidal one-pole LP; g=tan(π·fc/SR), k=g/(1+g); y[n]=k*(x+x@1)+(1-2k)*y[n-1]; exact -3dB at fc"
     (check examples.gsot.127-onepole-hz/onepole-hz)))
+
+(deftest gsot-128-svf-coeffs
+  (testing "pp.188-190 go.svf.coeffs — SVF coefficients: g=tan(π·fc/SR), k=1/Q, dn=1+k·g+g²; outputs on ch 0-2"
+    (check examples.gsot.128-svf-coeffs/svf-coeffs)))
+
+(deftest gsot-129-svf
+  (testing "pp.188-190 go.svf.gendsp — ZDF SVF; two coupled ~_ integrators via nested Faust with; LP/BP/HP via :type 0/1/2"
+    (check examples.gsot.129-svf/svf)))
