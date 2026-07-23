@@ -1,113 +1,149 @@
 ; SPDX-License-Identifier: EPL-2.0
 (ns examples.gsot.147-delay-multi-effect
-  "GSOT pp.211-212 — delay_multi_effect.maxpat (Chapter 7).
+  "GSOT pp.211-213 — delay_multi_effect.maxpat (Chapter 7).
 
-  'A Garden of Earthly Delays — Multi-Tap Delay Effect'
-  -------------------------------------------------------
-  Combines three delay techniques from Chapter 7 in parallel, each contributing
-  a distinct textural layer to the mix.  The 'garden' metaphor: rather than
-  choosing one delay type, cultivate several simultaneously.
+  'A Garden of Earthly Delays — Modulated Feedback Delay'
+  --------------------------------------------------------
+  A single feedback delay line combining all Chapter 7 techniques:
+  LFO modulation of delay time, decay-time parameterized feedback,
+  unity-DC-gain lowpass damping in the feedback path, DC blocking,
+  and wet/dry mix.
 
-  Three-tap parallel architecture
-  ---------------------------------
+  The 'garden' is the space of effects reachable from one patch by varying
+  parameters — presets at the bottom demonstrate the range.
 
-  Tap 1 — Slapback (feedforward, no feedback)  [ex.137 lineage]
-      A single fixed echo at a short delay time.  No feedback, so only one
-      reflection.  Classic 1950s rockabilly / vocal doubling character.
-      Controlled by :t1.  Decay time irrelevant — one-shot.
+  Signal chain
+  -------------
+  1. LFO modulates delay time:
+         D[n] = :ms × SR/1000  +  (1 − 2×:iv) × os.osc(:lf) × :ld × SR/1000
 
-  Tap 2 — Standard echo (feedback, decay-time parameterized)  [ex.139 lineage]
-      Repeating echo trail with amplitude fb₂ = pow(0.001, :t2/:dc).
-      Feedback makes the tail, decay time controls how long it lasts.
-      Mid-range delay time creates rhythmic phrasing in the echo.
-      Controlled by :t2 and :dc.
+     (1−2×:iv) = +1 when :iv=0 (normal), −1 when :iv=1 (phase-flipped LFO).
 
-  Tap 3 — Dark filtered echo (filtered + DC-blocked feedback)  [ex.141 lineage]
-      Same IIR echo structure as tap 2 but with a lowpass (fi.pole at :hz)
-      and DC blocker (R = 0.9999) inside the feedback loop.  High frequencies
-      decay faster than lows, producing a warm, tape-like tail.  Longer delay
-      time creates a wide, spacious shadow behind the mix.
-      Controlled by :t3, :dc, :hz.
+  2. Feedback coefficient from base delay and decay time:
+         fb = pow(0.001, :ms / max(1, :dc))
 
-  Combined texture
-  -----------------
-  The three taps are summed and divided by 3 to maintain unity gain.  Each
-  layer occupies a distinct temporal and spectral position:
+  3. Unity-DC-gain one-pole lowpass (dampen) in feedback path:
+         lp[n] = (1 − :dp) × s[n]  +  :dp × lp[n−1]
 
-      Tap 1  short,  bright, single echo  → presence and air
-      Tap 2  medium, flat,   repeating    → rhythmic definition
-      Tap 3  long,   dark,   decaying     → depth and warmth
+     :dp = 0 → lp = s (no damping; LP fully open; clear echoes)
+     :dp → 1 → lp → DC only (maximum damping; echoes become bass-only)
+     DC gain = 1 at all :dp values — does not amplify the feedback.
 
-  At default delay times (125, 250, 500 ms at 120 BPM ≈ 1/16, 1/8, 1/4 notes):
-  the three taps are rhythmically related, producing a complex but coherent
-  echo texture.  Detuning any tap (non-integer BPM ratios) creates polyrhythm.
+  4. DC blocker after LP (R = 0.9999):
+         dc[n] = (lp[n] − lp[n−1])  +  0.9999 × dc[n−1]
 
-  Shared decay time (:dc) for taps 2 and 3
-  ------------------------------------------
-  Both feedback taps use the RT60 formula fb = pow(0.001, t/dc) with the same
-  :dc parameter.  Since :t3 > :t2, tap 3's feedback coefficient is closer to 1
-  (longer tail relative to the same decay target).  To set independent tails,
-  see ex.145/146 where taps have independent decay parameters.
+  5. Feedback loop:
+         fdl_loop(s) = de.delay(maxD, D[n], in + fb × dc_blocked(lp(s)))
+         fdl = fdl_loop ~ _
 
-  Faust signal chain (three taps in parallel)
-  --------------------------------------------
-  Tap 1 (feedforward):
-      tp1 = de.delay(maxD, D₁, in)
+  6. Wet/dry mix:
+         out = (1 − :mx) × in  +  :mx × fdl
 
-  Tap 2 (feedback):
-      f2      = pow(0.001, :t2 / max(1, :dc))
-      fdl2(s) = de.delay(maxD, D₂, in + f2×s)
-      tp2     = fdl2 ~ _
-
-  Tap 3 (filtered + DC-blocked feedback):
-      f3      = pow(0.001, :t3 / max(1, :dc))
-      fc      = exp(−2π × :hz / SR)
-      fdl3(s) = de.delay(maxD, D₃, in + f3×lpdc)
-        where lp   = fi.pole(fc, s)
-              lpdc = (lp − lp@1) : + ~ *(0.9999)
-      tp3     = fdl3 ~ _
-
-  Mix:
-      wet = (tp1 + tp2 + tp3) / 3.0
-      out = (1 − mx)×in + mx×wet
+  Contrast with ex.140 / ex.141 LP
+  ----------------------------------
+  ex.140 uses fi.pole (unscaled, DC gain = 1/(1−fc)) inside the loop.
+  Here the LP is a scaled one-pole `(1−dp)·s : + ~ ·(dp)` with DC gain = 1,
+  so the dampen coefficient dp ∈ [0, 1) is stable for any fb < 1.
 
   Parameters
   ----------
-  :t1 — tap 1 delay time in ms, slapback (1–500; default 125)
-  :t2 — tap 2 delay time in ms, standard echo (1–2000; default 250)
-  :t3 — tap 3 delay time in ms, dark filtered echo (1–5000; default 500)
-  :dc — shared decay time to −60 dB in ms for taps 2 and 3 (1–30000; default 2000)
-  :hz — tap 3 feedback filter cutoff in Hz (200–8000; default 3000)
+  :ms — base delay time in milliseconds (1–5000; default 250)
+  :ld — LFO depth in milliseconds (0–50; default 0)
+  :lf — LFO frequency in Hz (0.01–20; default 0.5)
+  :iv — LFO invert; 0.0 = normal phase, 1.0 = inverted (default 0)
+  :dc — decay time to −60 dB in milliseconds (1–30000; default 2000)
+  :dp — dampen pole coefficient (0.0 = no damping, <1 = low-pass; default 0.0)
   :mx — wet/dry mix; 0.0 = dry only, 1.0 = wet only (default 0.5)
 
   Audio inputs / Outputs
   ----------------------
-  in: audio signal  →  :out: three-tap delay mix (slapback + echo + dark tail)"
+  in: audio signal  →  :out: LFO-modulated dampened-feedback delay output"
   (:require [alembic.patch :refer [defpatch!]]))
 
 (defpatch! delay-multi-effect
-  {:params {:t1 {:range [1.0 500.0]    :default 125.0}
-            :t2 {:range [1.0 2000.0]   :default 250.0}
-            :t3 {:range [1.0 5000.0]   :default 500.0}
-            :dc {:range [1.0 30000.0]  :default 2000.0}
-            :hz {:range [200.0 8000.0] :default 3000.0}
-            :mx {:range [0.0 1.0]      :default 0.5}}}
+  {:params {:ms {:range [1.0 5000.0]  :default 250.0}
+            :ld {:range [0.0 50.0]    :default 0.0}
+            :lf {:range [0.01 20.0]   :default 0.5}
+            :iv {:range [0.0 1.0]     :default 0.0}
+            :dc {:range [1.0 30000.0] :default 2000.0}
+            :dp {:range [0.0 0.9999]  :default 0.0}
+            :mx {:range [0.0 1.0]     :default 0.5}}}
   (let [in  (audio-in)
-        t1  (param :t1)
-        t2  (param :t2)
-        t3  (param :t3)
+        ms  (param :ms)
+        ld  (param :ld)
+        lf  (param :lf)
+        iv  (param :iv)
         dc  (param :dc)
-        hz  (param :hz)
+        dp  (param :dp)
         mx  (param :mx)
-        tp1 (faust "de.delay(int(ma.SR*5.0),int(max(0.0,%t1*ma.SR/1000.0)),%in)"
-                   {:t1 t1 :in in})
-        f2  (faust "pow(0.001,%t2/max(1.0,%dc))" {:t2 t2 :dc dc})
-        tp2 (faust "fdl2 ~ _\n  with { fdl2(s) = de.delay(int(ma.SR*5.0),int(max(0.0,%t2*ma.SR/1000.0)),%in+%f2*s); }"
-                   {:t2 t2 :in in :f2 f2})
-        f3  (faust "pow(0.001,%t3/max(1.0,%dc))" {:t3 t3 :dc dc})
-        fc  (faust "exp(-2.0*ma.PI*%hz/ma.SR)" {:hz hz})
-        tp3 (faust "fdl3 ~ _\n  with {\n    fdl3(s) = de.delay(int(ma.SR*5.0),int(max(0.0,%t3*ma.SR/1000.0)),%in+%f3*lpdc)\n      with {\n        lp   = fi.pole(%fc,s);\n        lpdc = (lp-lp@1) : +~*(0.9999);\n      };\n  }"
-                   {:t3 t3 :in in :f3 f3 :fc fc})
-        wet (faust "(%a+%b+%c)/3.0" {:a tp1 :b tp2 :c tp3})
-        out (faust "(1.0-%mx)*%in+%mx*%wt" {:mx mx :in in :wt wet})]
+        fb  (faust "pow(0.001,%ms/max(1.0,%dc))" {:ms ms :dc dc})
+        dly (faust "int(max(0.0,%ms*ma.SR/1000.0+(1.0-2.0*%iv)*os.osc(%lf)*%ld*ma.SR/1000.0))"
+                   {:ms ms :iv iv :lf lf :ld ld})
+        fdl (faust "fdl_loop ~ _\n  with {\n    fdl_loop(s) = de.delay(int(ma.SR*5.0),%dl,%in+%fb*lpdc)\n      with {\n        lp   = (1.0-%dp)*s : +~*(%dp);\n        lpdc = (lp-lp@1) : +~*(0.9999);\n      };\n  }"
+                   {:dl dly :in in :fb fb :dp dp})
+        out (faust "(1.0-%mx)*%in+%mx*%fd" {:mx mx :in in :fd fdl})]
     (output :out out)))
+
+; ---------------------------------------------------------------------------
+; Example presets — GSOT p.213
+; Column order: name         | :ms  | :ld    | :lf  | :iv | :dc  | :dp    | :mx
+; ---------------------------------------------------------------------------
+
+; Delays                     | 700  | 0      |      |     | 6000 | 0.8    | 0.4
+(comment
+  (delay-multi-effect {:ms 700 :ld 0 :lf 0.5 :iv 0 :dc 6000 :dp 0.8 :mx 0.4}))
+
+; Mad dub                    | 300  | 0.03   | 1    | 1   | 4000 | 0.9999 | 0.8
+; (Dampen=1 in source; clamped — at exactly 1.0 the LP becomes a pure integrator
+;  whose DC-blocked output is zero, silencing feedback.)
+(comment
+  (delay-multi-effect {:ms 300 :ld 0.03 :lf 1 :iv 1 :dc 4000 :dp 0.9999 :mx 0.8}))
+
+; Garage echo                | 150  | 0      |      |     | 1000 | 0.5    | 0.3
+(comment
+  (delay-multi-effect {:ms 150 :ld 0 :lf 0.5 :iv 0 :dc 1000 :dp 0.5 :mx 0.3}))
+
+; Slap echo                  | 60   | 0      |      | 1   | 1000 | 0.5    | 0.3
+(comment
+  (delay-multi-effect {:ms 60 :ld 0 :lf 0.5 :iv 1 :dc 1000 :dp 0.5 :mx 0.3}))
+
+; Tape flutter               | 30   | 0.1    | 3    |     | 10   | 0.9999 | 1.0
+; (Dampen=1 in source; clamped. :dc=10ms → fb≈0, single-pass flutter.)
+(comment
+  (delay-multi-effect {:ms 30 :ld 0.1 :lf 3 :iv 0 :dc 10 :dp 0.9999 :mx 1.0}))
+
+; Chorus                     | 20   | 0.03   | 4    |     | 0    | 0.9999 | 0.6
+; (Dampen=1 in source; clamped. :dc=0 → fb≈0 via max(1,dc) clamp; no feedback trail.)
+(comment
+  (delay-multi-effect {:ms 20 :ld 0.03 :lf 4 :iv 0 :dc 0 :dp 0.9999 :mx 0.6}))
+
+; Didgerimetal               | 10   | 0.01   | 99   | 1   | 2000 | 0.15   | 1.0
+; (99Hz LFO ≈ audio-rate FM; 0.01ms depth ≈ 0.44 samples. fb≈0.979, strong ~100Hz resonance.)
+(comment
+  (delay-multi-effect {:ms 10 :ld 0.01 :lf 99 :iv 1 :dc 2000 :dp 0.15 :mx 1.0}))
+
+; Flanger                    | 5    | 0.8    | 0.1  | 1   | 50   | 0.9999 | 0.5
+; (Dampen=1 in source; clamped.)
+(comment
+  (delay-multi-effect {:ms 5 :ld 0.8 :lf 0.1 :iv 1 :dc 50 :dp 0.9999 :mx 0.5}))
+
+; String                     | 3    | 0.0001 | 7    |     | 1000 | 0.75   | 1.0
+; (:ld≈0 — LFO inaudible; Karplus-Strong-adjacent resonator at ~333Hz. fb≈0.979.)
+(comment
+  (delay-multi-effect {:ms 3 :ld 0.0001 :lf 7 :iv 0 :dc 1000 :dp 0.75 :mx 1.0}))
+
+; Phaser                     | 1.5  | 1.0    | 0.1  |     | 1    | 0.9999 | 0.5
+; (Dampen=1 in source; clamped. :dc=1ms → fb≈0, feedforward comb; sweeps 0.5–2.5ms.)
+(comment
+  (delay-multi-effect {:ms 1.5 :ld 1.0 :lf 0.1 :iv 0 :dc 1 :dp 0.9999 :mx 0.5}))
+
+; Toothpaste                 | 0.3  | 0.6    | 1.0  | 1   | 12   | 0.9999 | 1.0
+; (Dampen=1 in source; clamped. :ld > :ms → clamps to 0 on negative LFO half;
+;  sweeps 0–0.9ms. fb≈0.841, strong resonant comb sweep.)
+(comment
+  (delay-multi-effect {:ms 0.3 :ld 0.6 :lf 1.0 :iv 1 :dc 12 :dp 0.9999 :mx 1.0}))
+
+; Filter Wobble              | 0.1  | 1.0    | 5.0  | 1   | 2    | 0.5    | 1.0
+; (:ld 10× :ms → sweeps 0–1.1ms; comb freq races 10kHz→900Hz at 5Hz. fb≈0.708.)
+(comment
+  (delay-multi-effect {:ms 0.1 :ld 1.0 :lf 5.0 :iv 1 :dc 2 :dp 0.5 :mx 1.0}))

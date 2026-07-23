@@ -875,5 +875,5 @@
     (check examples.gsot.146-go-background-change/go-background-change)))
 
 (deftest gsot-147-delay-multi-effect
-  (testing "pp.211-212 delay_multi_effect — three parallel taps: feedforward slapback + feedback echo + filtered-DC-blocked echo; (a+b+c)/3 mix"
+  (testing "pp.211-213 delay_multi_effect — LFO-modulated delay, RT60 feedback, unity-DC-gain LP dampen, DC block, wet/dry mix"
     (check examples.gsot.147-delay-multi-effect/delay-multi-effect)))
