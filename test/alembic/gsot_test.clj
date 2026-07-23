@@ -229,7 +229,9 @@
             ;; Chapter 7 — Saturating feedback limiter: tanh(dr*signal) in loop; bounded, harmonic (p.204)
             [examples.gsot.142-delay-feedback-saturated]
             ;; Chapter 7 — Parameter smoothing: one-pole lag on delay time; click-free transitions (pp.206-207)
-            [examples.gsot.143-delay-param-smoothed]))
+            [examples.gsot.143-delay-param-smoothed]
+            ;; Chapter 7 — Doppler morph: blend two delay targets; smooth transition = pitch shift (p.208)
+            [examples.gsot.144-delay-morphed-times]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -853,3 +855,7 @@
 (deftest gsot-143-delay-param-smoothed
   (testing "pp.206-207 delay_param_smoothed — one-pole lag on delay-time param; k=exp(-1000/(st*SR)); smoothed ms into de.delay; Doppler glide not click"
     (check examples.gsot.143-delay-param-smoothed/delay-param-smoothed)))
+
+(deftest gsot-144-delay-morphed-times
+  (testing "p.208 delay_morphed_times — two delay targets ta/tb blended by :mo; smooth transition = Doppler pitch shift; :st controls rate"
+    (check examples.gsot.144-delay-morphed-times/delay-morphed-times)))
