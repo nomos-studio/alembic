@@ -273,7 +273,9 @@
             ;; Ch.8 — parallel-carriers: one mod→two carriers; fc1=fm×r1, fc2=fm×r2; :mx blend; DX7 alg.5 pattern (p.238)
             [examples.gsot.164-fmpm-parallel-carriers]
             ;; Ch.8 — parallel-modulators: two mods→one carrier; intermod at fc+p×fm1+q×fm2; per-mod index (p.238)
-            [examples.gsot.165-fmpm-parallel-modulators]))
+            [examples.gsot.165-fmpm-parallel-modulators]
+            ;; Ch.8 — FMPM-blending: (1-bl)*sine+bl*sawtooth modulator; saw≡harmonic stack; Bessel cluster superposition (pp.239-241)
+            [examples.gsot.166-fmpm-blending]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -985,3 +987,7 @@
 (deftest gsot-165-fmpm-parallel-modulators
   (testing "p.238 parallel-modulators — fm1=fc×r1, fm2=fc×r2 sum into one carrier; intermod at fc+p×fm1+q×fm2; per-mod ix"
     (check examples.gsot.165-fmpm-parallel-modulators/fmpm-parallel-modulators)))
+
+(deftest gsot-166-fmpm-blending
+  (testing "pp.239-241 FMPM-blending — (1-bl)*osc+bl*sawtooth mod; saw=harmonic stack; Bessel clusters at each harmonic of fm"
+    (check examples.gsot.166-fmpm-blending/fmpm-blending)))
