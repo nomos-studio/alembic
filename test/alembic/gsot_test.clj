@@ -235,7 +235,9 @@
             ;; Chapter 7 — Two-tap crossfade: smooth crossfade GAIN (not delay time) = no pitch shift (pp.209-210)
             [examples.gsot.145-delay-morphed-times-no-pitch-change]
             ;; Chapter 7 — Background change abstraction: auto crossfade on :tg change via _@1 detection (p.211)
-            [examples.gsot.146-go-background-change]))
+            [examples.gsot.146-go-background-change]
+            ;; Chapter 7 — Multi-tap capstone: slapback + echo + filtered-echo in parallel (pp.211-212)
+            [examples.gsot.147-delay-multi-effect]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -871,3 +873,7 @@
 (deftest gsot-146-go-background-change
   (testing "p.211 go.background.change — auto crossfade on :tg change; _@1 detection; sample-hold via select2~; xfg ramps 0→1 over :cf ms"
     (check examples.gsot.146-go-background-change/go-background-change)))
+
+(deftest gsot-147-delay-multi-effect
+  (testing "pp.211-212 delay_multi_effect — three parallel taps: feedforward slapback + feedback echo + filtered-DC-blocked echo; (a+b+c)/3 mix"
+    (check examples.gsot.147-delay-multi-effect/delay-multi-effect)))
