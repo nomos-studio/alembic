@@ -205,7 +205,10 @@
             [examples.gsot.127-onepole-hz]
             ;; Chapter 6 — ZDF state variable filter: coefficients + full SVF body (pp.188-190)
             [examples.gsot.128-svf-coeffs]
-            [examples.gsot.129-svf]))
+            [examples.gsot.129-svf]
+            ;; Chapter 6 — Crossover filters: 1st-order complement pair + SVF-based split (pp.191-192)
+            [examples.gsot.130-crossover-simple]
+            [examples.gsot.131-crossover]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -773,3 +776,11 @@
 (deftest gsot-129-svf
   (testing "pp.188-190 go.svf.gendsp — ZDF SVF; two coupled ~_ integrators via nested Faust with; LP/BP/HP via :type 0/1/2"
     (check examples.gsot.129-svf/svf)))
+
+(deftest gsot-130-crossover-simple
+  (testing "pp.191-192 crossover_simple.maxpat — 1st-order one-pole pair; hp=x-lp exact complement; LP+HP=x; two outputs ch4/ch5"
+    (check examples.gsot.130-crossover-simple/crossover-simple)))
+
+(deftest gsot-131-crossover
+  (testing "pp.191-192 crossover.maxpat — SVF-based 2nd-order crossover; LP+HP from shared ZDF state; Q=0.707 Butterworth; two outputs ch4/ch5"
+    (check examples.gsot.131-crossover/crossover)))
