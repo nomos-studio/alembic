@@ -265,7 +265,9 @@
             ;; Ch.8 — sine: phase-explicit phasor→sin oscillator; PM audio input; building block for FM/PM (p.233)
             [examples.gsot.160-sine]
             ;; Ch.8 — FMPM: FM (mod→freq) vs PM (mod→phase) morph; Bessel sidebands; Chowning β=ix convention (pp.232-233)
-            [examples.gsot.161-fmpm]))
+            [examples.gsot.161-fmpm]
+            ;; Ch.8 — FMPM-enveloped: AR envelope on β and amplitude; timbral decay from dense→pure sine (pp.234-235)
+            [examples.gsot.162-fmpm-enveloped]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -961,3 +963,7 @@
 (deftest gsot-161-fmpm
   (testing "pp.232-233 FMPM — FM/PM morph; sin(2π*phasor(fc+(1-md)*ix*fm*mod)+md*ix*mod); Bessel sidebands; β=ix Chowning"
     (check examples.gsot.161-fmpm/fmpm)))
+
+(deftest gsot-162-fmpm-enveloped
+  (testing "pp.234-235 FMPM-enveloped — AR gate→env; iy=ix*env; env*sin(FM/PM(iy)); β decay drives timbral arc dense→sine"
+    (check examples.gsot.162-fmpm-enveloped/fmpm-enveloped)))
