@@ -200,7 +200,9 @@
             [examples.gsot.123-biquad4-ap]
             [examples.gsot.124-biquad4-ls]
             [examples.gsot.125-biquad4-hs]
-            [examples.gsot.126-morphing-biquad-cascade]))
+            [examples.gsot.126-morphing-biquad-cascade]
+            ;; Chapter 6 — trapezoidal one-pole: bilinear-transform, exact -3dB at fc (pp.184-188)
+            [examples.gsot.127-onepole-hz]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -756,3 +758,7 @@
 (deftest gsot-126-morphing-biquad-cascade
   (testing "pp.182-183 morphing_biquad_cascade.maxpat — LP↔HP morph; closed-form b0=(1+cw*(2m-1))/(2a0), b1=(1-cw-2m)/a0; shared a1/a2; two-stage cascade"
     (check examples.gsot.126-morphing-biquad-cascade/morphing-biquad-cascade)))
+
+(deftest gsot-127-onepole-hz
+  (testing "pp.184-188 go.onepole.hz.gendsp — trapezoidal one-pole LP; g=tan(π·fc/SR), k=g/(1+g); y[n]=k*(x+x@1)+(1-2k)*y[n-1]; exact -3dB at fc"
+    (check examples.gsot.127-onepole-hz/onepole-hz)))
