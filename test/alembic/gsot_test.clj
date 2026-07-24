@@ -325,7 +325,15 @@
             ;; Ch.9 — trilinear-indices: xf/yf/zf fractional coords; x0/x1 bitmask wrap; y0/z0 modulo wrap (p.277)
             [examples.gsot.190-trilinear-indices]
             ;; Ch.9 — wavetable-3D-attractor: Lorenz(σ=10,ρ=28,β=8/3) drives Y/Z axes; Euler dt param; ba.impulse kick (p.278)
-            [examples.gsot.191-wavetable-3d-attractor]))
+            [examples.gsot.191-wavetable-3d-attractor]
+            ;; Ch.9 — sinc-interpolate: 4-pt Hann-windowed sinc; sum(k,4,sinc(fr-k)*hann(fr-k)); singularity via max(|x|,1e-9) (p.290)
+            [examples.gsot.192-sinc-interpolate]
+            ;; Ch.9 — sincmipmap-sample: auto y_mip=int(SR/(2*fc))-1 each sample; sinc X; 4 reads in mipmap row (p.291)
+            [examples.gsot.193-wavetable-sincmipmap-sample]
+            ;; Ch.9 — sincmipmap-wave: same but ba.sAndH(ph<ph',y_raw) freezes mipmap level per cycle (p.292)
+            [examples.gsot.194-wavetable-sincmipmap-wave]
+            ;; Ch.9 — sinc-interpolate-wave: sinc X + linear Y; sinc_y(y0)*(1-yf)+sinc_y(y1)*yf; 8 reads; :wp morphing (p.293)
+            [examples.gsot.195-sinc-interpolate-wave]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -1141,3 +1149,19 @@
 (deftest gsot-191-wavetable-3d-attractor
   (testing "p.278 wavetable-3D-attractor — Lorenz(σ=10,ρ=28,β=8/3)~si.bus(3); ba.impulse kick; :dt speed; lx/lz→wp/zp"
     (check examples.gsot.191-wavetable-3d-attractor/wavetable-3d-attractor)))
+
+(deftest gsot-192-sinc-interpolate
+  (testing "p.290 sinc-interpolate — 4-pt Hann-windowed sinc; sum(k,4,sinc(fr-k)*hann(fr-k)); singularity via max(|x|,1e-9)"
+    (check examples.gsot.192-sinc-interpolate/sinc-interpolate)))
+
+(deftest gsot-193-wavetable-sincmipmap-sample
+  (testing "p.291 sincmipmap-sample — auto y_mip=int(SR/(2*fc)-1) per sample; sinc X in mipmap row; alias-free at :fc"
+    (check examples.gsot.193-wavetable-sincmipmap-sample/wavetable-sincmipmap-sample)))
+
+(deftest gsot-194-wavetable-sincmipmap-wave
+  (testing "p.292 sincmipmap-wave — ba.sAndH(ph<ph',y_raw) freezes mipmap per cycle; eliminates intra-cycle row changes"
+    (check examples.gsot.194-wavetable-sincmipmap-wave/wavetable-sincmipmap-wave)))
+
+(deftest gsot-195-sinc-interpolate-wave
+  (testing "p.293 sinc-interpolate-wave — sinc X + linear Y; sinc_y(y0)*(1-yf)+sinc_y(y1)*yf; 8 reads; :wp waveform morph"
+    (check examples.gsot.195-sinc-interpolate-wave/sinc-interpolate-wave)))
