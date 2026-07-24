@@ -291,7 +291,15 @@
             ;; Ch.8 — waveshaping-mod: ma.tanh(dr*mo)/ma.tanh(dr) shaped mod; odd harmonics only; Bessel clusters at fm,3fm,5fm (pp.249-250)
             [examples.gsot.173-fmpm-waveshaping-modulator]
             ;; Ch.8 — PM-asymmetric: (1+mx*cos)*sin(phasor+ix*sin); quadrature AM×PM; sideband k scaled by (1+k*mx/ix) (pp.251-253)
-            [examples.gsot.174-pm-asymmetric]))
+            [examples.gsot.174-pm-asymmetric]
+            ;; Ch.8 — AMRM-bandlimited: LP input at SR/2−fc before AM/RM; 0.5 gain for AM headroom; oversampling discussion (p.254)
+            [examples.gsot.175-amrm-bandlimited]
+            ;; Ch.8 — FMPM-carsonrule: BW=2*(ix+1)*fm; ix_safe=max(0,(SR/2−fc)/(fc*rt)−1); clamp ix to prevent aliasing (p.255)
+            [examples.gsot.176-fmpm-carsonrule]
+            ;; Ch.8 — FMPM-carsonrule-filtered: ix clamp + LP at fc*(1+(ic+1)*rt); Carson BW as parametric LP cutoff (p.256)
+            [examples.gsot.177-fmpm-carsonrule-filtered]
+            ;; Ch.8 — FMPM-antialias-filter: user :cf LP on FM output; no ix clamp; deliberate aliasing with controllable ceiling (p.257)
+            [examples.gsot.178-fmpm-antialias-filter]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -1039,3 +1047,19 @@
 (deftest gsot-174-pm-asymmetric
   (testing "pp.251-253 PM-asymmetric — (1+mx*mc)*sin(phasor(fc)+ix*ms); shared phasor; sideband k→Jk*(1+k*mx/ix)"
     (check examples.gsot.174-pm-asymmetric/pm-asymmetric)))
+
+(deftest gsot-175-amrm-bandlimited
+  (testing "p.254 AMRM-bandlimited — LP input at SR/2−fc; 0.5 gain; 2x oversampling equivalent"
+    (check examples.gsot.175-amrm-bandlimited/amrm-bandlimited)))
+
+(deftest gsot-176-fmpm-carsonrule
+  (testing "p.255 FMPM-carsonrule — ix_safe=max(0,(SR/2−fc)/(fc*rt)−1); ix clamped; Carson BW aliasing prevention"
+    (check examples.gsot.176-fmpm-carsonrule/fmpm-carsonrule)))
+
+(deftest gsot-177-fmpm-carsonrule-filtered
+  (testing "p.256 FMPM-carsonrule-filtered — ix clamp + LP at fc*(1+(ic+1)*rt); parametric Carson bandwidth LP"
+    (check examples.gsot.177-fmpm-carsonrule-filtered/fmpm-carsonrule-filtered)))
+
+(deftest gsot-178-fmpm-antialias-filter
+  (testing "p.257 FMPM-antialias-filter — fi.lowpass(2,:cf) on FM output; user-controlled ceiling; deliberate aliasing"
+    (check examples.gsot.178-fmpm-antialias-filter/fmpm-antialias-filter)))
