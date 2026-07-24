@@ -333,7 +333,9 @@
             ;; Ch.9 — sincmipmap-wave: same but ba.sAndH(ph<ph',y_raw) freezes mipmap level per cycle (p.292)
             [examples.gsot.194-wavetable-sincmipmap-wave]
             ;; Ch.9 — sinc-interpolate-wave: sinc X + linear Y; sinc_y(y0)*(1-yf)+sinc_y(y1)*yf; 8 reads; :wp morphing (p.293)
-            [examples.gsot.195-sinc-interpolate-wave]))
+            [examples.gsot.195-sinc-interpolate-wave]
+            ;; Ch.9 — terrain-reader: wave terrain utility; bilinear read from 2D harmonic bank at audio-rate (x,yp) (p.295)
+            [examples.gsot.196-terrain-reader]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -1165,3 +1167,7 @@
 (deftest gsot-195-sinc-interpolate-wave
   (testing "p.293 sinc-interpolate-wave — sinc X + linear Y; sinc_y(y0)*(1-yf)+sinc_y(y1)*yf; 8 reads; :wp waveform morph"
     (check examples.gsot.195-sinc-interpolate-wave/sinc-interpolate-wave)))
+
+(deftest gsot-196-terrain-reader
+  (testing "p.295 terrain-reader — wave terrain utility; bilinear T(xp,yp) on 2D harmonic bank; x=audio-rate orbit coord"
+    (check examples.gsot.196-terrain-reader/terrain-reader)))
