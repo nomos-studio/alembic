@@ -336,7 +336,8 @@
             [examples.gsot.195-sinc-interpolate-wave]
             ;; Ch.9 — terrain-reader: wave terrain utility; bilinear read from 2D harmonic bank at audio-rate (x,yp) (p.295)
             [examples.gsot.196-terrain-reader]
-            [examples.gsot.197-wave-terrain-osc]))
+            [examples.gsot.197-wave-terrain-osc]
+            [examples.gsot.198-waveterrain-generate-bfg]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -1176,3 +1177,7 @@
 (deftest gsot-197-wave-terrain-osc
   (testing "pp.295-296 wave-terrain-osc — Lissajous orbit (cx,cy) on 2D harmonic bank; :rt ratio + :ph offset control spectrum; inferred from GSOT codebox"
     (check examples.gsot.197-wave-terrain-osc/wave-terrain-osc)))
+
+(deftest gsot-198-waveterrain-generate-bfg
+  (testing "pp.298-299 waveterrain-generate-bfg — jit.bfg BFG terrain (jit.scanwrap→jit.buffer→gen~); 4 basis modes w(m,n)=sin(mπx)·sin(nπy); Lissajous orbit"
+    (check examples.gsot.198-waveterrain-generate-bfg/waveterrain-generate-bfg)))
