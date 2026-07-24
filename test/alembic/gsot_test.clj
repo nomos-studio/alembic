@@ -299,7 +299,9 @@
             ;; Ch.8 — FMPM-carsonrule-filtered: ix clamp + LP at fc*(1+(ic+1)*rt); Carson BW as parametric LP cutoff (p.256)
             [examples.gsot.177-fmpm-carsonrule-filtered]
             ;; Ch.8 — FMPM-antialias-filter: user :cf LP on FM output; no ix clamp; deliberate aliasing with controllable ceiling (p.257)
-            [examples.gsot.178-fmpm-antialias-filter]))
+            [examples.gsot.178-fmpm-antialias-filter]
+            ;; Ch.8 — PM-is-doppler-delay: variable delay = PM; τ(t)=ix/(2π*fc)*sin(fm*t); Doppler dτ/dt gives FM-equivalent pitch shift (pp.257-258)
+            [examples.gsot.179-pm-is-doppler-delay]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -1063,3 +1065,7 @@
 (deftest gsot-178-fmpm-antialias-filter
   (testing "p.257 FMPM-antialias-filter — fi.lowpass(2,:cf) on FM output; user-controlled ceiling; deliberate aliasing"
     (check examples.gsot.178-fmpm-antialias-filter/fmpm-antialias-filter)))
+
+(deftest gsot-179-pm-is-doppler-delay
+  (testing "pp.257-258 PM-is-doppler-delay — de.fdelay(2*SR, SR+da*osc(fm)); τ=ix*SR/(2π*fc); Doppler=PM equivalence"
+    (check examples.gsot.179-pm-is-doppler-delay/pm-is-doppler-delay)))
