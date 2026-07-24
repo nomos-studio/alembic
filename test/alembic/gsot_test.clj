@@ -289,7 +289,9 @@
             ;; Ch.8 — PM-noclicks: latch :ix and :rt at phasor reset (ph<ph@1); (x*rst+_*(1-rst))~_; click-suppressed PM (p.248)
             [examples.gsot.172-pm-noclicks-latched]
             ;; Ch.8 — waveshaping-mod: ma.tanh(dr*mo)/ma.tanh(dr) shaped mod; odd harmonics only; Bessel clusters at fm,3fm,5fm (pp.249-250)
-            [examples.gsot.173-fmpm-waveshaping-modulator]))
+            [examples.gsot.173-fmpm-waveshaping-modulator]
+            ;; Ch.8 — PM-asymmetric: (1+mx*cos)*sin(phasor+ix*sin); quadrature AM×PM; sideband k scaled by (1+k*mx/ix) (pp.251-253)
+            [examples.gsot.174-pm-asymmetric]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -1033,3 +1035,7 @@
 (deftest gsot-173-fmpm-waveshaping-modulator
   (testing "pp.249-250 waveshaping-mod — ma.tanh(dr*mo)/ma.tanh(dr); odd-only harmonics; clusters at fc+n*(fm,3fm,5fm…)"
     (check examples.gsot.173-fmpm-waveshaping-modulator/fmpm-waveshaping-modulator)))
+
+(deftest gsot-174-pm-asymmetric
+  (testing "pp.251-253 PM-asymmetric — (1+mx*mc)*sin(phasor(fc)+ix*ms); shared phasor; sideband k→Jk*(1+k*mx/ix)"
+    (check examples.gsot.174-pm-asymmetric/pm-asymmetric)))
