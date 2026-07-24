@@ -309,7 +309,15 @@
             ;; Ch.8 — AMRM-blended-harmonics: harmonic mo drives AM/RM (in*(bs+mo)) + PM (sin(phasor(fc)+ix*mo)); sideband pairs at ±n*fm (p.260)
             [examples.gsot.182-amrm-blended-harmonics]
             ;; Ch.8 — ModFM: asin(osc(fm))/(π/2) triangle modulator; odd harmonics 1/n²; β_1≈0.811*ix; FM/PM morph (pp.262-263)
-            [examples.gsot.183-modfm]))
+            [examples.gsot.183-modfm]
+            ;; Ch.9 — wavetable-1D: rdtable(1024, os.sinwaveform, i0)+linear interp; s0+fr*(s1-s0); bitmask wrap (pp.265-268)
+            [examples.gsot.184-wavetable-1d]
+            ;; Ch.9 — bilinear-indices: xf=xp*W−floor(xp*W), yf=wp*H−floor(wp*H); 2D grid fractional coords (p.272)
+            [examples.gsot.185-bilinear-indices]
+            ;; Ch.9 — bilinear-interpolation: s00*(1−xf)(1−yf)+s10*xf(1−yf)+s01*(1−xf)*yf+s11*xf*yf (p.273)
+            [examples.gsot.186-bilinear-interpolation]
+            ;; Ch.9 — wavetables-2D: 8-waveform bank (1..8 harmonics, 1/n rolloff); bilinear interp; :wp morphs sine→8-partial saw (p.273)
+            [examples.gsot.187-wavetables-2d]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -1093,3 +1101,19 @@
 (deftest gsot-183-modfm
   (testing "pp.262-263 ModFM — triangle mod: asin(osc(fm))/(π/2); odd sidebands 1/n²; β_1≈0.811*ix; FM/PM morph"
     (check examples.gsot.183-modfm/modfm)))
+
+(deftest gsot-184-wavetable-1d
+  (testing "pp.265-268 wavetable-1D — rdtable(1024, sinwaveform, i) + linear interp; s0+fr*(s1-s0); bitmask wrap"
+    (check examples.gsot.184-wavetable-1d/wavetable-1d)))
+
+(deftest gsot-185-bilinear-indices
+  (testing "p.272 bilinear-indices — xf=xp*W−floor(xp*W); yf=wp*H−floor(wp*H); fractional 2D grid coords for bilinear interp"
+    (check examples.gsot.185-bilinear-indices/bilinear-indices)))
+
+(deftest gsot-186-bilinear-interpolation
+  (testing "p.273 bilinear-interpolation — s00*(1−xf)(1−yf)+s10*xf(1−yf)+s01*(1−xf)yf+s11*xf*yf; area-weighted 4-corner blend"
+    (check examples.gsot.186-bilinear-interpolation/bilinear-interpolation)))
+
+(deftest gsot-187-wavetables-2d
+  (testing "p.273 wavetables-2D — 8-waveform bank (k+1 harmonics, 1/n rolloff); ba.time init; bilinear interp; :wp morphs sine→saw"
+    (check examples.gsot.187-wavetables-2d/wavetables-2d)))
