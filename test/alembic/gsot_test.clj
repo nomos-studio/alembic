@@ -287,7 +287,9 @@
             ;; Ch.8 — FMPM-ifod: in×(bs+FM_osc); FM signal as ring/AM modulator; ring-of-rings sidebands (pp.247-248)
             [examples.gsot.171-fmpm-ifod]
             ;; Ch.8 — PM-noclicks: latch :ix and :rt at phasor reset (ph<ph@1); (x*rst+_*(1-rst))~_; click-suppressed PM (p.248)
-            [examples.gsot.172-pm-noclicks-latched]))
+            [examples.gsot.172-pm-noclicks-latched]
+            ;; Ch.8 — waveshaping-mod: ma.tanh(dr*mo)/ma.tanh(dr) shaped mod; odd harmonics only; Bessel clusters at fm,3fm,5fm (pp.249-250)
+            [examples.gsot.173-fmpm-waveshaping-modulator]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -1027,3 +1029,7 @@
 (deftest gsot-172-pm-noclicks-latched
   (testing "p.248 PM-noclicks-latched — rst=ph<ph@1; (x*rst+_*(1-rst))~_ latches :ix,:rt at cycle boundary; PM click suppress"
     (check examples.gsot.172-pm-noclicks-latched/pm-noclicks-latched)))
+
+(deftest gsot-173-fmpm-waveshaping-modulator
+  (testing "pp.249-250 waveshaping-mod — ma.tanh(dr*mo)/ma.tanh(dr); odd-only harmonics; clusters at fc+n*(fm,3fm,5fm…)"
+    (check examples.gsot.173-fmpm-waveshaping-modulator/fmpm-waveshaping-modulator)))
