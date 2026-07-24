@@ -301,7 +301,9 @@
             ;; Ch.8 — FMPM-antialias-filter: user :cf LP on FM output; no ix clamp; deliberate aliasing with controllable ceiling (p.257)
             [examples.gsot.178-fmpm-antialias-filter]
             ;; Ch.8 — PM-is-doppler-delay: variable delay = PM; τ(t)=ix/(2π*fc)*sin(fm*t); Doppler dτ/dt gives FM-equivalent pitch shift (pp.257-258)
-            [examples.gsot.179-pm-is-doppler-delay]))
+            [examples.gsot.179-pm-is-doppler-delay]
+            ;; Ch.8 — KP-FM: Karplus-Strong with FM-modulated delay; N=SR/(fc+ix*fm*osc(fm)); LP in feedback path; delay-PM in resonating loop (p.259)
+            [examples.gsot.180-kp-fm]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -1069,3 +1071,7 @@
 (deftest gsot-179-pm-is-doppler-delay
   (testing "pp.257-258 PM-is-doppler-delay — de.fdelay(2*SR, SR+da*osc(fm)); τ=ix*SR/(2π*fc); Doppler=PM equivalence"
     (check examples.gsot.179-pm-is-doppler-delay/pm-is-doppler-delay)))
+
+(deftest gsot-180-kp-fm
+  (testing "p.259 KP-FM — KS loop with N=SR/(fc+ix*fm*osc(fm)); de.fdelay+LP in feedback; FM delay = PM of KS pitch"
+    (check examples.gsot.180-kp-fm/kp-fm)))
