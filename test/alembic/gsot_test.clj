@@ -307,7 +307,9 @@
             ;; Ch.8 — harmonic: shared phasor → 8 phase-locked harmonics; a_n=bl^(n-1)/n; bl=0→sine, bl=1→sawtooth; go.harmonic gendsp (pp.259-260)
             [examples.gsot.181-harmonic]
             ;; Ch.8 — AMRM-blended-harmonics: harmonic mo drives AM/RM (in*(bs+mo)) + PM (sin(phasor(fc)+ix*mo)); sideband pairs at ±n*fm (p.260)
-            [examples.gsot.182-amrm-blended-harmonics]))
+            [examples.gsot.182-amrm-blended-harmonics]
+            ;; Ch.8 — ModFM: asin(osc(fm))/(π/2) triangle modulator; odd harmonics 1/n²; β_1≈0.811*ix; FM/PM morph (pp.262-263)
+            [examples.gsot.183-modfm]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -1087,3 +1089,7 @@
 (deftest gsot-182-amrm-blended-harmonics
   (testing "p.260 AMRM-blended-harmonics — harmonic mo→AM/RM (in*(bs+mo)) + PM (sin(ph_fc+ix*mo)); sideband pairs ±n*fm"
     (check examples.gsot.182-amrm-blended-harmonics/amrm-blended-harmonics)))
+
+(deftest gsot-183-modfm
+  (testing "pp.262-263 ModFM — triangle mod: asin(osc(fm))/(π/2); odd sidebands 1/n²; β_1≈0.811*ix; FM/PM morph"
+    (check examples.gsot.183-modfm/modfm)))
