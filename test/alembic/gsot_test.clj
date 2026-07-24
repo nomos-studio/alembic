@@ -305,7 +305,9 @@
             ;; Ch.8 — KP-FM: Karplus-Strong with FM-modulated delay; N=SR/(fc+ix*fm*osc(fm)); LP in feedback path; delay-PM in resonating loop (p.259)
             [examples.gsot.180-kp-fm]
             ;; Ch.8 — harmonic: shared phasor → 8 phase-locked harmonics; a_n=bl^(n-1)/n; bl=0→sine, bl=1→sawtooth; go.harmonic gendsp (pp.259-260)
-            [examples.gsot.181-harmonic]))
+            [examples.gsot.181-harmonic]
+            ;; Ch.8 — AMRM-blended-harmonics: harmonic mo drives AM/RM (in*(bs+mo)) + PM (sin(phasor(fc)+ix*mo)); sideband pairs at ±n*fm (p.260)
+            [examples.gsot.182-amrm-blended-harmonics]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -1081,3 +1083,7 @@
 (deftest gsot-181-harmonic
   (testing "pp.259-260 harmonic — shared phasor; par(i,8,sin(2π*(i+1)*ph)*bl^i/(i+1)); bl=0→sine, bl=1→1/n sawtooth"
     (check examples.gsot.181-harmonic/harmonic)))
+
+(deftest gsot-182-amrm-blended-harmonics
+  (testing "p.260 AMRM-blended-harmonics — harmonic mo→AM/RM (in*(bs+mo)) + PM (sin(ph_fc+ix*mo)); sideband pairs ±n*fm"
+    (check examples.gsot.182-amrm-blended-harmonics/amrm-blended-harmonics)))
