@@ -303,7 +303,9 @@
             ;; Ch.8 — PM-is-doppler-delay: variable delay = PM; τ(t)=ix/(2π*fc)*sin(fm*t); Doppler dτ/dt gives FM-equivalent pitch shift (pp.257-258)
             [examples.gsot.179-pm-is-doppler-delay]
             ;; Ch.8 — KP-FM: Karplus-Strong with FM-modulated delay; N=SR/(fc+ix*fm*osc(fm)); LP in feedback path; delay-PM in resonating loop (p.259)
-            [examples.gsot.180-kp-fm]))
+            [examples.gsot.180-kp-fm]
+            ;; Ch.8 — harmonic: shared phasor → 8 phase-locked harmonics; a_n=bl^(n-1)/n; bl=0→sine, bl=1→sawtooth; go.harmonic gendsp (pp.259-260)
+            [examples.gsot.181-harmonic]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -1075,3 +1077,7 @@
 (deftest gsot-180-kp-fm
   (testing "p.259 KP-FM — KS loop with N=SR/(fc+ix*fm*osc(fm)); de.fdelay+LP in feedback; FM delay = PM of KS pitch"
     (check examples.gsot.180-kp-fm/kp-fm)))
+
+(deftest gsot-181-harmonic
+  (testing "pp.259-260 harmonic — shared phasor; par(i,8,sin(2π*(i+1)*ph)*bl^i/(i+1)); bl=0→sine, bl=1→1/n sawtooth"
+    (check examples.gsot.181-harmonic/harmonic)))
