@@ -317,7 +317,15 @@
             ;; Ch.9 — bilinear-interpolation: s00*(1−xf)(1−yf)+s10*xf(1−yf)+s01*(1−xf)*yf+s11*xf*yf (p.273)
             [examples.gsot.186-bilinear-interpolation]
             ;; Ch.9 — wavetables-2D: 8-waveform bank (1..8 harmonics, 1/n rolloff); bilinear interp; :wp morphs sine→8-partial saw (p.273)
-            [examples.gsot.187-wavetables-2d]))
+            [examples.gsot.187-wavetables-2d]
+            ;; Ch.9 — wavetable-3D: W×H×D=256×4×4; Z axis=phase offset; 8-corner trilinear interp; :wp/:zp navigate (pp.273-276)
+            [examples.gsot.188-wavetable-3d]
+            ;; Ch.9 — trilinear-interpolation: 8-corner formula; volume-weighted; nested bilinear×2 steps + z lerp (p.276)
+            [examples.gsot.189-trilinear-interpolation]
+            ;; Ch.9 — trilinear-indices: xf/yf/zf fractional coords; x0/x1 bitmask wrap; y0/z0 modulo wrap (p.277)
+            [examples.gsot.190-trilinear-indices]
+            ;; Ch.9 — wavetable-3D-attractor: Lorenz(σ=10,ρ=28,β=8/3) drives Y/Z axes; Euler dt param; ba.impulse kick (p.278)
+            [examples.gsot.191-wavetable-3d-attractor]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -1117,3 +1125,19 @@
 (deftest gsot-187-wavetables-2d
   (testing "p.273 wavetables-2D — 8-waveform bank (k+1 harmonics, 1/n rolloff); ba.time init; bilinear interp; :wp morphs sine→saw"
     (check examples.gsot.187-wavetables-2d/wavetables-2d)))
+
+(deftest gsot-188-wavetable-3d
+  (testing "pp.273-276 wavetable-3D — 256×4×4 bank; Z=phase offset (z×π/4); 8-corner trilinear interp; :wp/:zp navigate"
+    (check examples.gsot.188-wavetable-3d/wavetable-3d)))
+
+(deftest gsot-189-trilinear-interpolation
+  (testing "p.276 trilinear-interpolation — 8-corner volume-weighted blend; nested bilinear(z0)+bilinear(z1) then z-lerp"
+    (check examples.gsot.189-trilinear-interpolation/trilinear-interpolation)))
+
+(deftest gsot-190-trilinear-indices
+  (testing "p.277 trilinear-indices — xf/yf/zf from phasor + :wp/:zp; bitmask x wrap; modulo y/z wrap; W=256 H=D=4"
+    (check examples.gsot.190-trilinear-indices/trilinear-indices)))
+
+(deftest gsot-191-wavetable-3d-attractor
+  (testing "p.278 wavetable-3D-attractor — Lorenz(σ=10,ρ=28,β=8/3)~si.bus(3); ba.impulse kick; :dt speed; lx/lz→wp/zp"
+    (check examples.gsot.191-wavetable-3d-attractor/wavetable-3d-attractor)))
