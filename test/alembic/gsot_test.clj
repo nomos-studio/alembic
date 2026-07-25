@@ -353,7 +353,9 @@
             [examples.gsot.211-ramp-subsample-trig]
             [examples.gsot.212-go-ramp-subsample]
             [examples.gsot.213-grains2]
-            [examples.gsot.214-poly-granulation3]))
+            [examples.gsot.214-poly-granulation3]
+            [examples.gsot.215-granola-buffer]
+            [examples.gsot.216-granola-glisson]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -1261,3 +1263,11 @@
 (deftest gsot-214-poly-granulation3
   (testing "p.333 poly-granulation3 — 4-voice stochastic + subsample accurate; gp(tr,sf,fg)=(select2~_):frac per voice; capstone of Ch.10 granulation sequence"
     (check examples.gsot.214-poly-granulation3/poly-granulation3)))
+
+(deftest gsot-215-granola-buffer
+  (testing "pp.333-336 granola-buffer — buffer-read granulation; src reads rdtable at frac(ph*fc/gr+ps); per-grain S&H position scatter; @boundmode wrap via ma.frac"
+    (check examples.gsot.215-granola-buffer/granola-buffer)))
+
+(deftest gsot-216-granola-glisson
+  (testing "pp.333-336 granola-glisson — glisson synthesis; linear freq sweep f1→f2 per grain; gp(tr,pf)=(select2~_) with freq_t=f1+(f2-f1)*pf; chirp cloud"
+    (check examples.gsot.216-granola-glisson/granola-glisson)))
