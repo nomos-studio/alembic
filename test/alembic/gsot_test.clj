@@ -340,7 +340,8 @@
             [examples.gsot.198-waveterrain-generate-bfg]
             [examples.gsot.199-waveterrain-2d-doubleorbit]
             [examples.gsot.200-waveterrain-2d-carom]
-            [examples.gsot.201-polygonal]))
+            [examples.gsot.201-polygonal]
+            [examples.gsot.202-windowed-sync]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -1196,3 +1197,7 @@
 (deftest gsot-201-polygonal
   (testing "pp.303-306 polygonal — regular :ns-gon orbit; edge-trace via vertex lerp; PM from 2× osc; sin wavefold; hard sync noted but not implemented"
     (check examples.gsot.201-polygonal/polygonal)))
+
+(deftest gsot-202-windowed-sync
+  (testing "pp.309-314 windowed-sync — resettable slave phasor (select2~); Hann fade-in over :ww ms after each master reset; eliminates sync click artefact"
+    (check examples.gsot.202-windowed-sync/windowed-sync)))
