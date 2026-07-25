@@ -343,7 +343,8 @@
             [examples.gsot.201-polygonal]
             [examples.gsot.202-windowed-sync]
             [examples.gsot.203-pulsar]
-            [examples.gsot.204-pulsar-fm]))
+            [examples.gsot.204-pulsar-fm]
+            [examples.gsot.205-pulsar-subharmonic]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -1211,3 +1212,7 @@
 (deftest gsot-204-pulsar-fm
   (testing "p.317 pulsar-fm — PM formant via sin(2π·(ph_p·fc/fp + :mi·mod)); modulator at :fp×:mr; sidebands shaped by Hann pulsaret window"
     (check examples.gsot.204-pulsar-fm/pulsar-fm)))
+
+(deftest gsot-205-pulsar-subharmonic
+  (testing "pp.318-320 pulsar-subharmonic — retrigger suppression → integer subharmonics; fp_eff=fp/int(:ns); pulsaret spans :ns master periods; Hann win over dc fraction"
+    (check examples.gsot.205-pulsar-subharmonic/pulsar-subharmonic)))
