@@ -341,7 +341,9 @@
             [examples.gsot.199-waveterrain-2d-doubleorbit]
             [examples.gsot.200-waveterrain-2d-carom]
             [examples.gsot.201-polygonal]
-            [examples.gsot.202-windowed-sync]))
+            [examples.gsot.202-windowed-sync]
+            [examples.gsot.203-pulsar]
+            [examples.gsot.204-pulsar-fm]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -1201,3 +1203,11 @@
 (deftest gsot-202-windowed-sync
   (testing "pp.309-314 windowed-sync — resettable slave phasor (select2~); Hann fade-in over :ww ms after each master reset; eliminates sync click artefact"
     (check examples.gsot.202-windowed-sync/windowed-sync)))
+
+(deftest gsot-203-pulsar
+  (testing "pp.315-316 pulsar — Hann-windowed pulsaret at :dc duty cycle; formant sin at :fc; gate×win×formant; :fp pitch, :dc timbre, :fc spectral centroid"
+    (check examples.gsot.203-pulsar/pulsar)))
+
+(deftest gsot-204-pulsar-fm
+  (testing "p.317 pulsar-fm — PM formant via sin(2π·(ph_p·fc/fp + :mi·mod)); modulator at :fp×:mr; sidebands shaped by Hann pulsaret window"
+    (check examples.gsot.204-pulsar-fm/pulsar-fm)))
