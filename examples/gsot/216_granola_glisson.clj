@@ -1,6 +1,6 @@
 ; SPDX-License-Identifier: EPL-2.0
 (ns examples.gsot.216-granola-glisson
-  "GSOT pp.333-336 — granola_glisson.maxpat (Chapter 10: Windows of Time).
+  "GSOT p.343 — granola_glisson.maxpat (Chapter 10: Windows of Time).
 
   'Four-Voice Glisson Granular Synthesizer'
   ------------------------------------------

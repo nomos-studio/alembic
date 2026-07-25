@@ -355,7 +355,8 @@
             [examples.gsot.213-grains2]
             [examples.gsot.214-poly-granulation3]
             [examples.gsot.215-granola-buffer]
-            [examples.gsot.216-granola-glisson]))
+            [examples.gsot.216-granola-glisson]
+            [examples.gsot.217-go-ramp-aa]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -1269,5 +1270,9 @@
     (check examples.gsot.215-granola-buffer/granola-buffer)))
 
 (deftest gsot-216-granola-glisson
-  (testing "pp.333-336 granola-glisson — glisson synthesis; linear freq sweep f1→f2 per grain; gp(tr,pf)=(select2~_) with freq_t=f1+(f2-f1)*pf; chirp cloud"
+  (testing "p.343 granola-glisson — glisson synthesis; linear freq sweep f1→f2 per grain; gp(tr,pf)=(select2~_) with freq_t=f1+(f2-f1)*pf; chirp cloud"
     (check examples.gsot.216-granola-glisson/granola-glisson)))
+
+(deftest gsot-217-go-ramp-aa
+  (testing "pp.343-353 go-ramp-aa — anti-aliased hard sync saw; PolyBLEP on natural wraps (ta/tb ranges); sync reset via sf_m²×ph_s'; sine-fold shaping :sh"
+    (check examples.gsot.217-go-ramp-aa/go-ramp-aa)))

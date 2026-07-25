@@ -1,6 +1,6 @@
 ; SPDX-License-Identifier: EPL-2.0
 (ns examples.gsot.215-granola-buffer
-  "GSOT pp.333-336 — granola_buffer.maxpat (Chapter 10: Windows of Time).
+  "GSOT p.343 — granola_buffer.maxpat (Chapter 10: Windows of Time).
 
   'Four-Voice Buffer-Based Granular Synthesizer with Position Scatter'
   ---------------------------------------------------------------------
