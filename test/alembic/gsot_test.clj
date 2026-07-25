@@ -346,7 +346,8 @@
             [examples.gsot.204-pulsar-fm]
             [examples.gsot.205-pulsar-subharmonic]
             [examples.gsot.206-voice1]
-            [examples.gsot.207-poly-voices]))
+            [examples.gsot.207-poly-voices]
+            [examples.gsot.208-poly-granulation1]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -1226,3 +1227,7 @@
 (deftest gsot-207-poly-voices
   (testing "pp.323-324 poly-voices — 4-voice poly~→explicit Faust voice(hz,gt) fn; :f1-:f4 freqs :g1-:g4 gates; 0.25×sum; defaults C major chord"
     (check examples.gsot.207-poly-voices/poly-voices)))
+
+(deftest gsot-208-poly-granulation1
+  (testing "p.325 poly-granulation1 — 4 staggered grain voices at phase 0/0.25/0.5/0.75; gate×Hann win×src sine; dc_g=gd*gr/1000; 0.25×sum"
+    (check examples.gsot.208-poly-granulation1/poly-granulation1)))
