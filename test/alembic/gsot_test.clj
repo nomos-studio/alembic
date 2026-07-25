@@ -344,7 +344,9 @@
             [examples.gsot.202-windowed-sync]
             [examples.gsot.203-pulsar]
             [examples.gsot.204-pulsar-fm]
-            [examples.gsot.205-pulsar-subharmonic]))
+            [examples.gsot.205-pulsar-subharmonic]
+            [examples.gsot.206-voice1]
+            [examples.gsot.207-poly-voices]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -1216,3 +1218,11 @@
 (deftest gsot-205-pulsar-subharmonic
   (testing "pp.318-320 pulsar-subharmonic — retrigger suppression → integer subharmonics; fp_eff=fp/int(:ns); pulsaret spans :ns master periods; Hann win over dc fraction"
     (check examples.gsot.205-pulsar-subharmonic/pulsar-subharmonic)))
+
+(deftest gsot-206-voice1
+  (testing "p.325 voice1 — single voice .gendsp unit; sin+en.adsr(0.01,0.1,0.8,0.3,:gt); :hz freq :gt gate; instantiated N times by poly-voices"
+    (check examples.gsot.206-voice1/voice1)))
+
+(deftest gsot-207-poly-voices
+  (testing "pp.323-324 poly-voices — 4-voice poly~→explicit Faust voice(hz,gt) fn; :f1-:f4 freqs :g1-:g4 gates; 0.25×sum; defaults C major chord"
+    (check examples.gsot.207-poly-voices/poly-voices)))
