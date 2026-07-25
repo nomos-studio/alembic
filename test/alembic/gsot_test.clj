@@ -347,7 +347,9 @@
             [examples.gsot.205-pulsar-subharmonic]
             [examples.gsot.206-voice1]
             [examples.gsot.207-poly-voices]
-            [examples.gsot.208-poly-granulation1]))
+            [examples.gsot.208-poly-granulation1]
+            [examples.gsot.209-grain1]
+            [examples.gsot.210-poly-granulation2]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -1231,3 +1233,11 @@
 (deftest gsot-208-poly-granulation1
   (testing "p.325 poly-granulation1 — 4 staggered grain voices at phase 0/0.25/0.5/0.75; gate×Hann win×src sine; dc_g=gd*gr/1000; 0.25×sum"
     (check examples.gsot.208-poly-granulation1/poly-granulation1)))
+
+(deftest gsot-209-grain1
+  (testing "p.326 grain1 — stochastic grain .gendsp; ba.sAndH(ph<ph', fc*(1+fs*noise)); new random freq per grain; Hann win; single voice"
+    (check examples.gsot.209-grain1/grain1)))
+
+(deftest gsot-210-poly-granulation2
+  (testing "pp.326-327 poly-granulation2 — 4-voice stochastic; shared no.noise + staggered S&H captures independent per-grain freqs; :fs scatter width"
+    (check examples.gsot.210-poly-granulation2/poly-granulation2)))
