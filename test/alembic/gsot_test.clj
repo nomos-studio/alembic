@@ -349,7 +349,11 @@
             [examples.gsot.207-poly-voices]
             [examples.gsot.208-poly-granulation1]
             [examples.gsot.209-grain1]
-            [examples.gsot.210-poly-granulation2]))
+            [examples.gsot.210-poly-granulation2]
+            [examples.gsot.211-ramp-subsample-trig]
+            [examples.gsot.212-go-ramp-subsample]
+            [examples.gsot.213-grains2]
+            [examples.gsot.214-poly-granulation3]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -1241,3 +1245,19 @@
 (deftest gsot-210-poly-granulation2
   (testing "pp.326-327 poly-granulation2 — 4-voice stochastic; shared no.noise + staggered S&H captures independent per-grain freqs; :fs scatter width"
     (check examples.gsot.210-poly-granulation2/poly-granulation2)))
+
+(deftest gsot-211-ramp-subsample-trig
+  (testing "p.328 ramp-subsample-trig — phasor wrap subsample fraction; sf=(1-ph')/(ph+1-ph'); keyed trigger output: trig×sf nonzero only at wrap"
+    (check examples.gsot.211-ramp-subsample-trig/ramp-subsample-trig)))
+
+(deftest gsot-212-go-ramp-subsample
+  (testing "p.331 go-ramp-subsample — subsample-accurate grain; grain_ph reset to (1-sf)×fc/SR at trigger; select2~_ resettable accumulator"
+    (check examples.gsot.212-go-ramp-subsample/go-ramp-subsample)))
+
+(deftest gsot-213-grains2
+  (testing "p.332 grains2 — stochastic grain + subsample accuracy; S&H fc_g + gi=(1-sf)×fc_g/SR reset; combines grain1 randomisation with ex.212 timing"
+    (check examples.gsot.213-grains2/grains2)))
+
+(deftest gsot-214-poly-granulation3
+  (testing "p.333 poly-granulation3 — 4-voice stochastic + subsample accurate; gp(tr,sf,fg)=(select2~_):frac per voice; capstone of Ch.10 granulation sequence"
+    (check examples.gsot.214-poly-granulation3/poly-granulation3)))
