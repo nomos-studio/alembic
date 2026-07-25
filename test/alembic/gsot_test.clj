@@ -337,7 +337,9 @@
             ;; Ch.9 — terrain-reader: wave terrain utility; bilinear read from 2D harmonic bank at audio-rate (x,yp) (p.295)
             [examples.gsot.196-terrain-reader]
             [examples.gsot.197-wave-terrain-osc]
-            [examples.gsot.198-waveterrain-generate-bfg]))
+            [examples.gsot.198-waveterrain-generate-bfg]
+            [examples.gsot.199-waveterrain-2d-doubleorbit]
+            [examples.gsot.200-waveterrain-2d-carom]))
 
 (defn- check [graph]
   (let [src (emit-faust graph)]
@@ -1181,3 +1183,11 @@
 (deftest gsot-198-waveterrain-generate-bfg
   (testing "pp.298-299 waveterrain-generate-bfg — jit.bfg BFG terrain (jit.scanwrap→jit.buffer→gen~); 4 basis modes w(m,n)=sin(mπx)·sin(nπy); Lissajous orbit"
     (check examples.gsot.198-waveterrain-generate-bfg/waveterrain-generate-bfg)))
+
+(deftest gsot-199-waveterrain-2d-doubleorbit
+  (testing "p.301 waveterrain-2d-doubleorbit — compound epicyclic orbit; r1@fc + r2@fc*:rm; limaçon at :rm=2; :ph sets secondary phase; tiling for r1+r2>0.5"
+    (check examples.gsot.199-waveterrain-2d-doubleorbit/waveterrain-2d-doubleorbit)))
+
+(deftest gsot-200-waveterrain-2d-carom
+  (testing "p.302 waveterrain-2d-carom — billiard-ball reflecting orbit; triangle-wave x/y via 1-|2ph-1|; constant velocity vs Lissajous; :rt ratio :ph start angle"
+    (check examples.gsot.200-waveterrain-2d-carom/waveterrain-2d-carom)))
