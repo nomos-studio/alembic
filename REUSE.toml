@@ -17,9 +17,9 @@ precedence = "aggregate"
 SPDX-FileCopyrightText = "2025-2026 nomos-studio contributors"
 SPDX-License-Identifier = "EPL-2.0"
 
-# Project metadata and config files
+# Project metadata, docs, and config files
 [[annotations]]
-path = ["project.clj", "README.md", "CHANGELOG.md", ".gitignore", "scripts/**"]
+path = ["project.clj", "README.md", "CHANGELOG.md", ".gitignore", "scripts/**", "docs/**"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2025-2026 nomos-studio contributors"
 SPDX-License-Identifier = "EPL-2.0"
