@@ -102,12 +102,12 @@
         i1  (param :i1)
         i2  (param :i2)
         md  (param :md)
-        f1  (faust "%fc*%r1" {:fc fc :r1 r1})
-        f2  (faust "%fc*%r2" {:fc fc :r2 r2})
-        m1  (faust "os.osc(%f1)" {:f1 f1})
-        m2  (faust "os.osc(%f2)" {:f2 f2})
-        fd  (faust "%i1*%f1*%m1+%i2*%f2*%m2" {:i1 i1 :f1 f1 :m1 m1 :i2 i2 :f2 f2 :m2 m2})
-        pd  (faust "%i1*%m1+%i2*%m2" {:i1 i1 :m1 m1 :i2 i2 :m2 m2})
-        out (faust "sin(2.0*ma.PI*os.phasor(1,%fc+(1.0-%md)*%fd)+%md*%pd)"
+        f1  (faust "%{fc}*%{r1}" {:fc fc :r1 r1})
+        f2  (faust "%{fc}*%{r2}" {:fc fc :r2 r2})
+        m1  (faust "os.osc(%{f1})" {:f1 f1})
+        m2  (faust "os.osc(%{f2})" {:f2 f2})
+        fd  (faust "%{i1}*%{f1}*%{m1}+%{i2}*%{f2}*%{m2}" {:i1 i1 :f1 f1 :m1 m1 :i2 i2 :f2 f2 :m2 m2})
+        pd  (faust "%{i1}*%{m1}+%{i2}*%{m2}" {:i1 i1 :m1 m1 :i2 i2 :m2 m2})
+        out (faust "sin(2.0*ma.PI*os.phasor(1,%{fc}+(1.0-%{md})*%{fd})+%{md}*%{pd})"
                    {:fc fc :md md :fd fd :pd pd})]
     (output :out out)))

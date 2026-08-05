@@ -33,5 +33,5 @@
   {:params {:curvature {:range [0.1 10.0] :default 3.0}}}
   (let [x   (audio-in)
         k   (param :curvature)
-        out (faust "(exp(%k * %x) - 1.0) / (exp(%k) - 1.0)" {:x x :k k})]
+        out (faust "(exp(%{k} * %{x}) - 1.0) / (exp(%{k}) - 1.0)" {:x x :k k})]
     (output out)))

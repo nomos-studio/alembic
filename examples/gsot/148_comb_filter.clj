@@ -54,7 +54,7 @@
   (let [in  (audio-in)
         ms  (param :ms)
         gn  (param :gn)
-        dly (faust "de.delay(int(ma.SR*5.0),int(max(0.0,%ms*ma.SR/1000.0)),%in)"
+        dly (faust "de.delay(int(ma.SR*5.0),int(max(0.0,%{ms}*ma.SR/1000.0)),%{in})"
                    {:ms ms :in in})
-        out (faust "%in+%gn*%dl" {:in in :gn gn :dl dly})]
+        out (faust "%{in}+%{gn}*%{dl}" {:in in :gn gn :dl dly})]
     (output :out out)))

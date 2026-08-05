@@ -96,13 +96,13 @@
         out (faust
               "puls_fm
                with {
-                 dc_f=max(0.001,%dc);
-                 ph_p=os.phasor(1,%fp);
+                 dc_f=max(0.001,%{dc});
+                 ph_p=os.phasor(1,%{fp});
                  gate=float(ph_p<dc_f);
                  ph_f=ph_p/dc_f;
                  win=gate*0.5*(1.0-cos(2.0*ma.PI*ph_f));
-                 mod=sin(2.0*ma.PI*os.phasor(1,%fp*%mr));
-                 form_ph=ma.frac(ph_p*%fc/max(%fp,1.0)+%mi*mod);
+                 mod=sin(2.0*ma.PI*os.phasor(1,%{fp}*%{mr}));
+                 form_ph=ma.frac(ph_p*%{fc}/max(%{fp},1.0)+%{mi}*mod);
                  formant=sin(2.0*ma.PI*form_ph);
                  puls_fm=win*formant;
                }"

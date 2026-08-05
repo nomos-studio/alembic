@@ -107,6 +107,6 @@
         s2  (param :s2)
         s3  (param :s3)
         out (faust
-              "%s0*(1.0-%xf)*(1.0-%yf)+%s1*%xf*(1.0-%yf)+%s2*(1.0-%xf)*%yf+%s3*%xf*%yf"
+              "%{s0}*(1.0-%{xf})*(1.0-%{yf})+%{s1}*%{xf}*(1.0-%{yf})+%{s2}*(1.0-%{xf})*%{yf}+%{s3}*%{xf}*%{yf}"
               {:xf xf :yf yf :s0 s0 :s1 s1 :s2 s2 :s3 s3})]
     (output :out out)))

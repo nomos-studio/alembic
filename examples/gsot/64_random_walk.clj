@@ -65,7 +65,7 @@
   {:params {:step {:range [0.0 1.0] :default 0.1}}}
   (let [trig     (audio-in)
         step     (param :step)
-        rand-inc (faust "%st*no.noise"              {:st step})
+        rand-inc (faust "%{st}*no.noise"              {:st step})
         inc-held (track-hold rand-inc trig)
-        position (faust "(select2(%tr>0.5,_,_+%ih)~_)" {:tr trig :ih inc-held})]
+        position (faust "(select2(%{tr}>0.5,_,_+%{ih})~_)" {:tr trig :ih inc-held})]
     (output position)))

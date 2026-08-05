@@ -141,6 +141,6 @@
         fm  (param :fm)
         ix  (param :ix)
         fb  (param :fb)
-        out (faust "ks ~ _\n  with {\n    N = max(0.0,ma.SR/max(20.0,%fc+%ix*%fm*os.osc(%fm))-1.0);\n    ks(y) = no.noise*%gt+(de.fdelay(65536,N,y):fi.lowpass(1,7000.0):*(%fb));\n  }"
+        out (faust "ks ~ _\n  with {\n    N = max(0.0,ma.SR/max(20.0,%{fc}+%{ix}*%{fm}*os.osc(%{fm}))-1.0);\n    ks(y) = no.noise*%{gt}+(de.fdelay(65536,N,y):fi.lowpass(1,7000.0):*(%{fb}));\n  }"
                    {:gt gt :fc fc :fm fm :ix ix :fb fb})]
     (output :out out)))

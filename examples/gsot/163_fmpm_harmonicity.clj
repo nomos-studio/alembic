@@ -97,8 +97,8 @@
         rt  (param :rt)
         ix  (param :ix)
         md  (param :md)
-        fm  (faust "%fc*%rt" {:fc fc :rt rt})
-        mo  (faust "os.osc(%fm)" {:fm fm})
-        out (faust "sin(2.0*ma.PI*os.phasor(1,%fc+(1.0-%md)*%ix*%fm*%mo)+%md*%ix*%mo)"
+        fm  (faust "%{fc}*%{rt}" {:fc fc :rt rt})
+        mo  (faust "os.osc(%{fm})" {:fm fm})
+        out (faust "sin(2.0*ma.PI*os.phasor(1,%{fc}+(1.0-%{md})*%{ix}*%{fm}*%{mo})+%{md}*%{ix}*%{mo})"
                    {:fc fc :fm fm :ix ix :md md :mo mo})]
     (output :out out)))

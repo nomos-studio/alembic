@@ -71,9 +71,9 @@
   (let [xp  (audio-in)
         wp  (param :wp)
         zp  (param :zp)
-        xf  (faust "%xp*256.0-float(int(%xp*256.0))" {:xp xp})
-        yf  (faust "%wp*4.0-float(int(%wp*4.0))"     {:wp wp})
-        zf  (faust "%zp*4.0-float(int(%zp*4.0))"     {:zp zp})]
+        xf  (faust "%{xp}*256.0-float(int(%{xp}*256.0))" {:xp xp})
+        yf  (faust "%{wp}*4.0-float(int(%{wp}*4.0))"     {:wp wp})
+        zf  (faust "%{zp}*4.0-float(int(%{zp}*4.0))"     {:zp zp})]
     (output :xf xf)
     (output :yf yf)
     (output :zf zf)))

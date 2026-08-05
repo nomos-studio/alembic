@@ -1003,7 +1003,7 @@
 
 (defpatch! faust-emit-with-inlet {}
   (let [freq (param :freq)
-        out  (faust "os.osc(%freq)" {:freq freq})]
+        out  (faust "os.osc(%{freq})" {:freq freq})]
     (output out)))
 
 (deftest faust-emit-inlet-substitution-test
@@ -1018,7 +1018,7 @@
 (defpatch! faust-emit-prefix-test {}
   (let [dry (phasor 1.0)
         wet (sine-bi dry)
-        out (faust "(%in + %in-wet * 0.5)" {:in dry :in-wet wet})]
+        out (faust "(%{in} + %{in-wet} * 0.5)" {:in dry :in-wet wet})]
     (output out)))
 
 (deftest faust-emit-prefix-collision-test

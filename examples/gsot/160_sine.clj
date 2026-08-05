@@ -54,5 +54,5 @@
   {:params {:fc {:range [20.0 8000.0] :default 440.0}}}
   (let [pm  (audio-in)
         fc  (param :fc)
-        out (faust "sin(2.0*ma.PI*os.phasor(1,%fc)+%pm)" {:fc fc :pm pm})]
+        out (faust "sin(2.0*ma.PI*os.phasor(1,%{fc})+%{pm})" {:fc fc :pm pm})]
     (output :out out)))

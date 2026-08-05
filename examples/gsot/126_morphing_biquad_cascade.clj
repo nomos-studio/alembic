@@ -70,22 +70,22 @@
         q     (param :q)
         morph (param :morph)
         ; Shared intermediates
-        w0    (faust "2.0*ma.PI*%hz/ma.SR" {:hz hz})
-        cw    (faust "cos(%w0)" {:w0 w0})
-        sw    (faust "sin(%w0)" {:w0 w0})
-        al    (faust "%sw/(2.0*%qq)" {:sw sw :qq q})
-        a0    (faust "1.0+%al" {:al al})
+        w0    (faust "2.0*ma.PI*%{hz}/ma.SR" {:hz hz})
+        cw    (faust "cos(%{w0})" {:w0 w0})
+        sw    (faust "sin(%{w0})" {:w0 w0})
+        al    (faust "%{sw}/(2.0*%{qq})" {:sw sw :qq q})
+        a0    (faust "1.0+%{al}" {:al al})
         ; Morphed b0 = [1 + cw*(2*morph-1)] / (2*a0)
-        b0m   (faust "(1.0+%cw*(2.0*%mo-1.0))/(2.0*%a0)" {:cw cw :mo morph :a0 a0})
+        b0m   (faust "(1.0+%{cw}*(2.0*%{mo}-1.0))/(2.0*%{a0})" {:cw cw :mo morph :a0 a0})
         ; Morphed b1 = [1 - cw - 2*morph] / a0
-        b1m   (faust "(1.0-%cw-2.0*%mo)/%a0" {:cw cw :mo morph :a0 a0})
+        b1m   (faust "(1.0-%{cw}-2.0*%{mo})/%{a0}" {:cw cw :mo morph :a0 a0})
         ; Shared feedback coefficients (same for LP and HP)
-        a1    (faust "-2.0*%cw/%a0" {:cw cw :a0 a0})
-        a2    (faust "(1.0-%al)/%a0" {:al al :a0 a0})
+        a1    (faust "-2.0*%{cw}/%{a0}" {:cw cw :a0 a0})
+        a2    (faust "(1.0-%{al})/%{a0}" {:al al :a0 a0})
         ; Stage 1
-        w1    (faust "(%in-%a1*_-%a2*_@1)~_"         {:in audio :a1 a1 :a2 a2})
-        s1    (faust "%b0*%ww+%b1*%ww@1+%b0*%ww@2"  {:b0 b0m :b1 b1m :ww w1})
+        w1    (faust "(%{in}-%{a1}*_-%{a2}*_@1)~_"         {:in audio :a1 a1 :a2 a2})
+        s1    (faust "%{b0}*%{ww}+%{b1}*%{ww}@1+%{b0}*%{ww}@2"  {:b0 b0m :b1 b1m :ww w1})
         ; Stage 2
-        w2    (faust "(%in-%a1*_-%a2*_@1)~_"         {:in s1 :a1 a1 :a2 a2})
-        out   (faust "%b0*%ww+%b1*%ww@1+%b0*%ww@2"  {:b0 b0m :b1 b1m :ww w2})]
+        w2    (faust "(%{in}-%{a1}*_-%{a2}*_@1)~_"         {:in s1 :a1 a1 :a2 a2})
+        out   (faust "%{b0}*%{ww}+%{b1}*%{ww}@1+%{b0}*%{ww}@2"  {:b0 b0m :b1 b1m :ww w2})]
     (output :out out)))

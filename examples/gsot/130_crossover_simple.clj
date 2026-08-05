@@ -55,10 +55,10 @@
   (let [in  (audio-in)
         hz  (param :hz)
         ; a = exp(-2π·fc/SR) — backward Euler pole (same as go.onepole.basic_hz)
-        a   (faust "exp(-2.0*ma.PI*%hz/ma.SR)" {:hz hz})
+        a   (faust "exp(-2.0*ma.PI*%{hz}/ma.SR)" {:hz hz})
         ; LP: one-pole lowpass feedback
-        lp  (faust "((1.0-%al)*%in+%al*_)~_" {:al a :in in})
+        lp  (faust "((1.0-%{al})*%{in}+%{al}*_)~_" {:al a :in in})
         ; HP: exact complement — sums to dry at every sample
-        hp  (faust "%in-%lp" {:in in :lp lp})]
+        hp  (faust "%{in}-%{lp}" {:in in :lp lp})]
     (output :out0 lp)
     (output :out1 hp)))

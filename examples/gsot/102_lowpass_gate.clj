@@ -93,13 +93,13 @@
         lp-mix  (param :lp-mix)
         gat-mix (param :gate-mix)
         ; Asymmetric vactrol envelope follower
-        env     (faust "(select2(%gv>_,%rl,%at)*(%gv-_)+_)~_"
+        env     (faust "(select2(%{gv}>_,%{rl},%{at})*(%{gv}-_)+_)~_"
                        {:gv gate :at atk :rl rel})
         ; LP filter coefficient: (1 - env*lp-mix)*0.999; 0.999 ceiling ensures drain
-        filter  (faust "(%au+_*(1.0-%ev*%lp)*0.999)~_"
+        filter  (faust "(%{au}+_*(1.0-%{ev}*%{lp})*0.999)~_"
                        {:au audio :ev env :lp lp-mix})
         ; Amplitude: lerp from unity to env by gate-mix
-        out     (faust "%fl*(1.0-%gm+%ev*%gm)"
+        out     (faust "%{fl}*(1.0-%{gm}+%{ev}*%{gm})"
                        {:fl filter :gm gat-mix :ev env})]
     (output :out out)
     (output :env env)))

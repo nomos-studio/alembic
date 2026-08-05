@@ -61,9 +61,9 @@
         t2  (param :t2)
         g1  (param :g1)
         g2  (param :g2)
-        d1  (faust "de.delay(int(ma.SR*5.0),int(max(0.0,%t1*ma.SR/1000.0)),%in)"
+        d1  (faust "de.delay(int(ma.SR*5.0),int(max(0.0,%{t1}*ma.SR/1000.0)),%{in})"
                    {:t1 t1 :in in})
-        d2  (faust "de.delay(int(ma.SR*5.0),int(max(0.0,%t2*ma.SR/1000.0)),%in)"
+        d2  (faust "de.delay(int(ma.SR*5.0),int(max(0.0,%{t2}*ma.SR/1000.0)),%{in})"
                    {:t2 t2 :in in})
-        out (faust "%in+%g1*%d1+%g2*%d2" {:in in :g1 g1 :d1 d1 :g2 g2 :d2 d2})]
+        out (faust "%{in}+%{g1}*%{d1}+%{g2}*%{d2}" {:in in :g1 g1 :d1 d1 :g2 g2 :d2 d2})]
     (output :out out)))

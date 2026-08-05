@@ -14,6 +14,12 @@
    :sub         [:a :b]
    :div         [:a :b]
    :history     [:input]
+   ;; :z-1 — unit delay (Z-transform z⁻¹ notation).
+   ;;   User-authored: explicit 1-sample feedforward delay (e.g. `(z-1 signal)`).
+   ;;   Compiler-generated (_zd0, _zd1, …): auto-inserted by ensure-dag to break
+   ;;   detected feedback arcs in programmatically-constructed cyclic graphs.
+   ;;   Emits as Faust x' (same as :history, different inlet name for clarity).
+   :z-1         [:in]
    ;; :delay — parameterisable delay line
    ;;   opts: {:max-time 1.0       compile-time buffer allocation in seconds
    ;;          :interp   :linear   :none (integer) | :linear | :cubic
@@ -89,6 +95,10 @@
    :hard-clip   [:in]
    ;; :wave-fold — triangle wavefolder; folds input > 1 or < −1 back into [−1, 1]
    :wave-fold   [:in]
+   ;; Circuit-model saturation (tube table) — always sample-rate
+   ;; :triode-pre — 12AX7 tube stage (tubes.lib T1_12AX7 lookup table)
+   ;;   gain  pre-gain multiplier applied before the tube stage
+   :triode-pre  [:in :gain]
    ;; :floor — round down to nearest integer (Faust floor()); rate follows input
    :floor       [:in]
    ;; :abs — absolute value; full-wave rectify; rate follows input
@@ -204,6 +214,7 @@
    :audio-in    :sample
    ;; ---- ops with 1-sample state or IIR feedback — always sample-rate ----
    :history     :sample   ; uses Faust ' operator
+   :z-1         :sample   ; uses Faust ' operator (z⁻¹ unit delay)
    :delta       :sample   ; uses '
    :smooth      :sample   ; si.smooth — IIR pole
    :slew        :sample   ; ~ _ feedback
@@ -258,6 +269,8 @@
    :hard-clip   :polymorphic
    :wave-fold   :polymorphic
    :bitcrusher  :polymorphic
+   ;; ---- circuit-model ops — always sample-rate ----
+   :triode-pre  :sample
    :comparator  :polymorphic
    :segment     :polymorphic
    :table       :polymorphic

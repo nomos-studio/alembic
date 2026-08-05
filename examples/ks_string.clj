@@ -73,7 +73,7 @@
         ;;   ~ _                      — feed output back to (exciter + _)
         ;; max(1, …) guards against zero-length delay at high frequencies.
         string  (faust
-                 "(((_ + %exc) : de.delay(131072, max(1, int(ma.SR / max(1.0, %freq)) - 1)) <: *(%scale), (*(%damp) : @(1)) :> +) ~ _)"
+                 "(((_ + %{exc}) : de.delay(131072, max(1, int(ma.SR / max(1.0, %{freq})) - 1)) <: *(%{scale}), (*(%{damp}) : @(1)) :> +) ~ _)"
                  {:exc   exciter
                   :freq  (param :freq)
                   :scale scale

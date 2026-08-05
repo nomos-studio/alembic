@@ -115,11 +115,11 @@
               "sync_out
                with {
                  N=1024;
-                 ph_m=os.phasor(1,%fm);
+                 ph_m=os.phasor(1,%{fm});
                  reset=ph_m<ph_m';
-                 ph_s=(select2(reset,(_+%fs/ma.SR),0.0)~_):ma.frac;
+                 ph_s=(select2(reset,(_+%{fs}/ma.SR),0.0)~_):ma.frac;
                  slave=rdtable(N,os.sinwaveform(N),int(ph_s*float(N))&(N-1));
-                 ww_n=max(1.0,%ww*ma.SR/1000.0);
+                 ww_n=max(1.0,%{ww}*ma.SR/1000.0);
                  wc=(select2(reset,min(_+1.0,ww_n),0.0)~_);
                  win=0.5*(1.0-cos(ma.PI*min(wc/ww_n,1.0)));
                  sync_out=slave*win;

@@ -82,9 +82,9 @@
         b    (param :b)
         c    (param :c)
         d    (param :d)
-        x-out (faust "%xi+%hh*%aa*(%yi-%xi)"            {:xi x-in :yi y-in :hh h :aa a})
-        y-out (faust "%yi+%hh*(%bb*%xi+%cc*%yi-%xi*%zi)" {:xi x-in :yi y-in :zi z-in :hh h :bb b :cc c})
-        z-out (faust "%zi+%hh*(%xi*%yi-%dd*%zi)"         {:xi x-in :yi y-in :zi z-in :hh h :dd d})]
+        x-out (faust "%{xi}+%{hh}*%{aa}*(%{yi}-%{xi})"            {:xi x-in :yi y-in :hh h :aa a})
+        y-out (faust "%{yi}+%{hh}*(%{bb}*%{xi}+%{cc}*%{yi}-%{xi}*%{zi})" {:xi x-in :yi y-in :zi z-in :hh h :bb b :cc c})
+        z-out (faust "%{zi}+%{hh}*(%{xi}*%{yi}-%{dd}*%{zi})"         {:xi x-in :yi y-in :zi z-in :hh h :dd d})]
     (output :x x-out)
     (output :y y-out)
     (output :z z-out)))

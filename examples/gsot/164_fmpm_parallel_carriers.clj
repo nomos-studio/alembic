@@ -87,10 +87,10 @@
         ix  (param :ix)
         mx  (param :mx)
         md  (param :md)
-        mo  (faust "os.osc(%fm)" {:fm fm})
-        c1  (faust "sin(2.0*ma.PI*os.phasor(1,%fm*%r1+(1.0-%md)*%ix*%fm*%mo)+%md*%ix*%mo)"
+        mo  (faust "os.osc(%{fm})" {:fm fm})
+        c1  (faust "sin(2.0*ma.PI*os.phasor(1,%{fm}*%{r1}+(1.0-%{md})*%{ix}*%{fm}*%{mo})+%{md}*%{ix}*%{mo})"
                    {:fm fm :r1 r1 :md md :ix ix :mo mo})
-        c2  (faust "sin(2.0*ma.PI*os.phasor(1,%fm*%r2+(1.0-%md)*%ix*%fm*%mo)+%md*%ix*%mo)"
+        c2  (faust "sin(2.0*ma.PI*os.phasor(1,%{fm}*%{r2}+(1.0-%{md})*%{ix}*%{fm}*%{mo})+%{md}*%{ix}*%{mo})"
                    {:fm fm :r2 r2 :md md :ix ix :mo mo})
-        out (faust "(1.0-%mx)*%c1+%mx*%c2" {:mx mx :c1 c1 :c2 c2})]
+        out (faust "(1.0-%{mx})*%{c1}+%{mx}*%{c2}" {:mx mx :c1 c1 :c2 c2})]
     (output :out out)))

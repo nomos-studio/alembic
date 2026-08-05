@@ -81,7 +81,7 @@
 (defpatch! wavetable-sincmipmap-wave
   {:params {:fc {:range [20.0 4000.0] :default 220.0}}}
   (let [fc  (param :fc)
-        ph  (faust "os.phasor(1,%fc)" {:fc fc})
+        ph  (faust "os.phasor(1,%{fc})" {:fc fc})
         out (faust
               "sinc_out
                with {
@@ -91,10 +91,10 @@
                  h(k)=sin(ang*float(k+1))/float(k+1)*float(k<=yt);
                  tbl_init=0.5*(h(0)+h(1)+h(2)+h(3)+h(4)+h(5)+h(6)+h(7));
                  tbl(i)=rdtable(N,tbl_init,max(0,min(N-1,i)));
-                 reset=%ph<%ph';
-                 y_raw=max(1.0,min(8.0,ma.SR/(2.0*%fc)))-1.0;
+                 reset=%{ph}<%{ph}';
+                 y_raw=max(1.0,min(8.0,ma.SR/(2.0*%{fc})))-1.0;
                  y_held=int(ba.sAndH(reset,y_raw));
-                 xfull=%ph*float(W);
+                 xfull=%{ph}*float(W);
                  i0=int(xfull)&(W-1);
                  fr=xfull-float(int(xfull));
                  sinc(x)=sin(ma.PI*max(abs(x),1e-9))/(ma.PI*max(abs(x),1e-9));

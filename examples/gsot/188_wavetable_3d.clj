@@ -103,7 +103,7 @@
   (let [fc  (param :fc)
         wp  (param :wp)
         zp  (param :zp)
-        ph  (faust "os.phasor(1,%fc)" {:fc fc})
+        ph  (faust "os.phasor(1,%{fc})" {:fc fc})
         out (faust
               "trilinear
                with {
@@ -114,7 +114,7 @@
                  h(k)=sin(ang*float(k+1)+ph_off)/float(k+1)*float(k<=yt);
                  tbl_init=0.5*(h(0)+h(1)+h(2)+h(3));
                  tbl(i)=rdtable(N,tbl_init,max(0,min(N-1,i)));
-                 xfull=%ph*float(W); yfull=%wp*float(H); zfull=%zp*float(D);
+                 xfull=%{ph}*float(W); yfull=%{wp}*float(H); zfull=%{zp}*float(D);
                  xr=int(xfull); yr=int(yfull); zr=int(zfull);
                  x0=xr&(W-1); x1=(x0+1)&(W-1);
                  y0=yr%H; y1=(y0+1)%H;

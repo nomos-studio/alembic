@@ -77,15 +77,15 @@
   (let [trig        (audio-in)
         n           (param :size)
         ; Counter: advances on each trigger, wraps at N
-        counter     (faust "(select2(%tr>0.5,_,float(int(_+1.0)%max(1,int(%nn))))~_)"
+        counter     (faust "(select2(%{tr}>0.5,_,float(int(_+1.0)%max(1,int(%{nn}))))~_)"
                            {:tr trig :nn n})
         ; Cycle-start: fires when counter just wrapped back to 0
-        cycle-start (faust "float(%ct<0.5)*%tr"
+        cycle-start (faust "float(%{ct}<0.5)*%{tr}"
                            {:ct counter :tr trig})
         ; Random rotation key, resampled at each cycle boundary
-        rand-key    (faust "float(int(float(int(%nn))*0.5*(no.noise+1.0)))" {:nn n})
+        rand-key    (faust "float(int(float(int(%{nn}))*0.5*(no.noise+1.0)))" {:nn n})
         key         (track-hold rand-key cycle-start)
         ; Output: all N values per cycle in a randomly rotated order
-        out         (faust "float(int(%ct+%ky)%max(1,int(%nn)))"
+        out         (faust "float(int(%{ct}+%{ky})%max(1,int(%{nn})))"
                            {:ct counter :ky key :nn n})]
     (output out)))

@@ -61,5 +61,5 @@
             :sigma {:range [0.0  1.0] :default 0.3}}}
   (let [z   (faust "0.5*(no.noise+no.noise+no.noise+no.noise+no.noise+no.noise+no.noise+no.noise+no.noise+no.noise+no.noise+no.noise)"
                    {})
-        out (faust "%mu+%sg*%zz" {:mu (param :mu) :sg (param :sigma) :zz z})]
+        out (faust "%{mu}+%{sg}*%{zz}" {:mu (param :mu) :sg (param :sigma) :zz z})]
     (output out)))

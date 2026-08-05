@@ -115,15 +115,15 @@
         smooth  (param :smooth)
         root    (param :root)
         ; Octave number and float degree within current scale octave
-        oct-n   (faust "floor(%in/max(1.0,%bt))" {:in in :bt beats})
-        deg-oc  (faust "%in-%bt*%oc" {:in in :bt beats :oc oct-n})
+        oct-n   (faust "floor(%{in}/max(1.0,%{bt}))" {:in in :bt beats})
+        deg-oc  (faust "%{in}-%{bt}*%{oc}" {:in in :bt beats :oc oct-n})
         ; Continuous inverse digitized ratio: position within [0,12)
-        q-ratio (faust "12.0*%dg/max(1.0,%bt)" {:dg deg-oc :bt beats})
+        q-ratio (faust "12.0*%{dg}/max(1.0,%{bt})" {:dg deg-oc :bt beats})
         ; Hard-quantized semitone (floor = scale degree boundary)
-        semi-q  (faust "floor(%qr)" {:qr q-ratio})
+        semi-q  (faust "floor(%{qr})" {:qr q-ratio})
         ; Smooth blend: lerp from quantized floor to continuous ratio
-        note    (faust "%rt+%sq+%sm*(%qr-%sq)+%oc*12.0"
+        note    (faust "%{rt}+%{sq}+%{sm}*(%{qr}-%{sq})+%{oc}*12.0"
                        {:rt root :sq semi-q :sm smooth :qr q-ratio :oc oct-n})
-        freq    (faust "440.0*pow(2.0,(%nt-69.0)/12.0)" {:nt note})]
+        freq    (faust "440.0*pow(2.0,(%{nt}-69.0)/12.0)" {:nt note})]
     (output :freq freq)
     (output :note note)))

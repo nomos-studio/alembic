@@ -951,7 +951,7 @@
 
 (defpatch! faust-wired-inlet-test {}
   (let [freq (param :freq)
-        out  (faust "os.osc(%freq)" {:freq freq})]
+        out  (faust "os.osc(%{freq})" {:freq freq})]
     (output out)))
 
 (deftest faust-node-wired-inlet-test
@@ -963,7 +963,7 @@
     (testing ":freq inlet points to a valid node id"
       (is (contains? (:nodes faust-wired-inlet-test) (get-in node [:inputs :freq]))))
     (testing ":source string preserved verbatim on node"
-      (is (= "os.osc(%freq)" (:source node))))))
+      (is (= "os.osc(%{freq})" (:source node))))))
 
 (deftest faust-rate-crossing-test
   (testing "block-rate inlet wired to :faust node creates rate-crossing edge"

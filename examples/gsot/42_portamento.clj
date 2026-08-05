@@ -103,17 +103,17 @@
   {:params {:glide-ms {:range [1.0 5000.0] :default 300.0 :unit :ms}}}
   (let [x       (audio-in)
         ; fires when input changes by more than 0.5 (safe for MIDI pitch steps)
-        trig    (faust "float(abs(%inp-%inp')>0.5)" {:inp x})
+        trig    (faust "float(abs(%{inp}-%{inp}')>0.5)" {:inp x})
         ; per-sample increment: ramp reaches 1.0 after glide-ms milliseconds
-        slope   (faust "1000.0/(ma.SR*%gms)" {:gms (param :glide-ms)})
+        slope   (faust "1000.0/(ma.SR*%{gms})" {:gms (param :glide-ms)})
         ; accum @resetmode pre: resets to slope at trigger, accumulates between
-        ramp    (faust "(select2(%trig>0.5,_+%slope,%slope))~_"
+        ramp    (faust "(select2(%{trig}>0.5,_+%{slope},%{slope}))~_"
                        {:trig trig :slope slope})
-        clipped (faust "max(0.0,min(1.0,%r))" {:r ramp})
+        clipped (faust "max(0.0,min(1.0,%{r}))" {:r ramp})
         ; to = new target: S&H of input on trigger
         to      (track-hold x trig)
         ; from = S&H of to' (previous target) on trigger
-        from    (faust "(select2(%trig>0.5,_,%tgt')~_)" {:trig trig :tgt to})
-        out     (faust "%from+%ramp*(%tgt-%from)" {:from from :ramp clipped :tgt to})]
+        from    (faust "(select2(%{trig}>0.5,_,%{tgt}')~_)" {:trig trig :tgt to})
+        out     (faust "%{from}+%{ramp}*(%{tgt}-%{from})" {:from from :ramp clipped :tgt to})]
     (output out)
     (output :ramp clipped)))

@@ -73,7 +73,7 @@
   (let [trig     (audio-in)
         lo       (param :lo)
         hi       (param :hi)
-        rand-int (faust "min(%hi,floor(%lo+float(int(%hi)-int(%lo)+1)*0.5*(no.noise+1.0)))"
+        rand-int (faust "min(%{hi},floor(%{lo}+float(int(%{hi})-int(%{lo})+1)*0.5*(no.noise+1.0)))"
                         {:lo lo :hi hi})
         out      (track-hold rand-int trig)]
     (output out)))

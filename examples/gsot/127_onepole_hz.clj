@@ -105,8 +105,8 @@
   {:params {:hz {:range [1.0 20000.0] :default 1000.0}}}
   (let [in  (audio-in)
         hz  (param :hz)
-        gv  (faust "tan(ma.PI*%hz/ma.SR)" {:hz hz})
-        kk  (faust "%gv/(1.0+%gv)" {:gv gv})
-        xd  (faust "%in@1" {:in in})
-        out (faust "(%kk*%in+%kk*%xd+(1.0-2.0*%kk)*_)~_" {:kk kk :in in :xd xd})]
+        gv  (faust "tan(ma.PI*%{hz}/ma.SR)" {:hz hz})
+        kk  (faust "%{gv}/(1.0+%{gv})" {:gv gv})
+        xd  (faust "%{in}@1" {:in in})
+        out (faust "(%{kk}*%{in}+%{kk}*%{xd}+(1.0-2.0*%{kk})*_)~_" {:kk kk :in in :xd xd})]
     (output :out out)))

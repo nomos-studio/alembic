@@ -81,7 +81,7 @@
   {:params {:wp {:range [0.0 1.0] :default 0.0}}}
   (let [xp (audio-in)
         wp (param :wp)
-        xf (faust "%xp*512.0-float(int(%xp*512.0))" {:xp xp})
-        yf (faust "%wp*8.0-float(int(%wp*8.0))"     {:wp wp})]
+        xf (faust "%{xp}*512.0-float(int(%{xp}*512.0))" {:xp xp})
+        yf (faust "%{wp}*8.0-float(int(%{wp}*8.0))"     {:wp wp})]
     (output :xf xf)
     (output :yf yf)))

@@ -28,6 +28,6 @@
   {:params {:alpha {:range [0.0 1.0] :default 0.5}}}
   (let [x   (audio-in)
         a   (param :alpha)
-        out (faust "select2(%x >= (1.0 - %a/2.0), select2(%x >= (%a/2.0), 1.0, 0.5*(1.0-cos(2.0*ma.PI*%x/max(%a,0.0001)))), 0.5*(1.0-cos(2.0*ma.PI*(1.0-%x)/max(%a,0.0001))))"
+        out (faust "select2(%{x} >= (1.0 - %{a}/2.0), select2(%{x} >= (%{a}/2.0), 1.0, 0.5*(1.0-cos(2.0*ma.PI*%{x}/max(%{a},0.0001)))), 0.5*(1.0-cos(2.0*ma.PI*(1.0-%{x})/max(%{a},0.0001))))"
                    {:x x :a a})]
     (output out)))

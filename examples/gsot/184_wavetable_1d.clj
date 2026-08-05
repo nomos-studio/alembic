@@ -100,7 +100,7 @@
               "s0+fr*(s1-s0)
                with {
                  N = 1024;
-                 ph = os.phasor(1,%fc)*float(N);
+                 ph = os.phasor(1,%{fc})*float(N);
                  i0 = int(ph)&(N-1);
                  i1 = (i0+1)&(N-1);
                  fr = ph-float(int(ph));

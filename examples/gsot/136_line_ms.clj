@@ -69,6 +69,6 @@
   {:params {:ms {:range [0.1 5000.0] :default 10.0}}}
   (let [in  (audio-in)
         ms  (param :ms)
-        nn  (faust "max(1.0,%ms*ma.SR/1000.0)" {:ms ms})
-        out (faust "(_+(%in-_)/%nn)~_" {:in in :nn nn})]
+        nn  (faust "max(1.0,%{ms}*ma.SR/1000.0)" {:ms ms})
+        out (faust "(_+(%{in}-_)/%{nn})~_" {:in in :nn nn})]
     (output :out out)))

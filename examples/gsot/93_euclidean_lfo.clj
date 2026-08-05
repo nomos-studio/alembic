@@ -79,16 +79,16 @@
   (let [trig    (audio-in)
         beats   (param :beats)
         steps   (param :steps)
-        counter (faust "(select2(%tr>0.5,_,float(int(_+1.0)%max(1,int(%ns))))~_)"
+        counter (faust "(select2(%{tr}>0.5,_,float(int(_+1.0)%max(1,int(%{ns}))))~_)"
                        {:tr trig :ns steps})
         ; Digitized ratio floor value — used for both gate and LFO
-        cur-f   (faust "floor(%ct*%bt/max(1.0,%ns))"
+        cur-f   (faust "floor(%{ct}*%{bt}/max(1.0,%{ns}))"
                        {:ct counter :bt beats :ns steps})
         ; LFO: fractional part of digitized ratio — the pre-floor ramp
-        lfo     (faust "%ct*%bt/max(1.0,%ns)-%cf"
+        lfo     (faust "%{ct}*%{bt}/max(1.0,%{ns})-%{cf}"
                        {:ct counter :bt beats :ns steps :cf cur-f})
         ; Gate: same as euclidean-rhythms (example 91)
-        gate    (faust "max(%cf>%cf@1,%ct<%ct@1)"
+        gate    (faust "max(%{cf}>%{cf}@1,%{ct}<%{ct}@1)"
                        {:cf cur-f :ct counter})]
     (output :lfo lfo)
     (output :gate gate)))

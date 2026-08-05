@@ -65,5 +65,5 @@
   {:params {:samp {:range [1.0 192000.0] :default 100.0}}}
   (let [in   (audio-in)
         samp (param :samp)
-        out  (faust "(_+(%in-_)/%sa)~_" {:in in :sa samp})]
+        out  (faust "(_+(%{in}-_)/%{sa})~_" {:in in :sa samp})]
     (output :out out)))

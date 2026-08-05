@@ -116,7 +116,7 @@
         i2  (param :i2)
         dp  (param :dp)
         md  (param :md)
-        f2  (faust "%fc*%rt" {:fc fc :rt rt})
-        out (faust "(xfb ~ si.bus(2)) :> *(0.5)\n  with {\n    xfb(a,b) = sin(2.0*ma.PI*os.phasor(1,%fc+(1.0-%md)*%i1*%fc*lb)+%md*%i1*lb),\n               sin(2.0*ma.PI*os.phasor(1,%f2+(1.0-%md)*%i2*%f2*la)+%md*%i2*la)\n    with {\n      lb = (1.0-%dp)*b : +~*(%dp);\n      la = (1.0-%dp)*a : +~*(%dp);\n    };\n  }"
+        f2  (faust "%{fc}*%{rt}" {:fc fc :rt rt})
+        out (faust "(xfb ~ si.bus(2)) :> *(0.5)\n  with {\n    xfb(a,b) = sin(2.0*ma.PI*os.phasor(1,%{fc}+(1.0-%{md})*%{i1}*%{fc}*lb)+%{md}*%{i1}*lb),\n               sin(2.0*ma.PI*os.phasor(1,%{f2}+(1.0-%{md})*%{i2}*%{f2}*la)+%{md}*%{i2}*la)\n    with {\n      lb = (1.0-%{dp})*b : +~*(%{dp});\n      la = (1.0-%{dp})*a : +~*(%{dp});\n    };\n  }"
                    {:fc fc :f2 f2 :i1 i1 :i2 i2 :dp dp :md md})]
     (output :out out)))

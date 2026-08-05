@@ -45,5 +45,5 @@
   (let [n   (faust "no.noise" {})
         lo  (param :lo)
         hi  (param :hi)
-        out (faust "%lo+(%hi-%lo)*0.5*(%nn+1.0)" {:lo lo :hi hi :nn n})]
+        out (faust "%{lo}+(%{hi}-%{lo})*0.5*(%{nn}+1.0)" {:lo lo :hi hi :nn n})]
     (output out)))

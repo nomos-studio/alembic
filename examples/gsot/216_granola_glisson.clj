@@ -114,14 +114,14 @@
         out (faust
               "0.25*(g0+g1+g2+g3)
                with {
-                 dc_g=max(0.001,%gd*%gr/1000.0);
-                 ph0=ma.frac(os.phasor(1,%gr)+0.0);
-                 ph1=ma.frac(os.phasor(1,%gr)+0.25);
-                 ph2=ma.frac(os.phasor(1,%gr)+0.5);
-                 ph3=ma.frac(os.phasor(1,%gr)+0.75);
+                 dc_g=max(0.001,%{gd}*%{gr}/1000.0);
+                 ph0=ma.frac(os.phasor(1,%{gr})+0.0);
+                 ph1=ma.frac(os.phasor(1,%{gr})+0.25);
+                 ph2=ma.frac(os.phasor(1,%{gr})+0.5);
+                 ph3=ma.frac(os.phasor(1,%{gr})+0.75);
                  tr0=ph0<ph0'; tr1=ph1<ph1'; tr2=ph2<ph2'; tr3=ph3<ph3';
                  win(ph)=float(ph<dc_g)*0.5*(1.0-cos(2.0*ma.PI*ph/dc_g));
-                 gp(tr,pf)=(select2(tr,_+(%f1+(%f2-%f1)*pf)/ma.SR,0.0)~_):ma.frac;
+                 gp(tr,pf)=(select2(tr,_+(%{f1}+(%{f2}-%{f1})*pf)/ma.SR,0.0)~_):ma.frac;
                  src(tr,pf)=sin(2.0*ma.PI*gp(tr,pf));
                  pf0=min(ph0/dc_g,1.0); pf1=min(ph1/dc_g,1.0);
                  pf2=min(ph2/dc_g,1.0); pf3=min(ph3/dc_g,1.0);

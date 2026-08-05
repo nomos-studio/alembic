@@ -73,7 +73,7 @@
   (let [hz    (div (div (param :bpm) (const 60.0)) (param :beats))
         ramp  (phasor hz)
         k     (param :swing)
-        swing (faust "select2(%x >= %k, %x / max(%k, 0.0001) * 0.5, 0.5 + (%x - %k) / max(1.0 - %k, 0.0001) * 0.5)"
+        swing (faust "select2(%{x} >= %{k}, %{x} / max(%{k}, 0.0001) * 0.5, 0.5 + (%{x} - %{k}) / max(1.0 - %{k}, 0.0001) * 0.5)"
                      {:x ramp :k k})]
     (output :swing swing)
     (output :ramp  ramp)))

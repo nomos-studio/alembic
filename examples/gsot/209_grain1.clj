@@ -77,12 +77,12 @@
         out (faust
               "grain
                with {
-                 dc_g=max(0.001,%gd*%gr/1000.0);
-                 ph=os.phasor(1,%gr);
+                 dc_g=max(0.001,%{gd}*%{gr}/1000.0);
+                 ph=os.phasor(1,%{gr});
                  trig=ph<ph';
-                 fc_g=ba.sAndH(trig,max(20.0,%fc*(1.0+%fs*no.noise)));
+                 fc_g=ba.sAndH(trig,max(20.0,%{fc}*(1.0+%{fs}*no.noise)));
                  win=float(ph<dc_g)*0.5*(1.0-cos(2.0*ma.PI*ph/dc_g));
-                 src=sin(2.0*ma.PI*ma.frac(ph*fc_g/max(%gr,1.0)));
+                 src=sin(2.0*ma.PI*ma.frac(ph*fc_g/max(%{gr},1.0)));
                  grain=win*src;
                }"
               {:gr gr :gd gd :fc fc :fs fs})]

@@ -57,6 +57,6 @@
         n      (faust "no.noise" {})
         lo     (param :lo)
         hi     (param :hi)
-        scaled (faust "%lo+(%hi-%lo)*0.5*(%nn+1.0)" {:lo lo :hi hi :nn n})
+        scaled (faust "%{lo}+(%{hi}-%{lo})*0.5*(%{nn}+1.0)" {:lo lo :hi hi :nn n})
         out    (track-hold scaled trig)]
     (output out)))

@@ -72,15 +72,15 @@
         steps    (param :steps)
         ratchets (param :ratchets)
         ; Euclidean step counter and digitized-ratio gate (same as example 91)
-        counter  (faust "(select2(%tr>0.5,_,float(int(_+1.0)%max(1,int(%ns))))~_)"
+        counter  (faust "(select2(%{tr}>0.5,_,float(int(_+1.0)%max(1,int(%{ns}))))~_)"
                         {:tr trig :ns steps})
-        cur-f    (faust "floor(%ct*%bt/max(1.0,%ns))"
+        cur-f    (faust "floor(%{ct}*%{bt}/max(1.0,%{ns}))"
                         {:ct counter :bt beats :ns steps})
-        gate     (faust "max(%cf>%cf@1,%ct<%ct@1)"
+        gate     (faust "max(%{cf}>%{cf}@1,%{ct}<%{ct}@1)"
                         {:cf cur-f :ct counter})
         ; Ratchet counter: loads R on gate, decrements per trigger, holds between
-        ratch-ct (faust "(select2(%tr>0.5,_,select2(%ga>0.5,max(0.0,_-1.0),float(int(%rt)))))~_"
+        ratch-ct (faust "(select2(%{tr}>0.5,_,select2(%{ga}>0.5,max(0.0,_-1.0),float(int(%{rt})))))~_"
                         {:tr trig :ga gate :rt ratchets})
         ; Output high while ratchet counter > 0
-        out-gate (faust "float(%rc>0.0)" {:rc ratch-ct})]
+        out-gate (faust "float(%{rc}>0.0)" {:rc ratch-ct})]
     (output :gate out-gate)))

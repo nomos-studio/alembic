@@ -55,6 +55,6 @@
   (let [in  (audio-in)
         up  (param :up)
         dn  (param :dn)
-        out (faust "(_+select2(%in>_,max(-%dn,%in-_),min(%up,%in-_)))~_"
+        out (faust "(_+select2(%{in}>_,max(-%{dn},%{in}-_),min(%{up},%{in}-_)))~_"
                    {:in in :up up :dn dn})]
     (output :out out)))

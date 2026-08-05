@@ -53,7 +53,7 @@
   {:params {:decay {:range [0.9 1.0] :default 1.0}}}
   (let [in    (audio-in)
         decay (param :decay)
-        lo    (faust "(min(%in,_*%dc))~_" {:in in :dc decay})
-        hi    (faust "(max(%in,_*%dc))~_" {:in in :dc decay})]
+        lo    (faust "(min(%{in},_*%{dc}))~_" {:in in :dc decay})
+        hi    (faust "(max(%{in},_*%{dc}))~_" {:in in :dc decay})]
     (output :lo lo)
     (output :hi hi)))

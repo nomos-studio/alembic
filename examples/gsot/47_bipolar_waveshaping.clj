@@ -71,22 +71,22 @@
 (defpatch! bipolar-waveshaping
   {:params {:power {:range [0.5 8.0] :default 2.0}}}
   (let [x    (audio-in)
-        u    (faust "abs(%xx)"                           {:xx x})
-        sgn  (faust "float(%xx>0.0)-float(%xx<0.0)"     {:xx x})
-        un   (faust "(%xx+1.0)*0.5"                     {:xx x})
+        u    (faust "abs(%{xx})"                           {:xx x})
+        sgn  (faust "float(%{xx}>0.0)-float(%{xx}<0.0)"     {:xx x})
+        un   (faust "(%{xx}+1.0)*0.5"                     {:xx x})
         ; ── symmetric: sign(x)·f(|x|) — odd harmonics only ─────────────────
-        sym-pow  (faust "%sg*pow(max(0.0,%uu),%pw)"
+        sym-pow  (faust "%{sg}*pow(max(0.0,%{uu}),%{pw})"
                         {:sg sgn :uu u :pw (param :power)})
-        sym-cub  (faust "%sg*(3.0*%uu*%uu-2.0*%uu*%uu*%uu)"
+        sym-cub  (faust "%{sg}*(3.0*%{uu}*%{uu}-2.0*%{uu}*%{uu}*%{uu})"
                         {:sg sgn :uu u})
-        sym-log  (faust "%sg*(1.0/(1.0+exp(-12.0*(%uu-0.5))))"
+        sym-log  (faust "%{sg}*(1.0/(1.0+exp(-12.0*(%{uu}-0.5))))"
                         {:sg sgn :uu u})
         ; ── full-range: 2·f((x+1)/2)−1 — odd + even harmonics ──────────────
-        full-pow (faust "pow(max(0.0,%un),%pw)*2.0-1.0"
+        full-pow (faust "pow(max(0.0,%{un}),%{pw})*2.0-1.0"
                         {:un un :pw (param :power)})
-        full-cub (faust "(3.0*%un*%un-2.0*%un*%un*%un)*2.0-1.0"
+        full-cub (faust "(3.0*%{un}*%{un}-2.0*%{un}*%{un}*%{un})*2.0-1.0"
                         {:un un})
-        full-log (faust "(1.0/(1.0+exp(-12.0*(%un-0.5))))*2.0-1.0"
+        full-log (faust "(1.0/(1.0+exp(-12.0*(%{un}-0.5))))*2.0-1.0"
                         {:un un})]
     (output :sym-pow    sym-pow)
     (output :sym-cubic  sym-cub)

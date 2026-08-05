@@ -61,7 +61,7 @@
   {:params {:root {:range [0.0 127.0] :default 60.0}}}
   (let [in   (audio-in)
         root (param :root)
-        note (faust "%rt+%in" {:rt root :in in})
-        freq (faust "440.0*pow(2.0,(%nt-69.0)/12.0)" {:nt note})]
+        note (faust "%{rt}+%{in}" {:rt root :in in})
+        freq (faust "440.0*pow(2.0,(%{nt}-69.0)/12.0)" {:nt note})]
     (output :freq freq)
     (output :note note)))

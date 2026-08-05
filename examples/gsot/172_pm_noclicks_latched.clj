@@ -100,11 +100,11 @@
   (let [fc  (param :fc)
         rt  (param :rt)
         ix  (param :ix)
-        ph  (faust "os.phasor(1,%fc)" {:fc fc})
-        rs  (faust "%ph<%ph@1" {:ph ph})
-        lix (faust "(%ix*%rs+_*(1-%rs)) ~ _" {:ix ix :rs rs})
-        lr  (faust "(%rt*%rs+_*(1-%rs)) ~ _" {:rt rt :rs rs})
-        fm  (faust "%fc*%lr" {:fc fc :lr lr})
-        mo  (faust "os.osc(%fm)" {:fm fm})
-        out (faust "sin(2.0*ma.PI*%ph+%li*%mo)" {:ph ph :li lix :mo mo})]
+        ph  (faust "os.phasor(1,%{fc})" {:fc fc})
+        rs  (faust "%{ph}<%{ph}@1" {:ph ph})
+        lix (faust "(%{ix}*%{rs}+_*(1-%{rs})) ~ _" {:ix ix :rs rs})
+        lr  (faust "(%{rt}*%{rs}+_*(1-%{rs})) ~ _" {:rt rt :rs rs})
+        fm  (faust "%{fc}*%{lr}" {:fc fc :lr lr})
+        mo  (faust "os.osc(%{fm})" {:fm fm})
+        out (faust "sin(2.0*ma.PI*%{ph}+%{li}*%{mo})" {:ph ph :li lix :mo mo})]
     (output :out out)))

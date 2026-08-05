@@ -91,7 +91,7 @@
   (let [in    (audio-in)
         coeff (param :coeff)
         ; x[n-1]: feedforward 1-sample delay via Faust @1 operator
-        x-del (faust "%in@1" {:in in})
+        x-del (faust "%{in}@1" {:in in})
         ; y[n] = a*x[n] + x[n-1] - a*y[n-1]; ~_ holds y[n-1]
-        out   (faust "(%cf*%in+%xd-_*%cf)~_" {:cf coeff :in in :xd x-del})]
+        out   (faust "(%{cf}*%{in}+%{xd}-_*%{cf})~_" {:cf coeff :in in :xd x-del})]
     (output :out out)))

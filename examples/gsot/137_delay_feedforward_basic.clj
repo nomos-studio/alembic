@@ -67,7 +67,7 @@
   (let [in  (audio-in)
         ms  (param :ms)
         mx  (param :mx)
-        dly (faust "de.delay(int(ma.SR*5.0),int(max(0.0,%ms*ma.SR/1000.0)),%in)"
+        dly (faust "de.delay(int(ma.SR*5.0),int(max(0.0,%{ms}*ma.SR/1000.0)),%{in})"
                    {:ms ms :in in})
-        out (faust "(1.0-%mx)*%in+%mx*%dl" {:mx mx :in in :dl dly})]
+        out (faust "(1.0-%{mx})*%{in}+%{mx}*%{dl}" {:mx mx :in in :dl dly})]
     (output :out out)))

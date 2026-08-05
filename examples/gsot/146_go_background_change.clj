@@ -85,20 +85,20 @@
         cf  (param :cf)
         mx  (param :mx)
         ; one sample when :tg steps; sustained when :tg ramps
-        chg (faust "abs(%tg-(%tg@1))>0.001" {:tg tg})
+        chg (faust "abs(%{tg}-(%{tg}@1))>0.001" {:tg tg})
         ; crossfade gain: reset to 0 on change, ramp to 1 over :cf ms
-        xfg (faust "bgch_xfg ~ _\n  with { bgch_xfg(p) = select2(%ch,min(1.0,p+1000.0/(%cf*ma.SR)),0.0); }"
+        xfg (faust "bgch_xfg ~ _\n  with { bgch_xfg(p) = select2(%{ch},min(1.0,p+1000.0/(%{cf}*ma.SR)),0.0); }"
                    {:ch chg :cf cf})
         ; held committed delay time: latches old :tg when change fires
-        hld (faust "bgch_hld ~ _\n  with { bgch_hld(p) = select2(%ch,p,%tg@1); }"
+        hld (faust "bgch_hld ~ _\n  with { bgch_hld(p) = select2(%{ch},p,%{tg}@1); }"
                    {:ch chg :tg tg})
         ; old tap at committed (held) delay — read pointer never moves during crossfade
-        dlo (faust "de.delay(int(ma.SR*5.0),int(max(0.0,%hl*ma.SR/1000.0)),%in)"
+        dlo (faust "de.delay(int(ma.SR*5.0),int(max(0.0,%{hl}*ma.SR/1000.0)),%{in})"
                    {:hl hld :in in})
         ; new tap at current target — jumped to new position while at zero volume
-        dln (faust "de.delay(int(ma.SR*5.0),int(max(0.0,%tg*ma.SR/1000.0)),%in)"
+        dln (faust "de.delay(int(ma.SR*5.0),int(max(0.0,%{tg}*ma.SR/1000.0)),%{in})"
                    {:tg tg :in in})
         ; crossfade: xfg=0 → old only (stable), xfg=1 → new only (stable)
-        wet (faust "(1.0-%xf)*%lo+%xf*%ln" {:xf xfg :lo dlo :ln dln})
-        out (faust "(1.0-%mx)*%in+%mx*%wt" {:mx mx :in in :wt wet})]
+        wet (faust "(1.0-%{xf})*%{lo}+%{xf}*%{ln}" {:xf xfg :lo dlo :ln dln})
+        out (faust "(1.0-%{mx})*%{in}+%{mx}*%{wt}" {:mx mx :in in :wt wet})]
     (output :out out)))

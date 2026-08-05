@@ -90,18 +90,18 @@
   (let [trig    (audio-in)
         pattern (param :pattern)
         steps   (param :steps)
-        counter (faust "(select2(%tr>0.5,_,float(int(_+1.0)%max(1,int(%ns))))~_)"
+        counter (faust "(select2(%{tr}>0.5,_,float(int(_+1.0)%max(1,int(%{ns}))))~_)"
                        {:tr trig :ns steps})
-        new-bit (faust "float(int(%pt)>>int(%ct) & 1)"
+        new-bit (faust "float(int(%{pt})>>int(%{ct}) & 1)"
                        {:pt pattern :ct counter})
         s0 (track-hold new-bit trig)
-        s1 (track-hold (faust "%pv@1" {:pv s0}) trig)
-        s2 (track-hold (faust "%pv@1" {:pv s1}) trig)
-        s3 (track-hold (faust "%pv@1" {:pv s2}) trig)
-        s4 (track-hold (faust "%pv@1" {:pv s3}) trig)
-        s5 (track-hold (faust "%pv@1" {:pv s4}) trig)
-        s6 (track-hold (faust "%pv@1" {:pv s5}) trig)
-        s7 (track-hold (faust "%pv@1" {:pv s6}) trig)]
+        s1 (track-hold (faust "%{pv}@1" {:pv s0}) trig)
+        s2 (track-hold (faust "%{pv}@1" {:pv s1}) trig)
+        s3 (track-hold (faust "%{pv}@1" {:pv s2}) trig)
+        s4 (track-hold (faust "%{pv}@1" {:pv s3}) trig)
+        s5 (track-hold (faust "%{pv}@1" {:pv s4}) trig)
+        s6 (track-hold (faust "%{pv}@1" {:pv s5}) trig)
+        s7 (track-hold (faust "%{pv}@1" {:pv s6}) trig)]
     (output :s0 s0)
     (output :s1 s1)
     (output :s2 s2)

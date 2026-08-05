@@ -84,13 +84,13 @@
         amount (param :amount)
         r      (param :r)
         ; Logistic map — chaotic orbit in (0,1); max(_, 0.01) seeds from 0
-        chaos  (faust "(%rr*max(_,0.01)*(1.0-max(_,0.01)))~_" {:rr r})
+        chaos  (faust "(%{rr}*max(_,0.01)*(1.0-max(_,0.01)))~_" {:rr r})
         ; Rate: nominal BPM ± amount, converted to phase-per-sample
-        rate   (faust "max(0.0,(%bp+%am*(2.0*%ch-1.0))/60.0/float(ma.SR))"
+        rate   (faust "max(0.0,(%{bp}+%{am}*(2.0*%{ch}-1.0))/60.0/float(ma.SR))"
                       {:bp bpm :am amount :ch chaos})
         ; Wrapped phasor driven by chaotic rate
-        phase  (faust "(ma.frac(_+%rt))~_" {:rt rate})
+        phase  (faust "(ma.frac(_+%{rt}))~_" {:rt rate})
         ; Trigger fires for one sample when phasor wraps (phase decreases)
-        trig   (faust "float(%ph<%ph@1)" {:ph phase})]
+        trig   (faust "float(%{ph}<%{ph}@1)" {:ph phase})]
     (output :phase phase)
     (output :trig  trig)))

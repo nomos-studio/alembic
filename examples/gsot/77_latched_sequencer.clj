@@ -76,17 +76,17 @@
   (let [trig   (audio-in)
         cv-in  (audio-in)
         steps  (param :steps)
-        counter (faust "(select2(%tr>0.5,_,float(int(_+1.0)%max(1,int(%ns))))~_)"
+        counter (faust "(select2(%{tr}>0.5,_,float(int(_+1.0)%max(1,int(%{ns}))))~_)"
                        {:tr trig :ns steps})
         ; Per-step fire: pulses for one sample when trig fires on that step
-        fire0  (faust "float(%tr>0.5)*float(int(%ct)==0)" {:tr trig :ct counter})
-        fire1  (faust "float(%tr>0.5)*float(int(%ct)==1)" {:tr trig :ct counter})
-        fire2  (faust "float(%tr>0.5)*float(int(%ct)==2)" {:tr trig :ct counter})
-        fire3  (faust "float(%tr>0.5)*float(int(%ct)==3)" {:tr trig :ct counter})
-        fire4  (faust "float(%tr>0.5)*float(int(%ct)==4)" {:tr trig :ct counter})
-        fire5  (faust "float(%tr>0.5)*float(int(%ct)==5)" {:tr trig :ct counter})
-        fire6  (faust "float(%tr>0.5)*float(int(%ct)==6)" {:tr trig :ct counter})
-        fire7  (faust "float(%tr>0.5)*float(int(%ct)==7)" {:tr trig :ct counter})
+        fire0  (faust "float(%{tr}>0.5)*float(int(%{ct})==0)" {:tr trig :ct counter})
+        fire1  (faust "float(%{tr}>0.5)*float(int(%{ct})==1)" {:tr trig :ct counter})
+        fire2  (faust "float(%{tr}>0.5)*float(int(%{ct})==2)" {:tr trig :ct counter})
+        fire3  (faust "float(%{tr}>0.5)*float(int(%{ct})==3)" {:tr trig :ct counter})
+        fire4  (faust "float(%{tr}>0.5)*float(int(%{ct})==4)" {:tr trig :ct counter})
+        fire5  (faust "float(%{tr}>0.5)*float(int(%{ct})==5)" {:tr trig :ct counter})
+        fire6  (faust "float(%{tr}>0.5)*float(int(%{ct})==6)" {:tr trig :ct counter})
+        fire7  (faust "float(%{tr}>0.5)*float(int(%{ct})==7)" {:tr trig :ct counter})
         ; Per-step S&H cells: each holds its last captured cv-in value
         held0  (track-hold cv-in fire0)
         held1  (track-hold cv-in fire1)
@@ -97,10 +97,10 @@
         held6  (track-hold cv-in fire6)
         held7  (track-hold cv-in fire7)
         ; Binary-tree readback: select the current step's held value
-        pitch  (faust "select2(%ct<4.0,select2(%ct<6.0,select2(%ct<5.0,%h4,%h5),select2(%ct<7.0,%h6,%h7)),select2(%ct<2.0,select2(%ct<1.0,%h0,%h1),select2(%ct<3.0,%h2,%h3)))"
+        pitch  (faust "select2(%{ct}<4.0,select2(%{ct}<6.0,select2(%{ct}<5.0,%{h4},%{h5}),select2(%{ct}<7.0,%{h6},%{h7})),select2(%{ct}<2.0,select2(%{ct}<1.0,%{h0},%{h1}),select2(%{ct}<3.0,%{h2},%{h3})))"
                       {:ct counter
                        :h0 held0 :h1 held1 :h2 held2 :h3 held3
                        :h4 held4 :h5 held5 :h6 held6 :h7 held7})
-        gate   (faust "float(%tr>0.5)" {:tr trig})]
+        gate   (faust "float(%{tr}>0.5)" {:tr trig})]
     (output :pitch pitch)
     (output :gate  gate)))

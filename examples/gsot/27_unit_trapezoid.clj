@@ -33,6 +33,6 @@
         r   (param :rise)
         s   (param :fall-start)
         f   (param :fall)
-        out (faust "select2(%x >= %f, select2(%x >= %s, select2(%x >= %r, 1.0, %x / %r), (%f - %x) / (%f - %s)), 0.0)"
+        out (faust "select2(%{x} >= %{f}, select2(%{x} >= %{s}, select2(%{x} >= %{r}, 1.0, %{x} / %{r}), (%{f} - %{x}) / (%{f} - %{s})), 0.0)"
                    {:x x :r r :s s :f f})]
     (output out)))

@@ -79,19 +79,19 @@
         n       (faust "no.noise" {})
         lo      (param :lo)
         hi      (param :hi)
-        scaled  (faust "%lo+(%hi-%lo)*0.5*(%nn+1.0)" {:lo lo :hi hi :nn n})
+        scaled  (faust "%{lo}+(%{hi}-%{lo})*0.5*(%{nn}+1.0)" {:lo lo :hi hi :nn n})
         ; ── 6-stage shift register (p5 = newest, p0 = oldest) ────────────────
         p5 (track-hold scaled trig)
-        p4 (track-hold (faust "%nv@1" {:nv p5}) trig)
-        p3 (track-hold (faust "%nv@1" {:nv p4}) trig)
-        p2 (track-hold (faust "%nv@1" {:nv p3}) trig)
-        p1 (track-hold (faust "%nv@1" {:nv p2}) trig)
-        _p0 (track-hold (faust "%nv@1" {:nv p1}) trig)
+        p4 (track-hold (faust "%{nv}@1" {:nv p5}) trig)
+        p3 (track-hold (faust "%{nv}@1" {:nv p4}) trig)
+        p2 (track-hold (faust "%{nv}@1" {:nv p3}) trig)
+        p1 (track-hold (faust "%{nv}@1" {:nv p2}) trig)
+        _p0 (track-hold (faust "%{nv}@1" {:nv p1}) trig)
         ; ── Catmull-Rom: interpolate p2 → p3 with tangents from p1 and p4 ───
-        t2  (faust "%ph*%ph"          {:ph phase})
-        t3  (faust "%t2*%ph"          {:t2 t2 :ph phase})
-        m2  (faust "(%p3-%p1)*0.5"   {:p3 p3 :p1 p1})
-        m3  (faust "(%p4-%p2)*0.5"   {:p4 p4 :p2 p2})
-        out (faust "(2.0*%t3-3.0*%t2+1.0)*%p2+(%t3-2.0*%t2+%ph)*%m2+(-2.0*%t3+3.0*%t2)*%p3+(%t3-%t2)*%m3"
+        t2  (faust "%{ph}*%{ph}"          {:ph phase})
+        t3  (faust "%{t2}*%{ph}"          {:t2 t2 :ph phase})
+        m2  (faust "(%{p3}-%{p1})*0.5"   {:p3 p3 :p1 p1})
+        m3  (faust "(%{p4}-%{p2})*0.5"   {:p4 p4 :p2 p2})
+        out (faust "(2.0*%{t3}-3.0*%{t2}+1.0)*%{p2}+(%{t3}-2.0*%{t2}+%{ph})*%{m2}+(-2.0*%{t3}+3.0*%{t2})*%{p3}+(%{t3}-%{t2})*%{m3}"
                    {:t3 t3 :t2 t2 :ph phase :p2 p2 :p3 p3 :m2 m2 :m3 m3})]
     (output out)))

@@ -80,17 +80,17 @@
   (let [x    (audio-in)  ; bipolar signal
         env  (audio-in)  ; envelope [0,1] — controls wet/dry blend
         k    (param :drive)
-        kx   (faust "%kk*%xx"       {:kk k :xx x})
+        kx   (faust "%{kk}*%{xx}"       {:kk k :xx x})
         ; wet signals at full drive ─────────────────────────────────────────
-        e2kx     (faust "exp(2.0*%kx)"                          {:kx kx})
-        wet-tanh (faust "1.0-2.0/(1.0+%ex)"                     {:ex e2kx})
-        wet-atan (faust "(2.0/ma.PI)*atan(%kx)"                 {:kx kx})
-        wet-soft (faust "select2(float(abs(%kx)>1.0)>0.5,1.5*%kx-0.5*%kx*%kx*%kx,max(-1.0,min(1.0,%kx)))"
+        e2kx     (faust "exp(2.0*%{kx})"                          {:kx kx})
+        wet-tanh (faust "1.0-2.0/(1.0+%{ex})"                     {:ex e2kx})
+        wet-atan (faust "(2.0/ma.PI)*atan(%{kx})"                 {:kx kx})
+        wet-soft (faust "select2(float(abs(%{kx})>1.0)>0.5,1.5*%{kx}-0.5*%{kx}*%{kx}*%{kx},max(-1.0,min(1.0,%{kx})))"
                         {:kx kx})
         ; blend: (1-env)·x + env·wet ─────────────────────────────────────
-        tanh-out (faust "(1.0-%ev)*%xx+%ev*%wt" {:ev env :xx x :wt wet-tanh})
-        atan-out (faust "(1.0-%ev)*%xx+%ev*%wa" {:ev env :xx x :wa wet-atan})
-        soft-out (faust "(1.0-%ev)*%xx+%ev*%ws" {:ev env :xx x :ws wet-soft})]
+        tanh-out (faust "(1.0-%{ev})*%{xx}+%{ev}*%{wt}" {:ev env :xx x :wt wet-tanh})
+        atan-out (faust "(1.0-%{ev})*%{xx}+%{ev}*%{wa}" {:ev env :xx x :wa wet-atan})
+        soft-out (faust "(1.0-%{ev})*%{xx}+%{ev}*%{ws}" {:ev env :xx x :ws wet-soft})]
     (output :tanh     tanh-out)
     (output :atan     atan-out)
     (output :softclip soft-out)))

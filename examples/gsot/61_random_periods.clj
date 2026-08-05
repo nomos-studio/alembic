@@ -71,11 +71,11 @@
   (let [trig     (audio-in)
         lo       (param :lo)
         hi       (param :hi)
-        rand-p   (faust "(%lo+(%hi-%lo)*0.5*(no.noise+1.0))*float(ma.SR)"
+        rand-p   (faust "(%{lo}+(%{hi}-%{lo})*0.5*(no.noise+1.0))*float(ma.SR)"
                         {:lo lo :hi hi})
         period   (track-hold rand-p trig)
-        counter  (faust "(select2(%tr>0.5,_+1.0,0.0)~_)"       {:tr trig})
-        phase    (faust "min(1.0,%ct/max(1.0,%pr))"             {:ct counter :pr period})
-        trig-out (faust "float(%ct>=%pr)*float(%ct@1<%pr)"      {:ct counter :pr period})]
+        counter  (faust "(select2(%{tr}>0.5,_+1.0,0.0)~_)"       {:tr trig})
+        phase    (faust "min(1.0,%{ct}/max(1.0,%{pr}))"             {:ct counter :pr period})
+        trig-out (faust "float(%{ct}>=%{pr})*float(%{ct}@1<%{pr})"      {:ct counter :pr period})]
     (output :phase phase)
     (output :trig  trig-out)))

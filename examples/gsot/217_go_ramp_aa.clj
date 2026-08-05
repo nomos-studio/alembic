@@ -138,11 +138,11 @@
         out (faust
               "shaped
                with {
-                 inc_s=%fs/ma.SR;
-                 ph_m=os.phasor(1,%fm);
+                 inc_s=%{fs}/ma.SR;
+                 ph_m=os.phasor(1,%{fm});
                  trig_m=ph_m<ph_m';
                  sf_m=(1.0-ph_m')/max(0.001,ph_m+1.0-ph_m');
-                 ph_s=(select2(trig_m,_+%fs/ma.SR,0.0)~_):ma.frac;
+                 ph_s=(select2(trig_m,_+%{fs}/ma.SR,0.0)~_):ma.frac;
                  ph_sp=ph_s';
                  is_nat=float(1-trig_m);
                  ta_s=ph_s/max(0.001,inc_s);
@@ -150,7 +150,7 @@
                  blep_nat=is_nat*(float(ta_s<1.0)*(ta_s+ta_s-ta_s*ta_s-1.0)+float(tb_s>-1.0)*(tb_s*tb_s+tb_s+tb_s+1.0));
                  sync_corr=float(trig_m)*ph_sp*sf_m*sf_m;
                  saw_aa=2.0*ph_s-1.0-blep_nat+sync_corr;
-                 shaped=(1.0-%sh)*saw_aa+%sh*sin(ma.PI*saw_aa);
+                 shaped=(1.0-%{sh})*saw_aa+%{sh}*sin(ma.PI*saw_aa);
                }"
               {:fm fm :fs fs :sh sh})]
     (output :out out)))

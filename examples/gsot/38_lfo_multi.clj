@@ -81,25 +81,25 @@
   (let [x        (audio-in)
         triangle (sub (const 1.0)
                       (abs (sub (mul x (const 2.0)) (const 1.0))))
-        trapezoid (faust "select2(%x >= 0.75, select2(%x >= 0.5, select2(%x >= 0.25, 1.0, %x / 0.25), (0.75 - %x) / (0.75 - 0.5)), 0.0)"
+        trapezoid (faust "select2(%{x} >= 0.75, select2(%{x} >= 0.5, select2(%{x} >= 0.25, 1.0, %{x} / 0.25), (0.75 - %{x}) / (0.75 - 0.5)), 0.0)"
                          {:x x})
-        kink     (faust "select2(%x >= 0.67, %x / max(0.67, 0.0001) * 0.5, 0.5 + (%x - 0.67) / max(1.0 - 0.67, 0.0001) * 0.5)"
+        kink     (faust "select2(%{x} >= 0.67, %{x} / max(0.67, 0.0001) * 0.5, 0.5 + (%{x} - 0.67) / max(1.0 - 0.67, 0.0001) * 0.5)"
                         {:x x})
-        lfo      (faust "0.5*(1.0-cos(2.0*ma.PI*%x))"
+        lfo      (faust "0.5*(1.0-cos(2.0*ma.PI*%{x}))"
                         {:x x})
-        pow      (faust "pow(max(0.0, %x), 2.0)"
+        pow      (faust "pow(max(0.0, %{x}), 2.0)"
                         {:x x})
-        arc      (faust "sqrt(max(0.0, %x * (2.0 - %x)))"
+        arc      (faust "sqrt(max(0.0, %{x} * (2.0 - %{x})))"
                         {:x x})
         x2       (mul x x)
         x3       (mul x2 x)
         cubic    (sub (mul (const 3.0) x2) (mul (const 2.0) x3))
-        logistic (faust "1.0 / (1.0 + exp(-10.0 * (%x - 0.5)))"
+        logistic (faust "1.0 / (1.0 + exp(-10.0 * (%{x} - 0.5)))"
                         {:x x})
-        ease-exp (faust "(exp(3.0 * %x) - 1.0) / (exp(3.0) - 1.0)"
+        ease-exp (faust "(exp(3.0 * %{x}) - 1.0) / (exp(3.0) - 1.0)"
                         {:x x})
         welch    (mul (mul (const 4.0) x) (sub (const 1.0) x))
-        tukey    (faust "select2(%x >= (1.0 - 0.5/2.0), select2(%x >= (0.5/2.0), 1.0, 0.5*(1.0-cos(2.0*ma.PI*%x/max(0.5,0.0001)))), 0.5*(1.0-cos(2.0*ma.PI*(1.0-%x)/max(0.5,0.0001))))"
+        tukey    (faust "select2(%{x} >= (1.0 - 0.5/2.0), select2(%{x} >= (0.5/2.0), 1.0, 0.5*(1.0-cos(2.0*ma.PI*%{x}/max(0.5,0.0001)))), 0.5*(1.0-cos(2.0*ma.PI*(1.0-%{x})/max(0.5,0.0001))))"
                         {:x x})]
     (output :triangle  triangle)
     (output :trapezoid trapezoid)

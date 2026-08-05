@@ -92,16 +92,16 @@
         beats   (param :beats)
         steps   (param :steps)
         ; Step counter 0 → steps-1; advances by 1 on each trigger
-        counter (faust "(select2(%tr>0.5,_,float(int(_+1.0)%max(1,int(%ns))))~_)"
+        counter (faust "(select2(%{tr}>0.5,_,float(int(_+1.0)%max(1,int(%{ns}))))~_)"
                        {:tr trig :ns steps})
         ; Digitized ratio: floor value increments N times per K-step cycle
-        cur-f   (faust "floor(%ct*%bt/max(1.0,%ns))"
+        cur-f   (faust "floor(%{ct}*%{bt}/max(1.0,%{ns}))"
                        {:ct counter :bt beats :ns steps})
         ; Gate: floor incremented (Euclidean beat) OR counter wrapped (step 0)
-        gate    (faust "max(%cf>%cf@1,%ct<%ct@1)"
+        gate    (faust "max(%{cf}>%{cf}@1,%{ct}<%{ct}@1)"
                        {:cf cur-f :ct counter})
         ; Normalized phase for sync and visualization
-        phase   (faust "%ct/max(1.0,%ns)"
+        phase   (faust "%{ct}/max(1.0,%{ns})"
                        {:ct counter :ns steps})]
     (output :gate gate)
     (output :phase phase)))

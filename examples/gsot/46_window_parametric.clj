@@ -71,25 +71,25 @@
         sig  (param :sigma)
         pow  (param :power)
         ; shared: 1-shape = edge-region size (for tukey / plancktaper / trapezoid)
-        eps  (faust "1.0 - %sh" {:sh shp})
-        gate (faust "float(%tt >= %ep)" {:tt t :ep eps})
+        eps  (faust "1.0 - %{sh}" {:sh shp})
+        gate (faust "float(%{tt} >= %{ep})" {:tt t :ep eps})
         ; trapezoid: linear ramp in edge region, flat at plateau
-        trap (faust "select2(%gg>0.5,%tt/max(%ep,0.0001),1.0)"
+        trap (faust "select2(%{gg}>0.5,%{tt}/max(%{ep},0.0001),1.0)"
                     {:gg gate :tt t :ep eps})
         ; tukey: cosine taper in edge region, flat at plateau
-        tuky (faust "select2(%gg>0.5,0.5*(1.0-cos(ma.PI*%tt/max(%ep,0.0001))),1.0)"
+        tuky (faust "select2(%{gg}>0.5,0.5*(1.0-cos(ma.PI*%{tt}/max(%{ep},0.0001))),1.0)"
                     {:gg gate :tt t :ep eps})
         ; plancktaper: C∞ taper — exp formula, both denominators clamped
-        plnk (faust "select2(%gg>0.5,1.0/(1.0+exp(%ep/max(%tt,0.0001)+%ep/min(%tt-%ep,-0.0001))),1.0)"
+        plnk (faust "select2(%{gg}>0.5,1.0/(1.0+exp(%{ep}/max(%{tt},0.0001)+%{ep}/min(%{tt}-%{ep},-0.0001))),1.0)"
                     {:gg gate :tt t :ep eps})
         ; gauss: generalized Gaussian, σ and power exposed as params
         ; note: write (0.0 - pow(...)) not -pow(...) — Faust rejects unary minus before POWFUN
-        gaus (faust "exp(0.0 - pow(max(0.0,(1.0-%tt)/max(%sg,0.0001)),%pw))"
+        gaus (faust "exp(0.0 - pow(max(0.0,(1.0-%{tt})/max(%{sg},0.0001)),%{pw}))"
                     {:tt t :sg sig :pw pow})
         ; raisedcosine: cosine taper with shape as rolloff fraction (complement of tukey)
         ; taper at t < shape; plateau at t ≥ shape
-        rcgx (faust "float(%tt >= %sh)" {:tt t :sh shp})
-        rcos (faust "select2(%gg>0.5,0.5*(1.0-cos(ma.PI*%tt/max(%sh,0.0001))),1.0)"
+        rcgx (faust "float(%{tt} >= %{sh})" {:tt t :sh shp})
+        rcos (faust "select2(%{gg}>0.5,0.5*(1.0-cos(ma.PI*%{tt}/max(%{sh},0.0001))),1.0)"
                     {:gg rcgx :tt t :sh shp})]
     (output :trapezoid    trap)
     (output :tukey        tuky)

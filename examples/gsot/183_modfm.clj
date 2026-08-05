@@ -128,7 +128,7 @@
         fm  (param :fm)
         ix  (param :ix)
         md  (param :md)
-        mo  (faust "asin(os.osc(%fm))/(ma.PI/2.0)" {:fm fm})
-        out (faust "sin(2.0*ma.PI*os.phasor(1,%fc+(1.0-%md)*%ix*%fm*%mo)+%md*%ix*%mo)"
+        mo  (faust "asin(os.osc(%{fm}))/(ma.PI/2.0)" {:fm fm})
+        out (faust "sin(2.0*ma.PI*os.phasor(1,%{fc}+(1.0-%{md})*%{ix}*%{fm}*%{mo})+%{md}*%{ix}*%{mo})"
                    {:fc fc :fm fm :ix ix :md md :mo mo})]
     (output :out out)))

@@ -50,14 +50,14 @@
 (defpatch! bit-unpack8
   {}
   (let [in (audio-in)
-        b0 (faust "float(int(%in)&1)"      {:in in})
-        b1 (faust "float((int(%in)>>1)&1)" {:in in})
-        b2 (faust "float((int(%in)>>2)&1)" {:in in})
-        b3 (faust "float((int(%in)>>3)&1)" {:in in})
-        b4 (faust "float((int(%in)>>4)&1)" {:in in})
-        b5 (faust "float((int(%in)>>5)&1)" {:in in})
-        b6 (faust "float((int(%in)>>6)&1)" {:in in})
-        b7 (faust "float((int(%in)>>7)&1)" {:in in})]
+        b0 (faust "float(int(%{in})&1)"      {:in in})
+        b1 (faust "float((int(%{in})>>1)&1)" {:in in})
+        b2 (faust "float((int(%{in})>>2)&1)" {:in in})
+        b3 (faust "float((int(%{in})>>3)&1)" {:in in})
+        b4 (faust "float((int(%{in})>>4)&1)" {:in in})
+        b5 (faust "float((int(%{in})>>5)&1)" {:in in})
+        b6 (faust "float((int(%{in})>>6)&1)" {:in in})
+        b7 (faust "float((int(%{in})>>7)&1)" {:in in})]
     (output :b0 b0)
     (output :b1 b1)
     (output :b2 b2)

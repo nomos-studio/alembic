@@ -53,6 +53,6 @@
   (let [trig  (audio-in)
         cv-in (audio-in)
         s0    (track-hold cv-in trig)
-        s1    (track-hold (faust "%pv@1" {:pv s0}) trig)]
+        s1    (track-hold (faust "%{pv}@1" {:pv s0}) trig)]
     (output :s0 s0)
     (output :s1 s1)))

@@ -75,11 +75,11 @@
         step     (param :step)
         lo       (param :lo)
         hi       (param :hi)
-        rand-inc (faust "%st*no.noise" {:st step})
+        rand-inc (faust "%{st}*no.noise" {:st step})
         inc-held (track-hold rand-inc trig)
         ; Fold embedded in feedback: _ = previous folded position
         ; raw = _+inc on trigger, _ on hold
         ; fold maps raw to [lo,hi] via triangular wave
-        position (faust "((%lo+abs(ma.decimal((select2(%tr>0.5,_,_+%ih)-%lo)/(2.0*max(%hi-%lo,0.0001)))*(2.0*max(%hi-%lo,0.0001))-(%hi-%lo)))~_)"
+        position (faust "((%{lo}+abs(ma.decimal((select2(%{tr}>0.5,_,_+%{ih})-%{lo})/(2.0*max(%{hi}-%{lo},0.0001)))*(2.0*max(%{hi}-%{lo},0.0001))-(%{hi}-%{lo})))~_)"
                         {:lo lo :hi hi :tr trig :ih inc-held})]
     (output position)))

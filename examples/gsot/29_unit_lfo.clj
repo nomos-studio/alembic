@@ -29,6 +29,6 @@
 (defpatch! unit-lfo
   {}
   (let [x   (audio-in)
-        c   (faust "cos(2.0*ma.PI*%x)" {:x x})
+        c   (faust "cos(2.0*ma.PI*%{x})" {:x x})
         out (mul (sub (const 1.0) c) (const 0.5))]
     (output out)))

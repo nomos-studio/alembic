@@ -83,28 +83,28 @@
   {}
   (let [t  (audio-in)
         ; shared cosine harmonics (computed once, reused across all windows)
-        c1 (faust "cos(ma.PI*%tt)"       {:tt t})
-        c2 (faust "cos(2.0*ma.PI*%tt)"   {:tt t})
-        c3 (faust "cos(3.0*ma.PI*%tt)"   {:tt t})
-        c4 (faust "cos(4.0*ma.PI*%tt)"   {:tt t})
+        c1 (faust "cos(ma.PI*%{tt})"       {:tt t})
+        c2 (faust "cos(2.0*ma.PI*%{tt})"   {:tt t})
+        c3 (faust "cos(3.0*ma.PI*%{tt})"   {:tt t})
+        c4 (faust "cos(4.0*ma.PI*%{tt})"   {:tt t})
         ; cosine-sum windows
-        hann    (faust "0.5 - 0.5*%c"     {:c c1})
-        hamming (faust "0.54 - 0.46*%c"   {:c c1})
-        blackman (faust "0.42 - 0.5*%c1 + 0.08*%c2" {:c1 c1 :c2 c2})
-        bh       (faust "0.35875 - 0.48829*%c1 + 0.14128*%c2 - 0.01168*%c3"
+        hann    (faust "0.5 - 0.5*%{c}"     {:c c1})
+        hamming (faust "0.54 - 0.46*%{c}"   {:c c1})
+        blackman (faust "0.42 - 0.5*%{c1} + 0.08*%{c2}" {:c1 c1 :c2 c2})
+        bh       (faust "0.35875 - 0.48829*%{c1} + 0.14128*%{c2} - 0.01168*%{c3}"
                         {:c1 c1 :c2 c2 :c3 c3})
-        bn       (faust "0.3635819 - 0.4891775*%c1 + 0.1365995*%c2 - 0.0106411*%c3"
+        bn       (faust "0.3635819 - 0.4891775*%{c1} + 0.1365995*%{c2} - 0.0106411*%{c3}"
                         {:c1 c1 :c2 c2 :c3 c3})
-        nuttall  (faust "0.355768 - 0.487396*%c1 + 0.144232*%c2 - 0.012604*%c3"
+        nuttall  (faust "0.355768 - 0.487396*%{c1} + 0.144232*%{c2} - 0.012604*%{c3}"
                         {:c1 c1 :c2 c2 :c3 c3})
-        flattop  (faust "(1.0 - 1.93*%c1 + 1.29*%c2 - 0.388*%c3 + 0.028*%c4) / 4.636"
+        flattop  (faust "(1.0 - 1.93*%{c1} + 1.29*%{c2} - 0.388*%{c3} + 0.028*%{c4}) / 4.636"
                         {:c1 c1 :c2 c2 :c3 c3 :c4 c4})
         ; welch: t*(2-t) = 1-(1-t)^2 in window (triangle) coordinates
-        welch    (faust "%tt*(2.0-%tt)" {:tt t})
+        welch    (faust "%{tt}*(2.0-%{tt})" {:tt t})
         ; parzen (de la Vallée-Poussin): piecewise cubic
         ; center half (t >= 0.5, u=1-t <= 0.5): 1 - 6u^2 + 6u^3  where u=1-t
         ; edge  half (t  < 0.5, u > 0.5):       2*t^3             (= 2*(1-u)^3)
-        parzen   (faust "select2(float(%tt>=0.5)>0.5, 2.0*%tt*%tt*%tt, 1.0-6.0*(1.0-%tt)*(1.0-%tt)+6.0*(1.0-%tt)*(1.0-%tt)*(1.0-%tt))"
+        parzen   (faust "select2(float(%{tt}>=0.5)>0.5, 2.0*%{tt}*%{tt}*%{tt}, 1.0-6.0*(1.0-%{tt})*(1.0-%{tt})+6.0*(1.0-%{tt})*(1.0-%{tt})*(1.0-%{tt}))"
                         {:tt t})]
     (output :hann            hann)
     (output :hamming         hamming)

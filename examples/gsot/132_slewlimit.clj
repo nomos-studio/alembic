@@ -75,5 +75,5 @@
   {:params {:slew {:range [0.0 1.0] :default 0.01}}}
   (let [in   (audio-in)
         slew (param :slew)
-        out  (faust "(_+max(-%sl,min(%sl,%in-_)))~_" {:sl slew :in in})]
+        out  (faust "(_+max(-%{sl},min(%{sl},%{in}-_)))~_" {:sl slew :in in})]
     (output :out out)))

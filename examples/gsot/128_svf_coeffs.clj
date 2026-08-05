@@ -77,9 +77,9 @@
             :q  {:range [0.1 20.0]    :default 0.707}}}
   (let [hz  (param :hz)
         q   (param :q)
-        gv  (faust "tan(ma.PI*%hz/ma.SR)" {:hz hz})
-        kk  (faust "1.0/%qq" {:qq q})
-        dn  (faust "1.0+%kk*%gv+%gv*%gv" {:kk kk :gv gv})]
+        gv  (faust "tan(ma.PI*%{hz}/ma.SR)" {:hz hz})
+        kk  (faust "1.0/%{qq}" {:qq q})
+        dn  (faust "1.0+%{kk}*%{gv}+%{gv}*%{gv}" {:kk kk :gv gv})]
     (output :out0 gv)
     (output :out1 kk)
     (output :out2 dn)))

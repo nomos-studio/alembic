@@ -24,5 +24,5 @@
 (defpatch! unit-arc
   {}
   (let [x   (audio-in)
-        out (faust "sqrt(max(0.0, %x * (2.0 - %x)))" {:x x})]
+        out (faust "sqrt(max(0.0, %{x} * (2.0 - %{x})))" {:x x})]
     (output out)))

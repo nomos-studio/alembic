@@ -100,16 +100,16 @@
             :dt {:range [1.0e-6 1.0e-3] :default 1.0e-4}}}
   (let [fc  (param :fc)
         dt  (param :dt)
-        ph  (faust "os.phasor(1,%fc)" {:fc fc})
+        ph  (faust "os.phasor(1,%{fc})" {:fc fc})
         out (faust
               "trilinear
                with {
                  sg=10.0; rh=28.0; bt=8.0/3.0;
                  imp=float(1-1');
                  lorenz_step(lx,ly,lz) = (
-                   lx+%dt*sg*(ly-lx)+imp,
-                   ly+%dt*(lx*(rh-lz)-ly),
-                   lz+%dt*(lx*ly-bt*lz)+25.0*imp
+                   lx+%{dt}*sg*(ly-lx)+imp,
+                   ly+%{dt}*(lx*(rh-lz)-ly),
+                   lz+%{dt}*(lx*ly-bt*lz)+25.0*imp
                  );
                  lorenz = lorenz_step~si.bus(3);
                  wp_a = max(0.0,min(1.0,((lorenz:(_,!,!))+25.0)/50.0));
@@ -121,7 +121,7 @@
                  h(k)=sin(ang*float(k+1)+ph_off)/float(k+1)*float(k<=yt);
                  tbl_init=0.5*(h(0)+h(1)+h(2)+h(3));
                  tbl(i)=rdtable(N,tbl_init,max(0,min(N-1,i)));
-                 xfull=%ph*float(W); yfull=wp_a*float(H); zfull=zp_a*float(D);
+                 xfull=%{ph}*float(W); yfull=wp_a*float(H); zfull=zp_a*float(D);
                  xr=int(xfull); yr=int(yfull); zr=int(zfull);
                  x0=xr&(W-1); x1=(x0+1)&(W-1);
                  y0=yr%H; y1=(y0+1)%H;

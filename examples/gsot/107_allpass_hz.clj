@@ -84,8 +84,8 @@
   {:params {:hz {:range [1.0 20000.0] :default 1000.0}}}
   (let [in     (audio-in)
         freq   (param :hz)
-        tan-w  (faust "tan(ma.PI*%hz/ma.SR)" {:hz freq})
-        coeff  (faust "(%tw-1.0)/(%tw+1.0)" {:tw tan-w})
-        x-del  (faust "%in@1" {:in in})
-        out    (faust "(%cf*%in+%xd-_*%cf)~_" {:cf coeff :in in :xd x-del})]
+        tan-w  (faust "tan(ma.PI*%{hz}/ma.SR)" {:hz freq})
+        coeff  (faust "(%{tw}-1.0)/(%{tw}+1.0)" {:tw tan-w})
+        x-del  (faust "%{in}@1" {:in in})
+        out    (faust "(%{cf}*%{in}+%{xd}-_*%{cf})~_" {:cf coeff :in in :xd x-del})]
     (output :out out)))

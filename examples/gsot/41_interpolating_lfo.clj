@@ -97,11 +97,11 @@
   (let [ramp  (phasor (param :hz))
         skew  (param :skew)
         ; skewed triangle: rises 0→1 in first :skew fraction, falls 1→0 in remainder
-        tri   (faust "select2(%phase>=%skew,%phase/max(%skew,0.0001),(1.0-%phase)/max(1.0-%skew,0.0001))"
+        tri   (faust "select2(%{phase}>=%{skew},%{phase}/max(%{skew},0.0001),(1.0-%{phase})/max(1.0-%{skew},0.0001))"
                      {:phase ramp :skew skew})
         ; detect rising half (positive delta); falling half uses inverted ramp
-        gate  (faust "float((%tri-%tri')>0.0)" {:tri tri})
-        r     (faust "select2(%gate>0.5,1.0-%tri,%tri)" {:gate gate :tri tri})
+        gate  (faust "float((%{tri}-%{tri}')>0.0)" {:tri tri})
+        r     (faust "select2(%{gate}>0.5,1.0-%{tri},%{tri})" {:gate gate :tri tri})
         ; two triggers per cycle: one at skew (kink), one at wrap
         cmp   (comparator (abs (delta r)) (const 0.5))
         trig  (:out cmp)
@@ -109,20 +109,20 @@
         noise (faust "abs(no.noise)")
         to    (track-hold noise trig)
         ; from: S&H of previous target (to') on trigger — no forward reference needed
-        from  (faust "(select2(%trg>0.5,_,%tgt')~_)" {:trg trig :tgt to})
+        from  (faust "(select2(%{trg}>0.5,_,%{tgt}')~_)" {:trg trig :tgt to})
         ; symmetry: when heading down (from>=to) AND sym>0.5, flip shape factor
-        fal   (faust "float(%frm>=%tgt)" {:frm from :tgt to})
+        fal   (faust "float(%{frm}>=%{tgt})" {:frm from :tgt to})
         sym   (param :symmetry)
         shp   (param :shape)
-        sf    (faust "select2(float(%fal>0.5)*float(%sym>0.5)>0.5,%shp,1.0-%shp)"
+        sf    (faust "select2(float(%{fal}>0.5)*float(%{sym}>0.5)>0.5,%{shp},1.0-%{shp})"
                      {:fal fal :sym sym :shp shp})
         ; arc-blend: linear interpolation with arc(r) mixed in by sf
-        arc   (faust "sqrt(max(0.0,%rr*(2.0-%rr)))" {:rr r})
-        bld   (faust "%rr+%sf*(%arc-%rr)" {:rr r :sf sf :arc arc})
+        arc   (faust "sqrt(max(0.0,%{rr}*(2.0-%{rr})))" {:rr r})
+        bld   (faust "%{rr}+%{sf}*(%{arc}-%{rr})" {:rr r :sf sf :arc arc})
         ; smooth interpolation: from → to over the arc-blend ramp
-        out   (faust "%frm+%bld*(%tgt-%frm)" {:frm from :bld bld :tgt to})
+        out   (faust "%{frm}+%{bld}*(%{tgt}-%{frm})" {:frm from :bld bld :tgt to})
         ; optional bipolar scaling: [0,1] → [-1,1] when bp=1
         bp    (param :bipolar)
-        scl   (faust "%out*(1.0+%bp)-%bp" {:out out :bp bp})]
+        scl   (faust "%{out}*(1.0+%{bp})-%{bp}" {:out out :bp bp})]
     (output scl)
     (output :ramp ramp)))

@@ -101,10 +101,10 @@
         rt  (param :rt)
         ix  (param :ix)
         md  (param :md)
-        fm  (faust "%fc*%rt" {:fc fc :rt rt})
-        is  (faust "max(0.0,(ma.SR/2.0-%fc)/(%fc*%rt)-1.0)" {:fc fc :rt rt})
-        ic  (faust "min(%ix,%is)" {:ix ix :is is})
-        mo  (faust "os.osc(%fm)" {:fm fm})
-        out (faust "sin(2.0*ma.PI*os.phasor(1,%fc+(1.0-%md)*%ic*%fm*%mo)+%md*%ic*%mo)"
+        fm  (faust "%{fc}*%{rt}" {:fc fc :rt rt})
+        is  (faust "max(0.0,(ma.SR/2.0-%{fc})/(%{fc}*%{rt})-1.0)" {:fc fc :rt rt})
+        ic  (faust "min(%{ix},%{is})" {:ix ix :is is})
+        mo  (faust "os.osc(%{fm})" {:fm fm})
+        out (faust "sin(2.0*ma.PI*os.phasor(1,%{fc}+(1.0-%{md})*%{ic}*%{fm}*%{mo})+%{md}*%{ic}*%{mo})"
                    {:fc fc :fm fm :ic ic :md md :mo mo})]
     (output :out out)))

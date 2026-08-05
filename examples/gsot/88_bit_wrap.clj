@@ -51,6 +51,6 @@
   {:params {:amount {:range [0.0 7.0] :default 1.0}}}
   (let [in  (audio-in)
         am  (param :amount)
-        out (faust "float(((int(%in)<<int(%am))|(int(%in)>>(8-int(%am))))&255)"
+        out (faust "float(((int(%{in})<<int(%{am}))|(int(%{in})>>(8-int(%{am}))))&255)"
                    {:in in :am am})]
     (output :out out)))

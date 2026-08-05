@@ -66,8 +66,8 @@
   (let [in  (audio-in)
         hz  (param :hz)
         gn  (param :gn)
-        dl  (faust "int(max(1.0,ma.SR/%hz))" {:hz hz})
-        dl1 (faust "max(0,%dl-1)" {:dl dl})
-        out (faust "stri_loop ~ _\n  with { stri_loop(s) = %in-%gn*de.delay(int(ma.SR*5.0),%d1,0.5*(s+s@1)); }"
+        dl  (faust "int(max(1.0,ma.SR/%{hz}))" {:hz hz})
+        dl1 (faust "max(0,%{dl}-1)" {:dl dl})
+        out (faust "stri_loop ~ _\n  with { stri_loop(s) = %{in}-%{gn}*de.delay(int(ma.SR*5.0),%{d1},0.5*(s+s@1)); }"
                    {:in in :gn gn :d1 dl1})]
     (output :out out)))

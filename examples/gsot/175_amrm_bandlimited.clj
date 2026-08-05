@@ -96,7 +96,7 @@
   (let [in  (audio-in)
         fc  (param :fc)
         bs  (param :bs)
-        lp  (faust "%in : fi.lowpass(1,max(20.0,ma.SR/2.0-%fc))" {:in in :fc fc})
-        os  (faust "os.osc(%fc)" {:fc fc})
-        out (faust "0.5*%lp*(%bs+%os)" {:lp lp :bs bs :os os})]
+        lp  (faust "%{in} : fi.lowpass(1,max(20.0,ma.SR/2.0-%{fc}))" {:in in :fc fc})
+        os  (faust "os.osc(%{fc})" {:fc fc})
+        out (faust "0.5*%{lp}*(%{bs}+%{os})" {:lp lp :bs bs :os os})]
     (output :out out)))

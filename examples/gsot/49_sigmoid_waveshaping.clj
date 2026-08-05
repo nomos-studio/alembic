@@ -84,16 +84,16 @@
   {:params {:drive {:range [1.0 16.0] :default 4.0}}}
   (let [x    (audio-in)
         k    (param :drive)
-        kx   (faust "%kk*%xx" {:kk k :xx x})
+        kx   (faust "%{kk}*%{xx}" {:kk k :xx x})
         ; tanh: C∞ soft clip via 1-2/(1+exp(2x)) — Faust has no tanh primitive
-        e2kx     (faust "exp(2.0*%kx)"                 {:kx kx})
-        tanh-out (faust "1.0-2.0/(1.0+%ex)"            {:ex e2kx})
+        e2kx     (faust "exp(2.0*%{kx})"                 {:kx kx})
+        tanh-out (faust "1.0-2.0/(1.0+%{ex})"            {:ex e2kx})
         ; Padé rational: kx/(1+|kx|) — algebraic, same odd symmetry
-        pade-out (faust "%kx/(1.0+abs(%kx))"           {:kx kx})
+        pade-out (faust "%{kx}/(1.0+abs(%{kx}))"           {:kx kx})
         ; sqrt algebraic: kx/sqrt(1+(kx)²) — slower knee than tanh
-        sqrt-out (faust "%kx/sqrt(1.0+%kx*%kx)"       {:kx kx})
+        sqrt-out (faust "%{kx}/sqrt(1.0+%{kx}*%{kx})"       {:kx kx})
         ; hard clip: limiting case, brick-wall at ±1
-        hard-out (faust "max(-1.0,min(1.0,%kx))"       {:kx kx})]
+        hard-out (faust "max(-1.0,min(1.0,%{kx}))"       {:kx kx})]
     (output :tanh tanh-out)
     (output :pade pade-out)
     (output :sqrt sqrt-out)

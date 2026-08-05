@@ -117,9 +117,9 @@
         ix  (param :ix)
         dr  (param :dr)
         md  (param :md)
-        fm  (faust "%fc*%rt" {:fc fc :rt rt})
-        mo  (faust "os.osc(%fm)" {:fm fm})
-        ws  (faust "ma.tanh(%dr*%mo)/ma.tanh(%dr)" {:dr dr :mo mo})
-        out (faust "sin(2.0*ma.PI*os.phasor(1,%fc+(1.0-%md)*%ix*%fm*%ws)+%md*%ix*%ws)"
+        fm  (faust "%{fc}*%{rt}" {:fc fc :rt rt})
+        mo  (faust "os.osc(%{fm})" {:fm fm})
+        ws  (faust "ma.tanh(%{dr}*%{mo})/ma.tanh(%{dr})" {:dr dr :mo mo})
+        out (faust "sin(2.0*ma.PI*os.phasor(1,%{fc}+(1.0-%{md})*%{ix}*%{fm}*%{ws})+%{md}*%{ix}*%{ws})"
                    {:fc fc :fm fm :ix ix :md md :ws ws})]
     (output :out out)))

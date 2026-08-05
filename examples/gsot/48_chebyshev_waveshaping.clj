@@ -70,12 +70,12 @@
   (let [x  (audio-in)
         ; Recurrence: T_{n+1}(x) = 2x·Tn(x) − T_{n-1}(x)
         ; T0 = 1 (inlined), T1 = x (audio-in)
-        t2 (faust "2.0*%xx*%xx-1.0"    {:xx x})
-        t3 (faust "2.0*%xx*%t2-%xx"    {:xx x :t2 t2})
-        t4 (faust "2.0*%xx*%t3-%t2"    {:xx x :t3 t3 :t2 t2})
-        t5 (faust "2.0*%xx*%t4-%t3"    {:xx x :t4 t4 :t3 t3})
-        t6 (faust "2.0*%xx*%t5-%t4"    {:xx x :t5 t5 :t4 t4})
-        t7 (faust "2.0*%xx*%t6-%t5"    {:xx x :t6 t6 :t5 t5})]
+        t2 (faust "2.0*%{xx}*%{xx}-1.0"    {:xx x})
+        t3 (faust "2.0*%{xx}*%{t2}-%{xx}"    {:xx x :t2 t2})
+        t4 (faust "2.0*%{xx}*%{t3}-%{t2}"    {:xx x :t3 t3 :t2 t2})
+        t5 (faust "2.0*%{xx}*%{t4}-%{t3}"    {:xx x :t4 t4 :t3 t3})
+        t6 (faust "2.0*%{xx}*%{t5}-%{t4}"    {:xx x :t5 t5 :t4 t4})
+        t7 (faust "2.0*%{xx}*%{t6}-%{t5}"    {:xx x :t6 t6 :t5 t5})]
     (output :t1 x)
     (output :t2 t2)
     (output :t3 t3)

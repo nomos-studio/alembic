@@ -98,14 +98,14 @@
         beats   (param :beats)
         smooth  (param :smooth)
         ; Map audio [-1,1) to continuous degree [0,N)
-        degree  (faust "(%in+1.0)*%bt/2.0" {:in audio :bt beats})
+        degree  (faust "(%{in}+1.0)*%{bt}/2.0" {:in audio :bt beats})
         ; Integer degree 0..N-1 and fractional part
-        deg-i   (faust "floor(%dg)" {:dg degree})
-        frac    (faust "%dg-%di" {:dg degree :di deg-i})
+        deg-i   (faust "floor(%{dg})" {:dg degree})
+        frac    (faust "%{dg}-%{di}" {:dg degree :di deg-i})
         ; Euclidean semitone level at current degree and next degree
-        semi-q  (faust "floor(12.0*%di/max(1.0,%bt))" {:di deg-i :bt beats})
-        semi-nx (faust "floor(12.0*(%di+1.0)/max(1.0,%bt))" {:di deg-i :bt beats})
+        semi-q  (faust "floor(12.0*%{di}/max(1.0,%{bt}))" {:di deg-i :bt beats})
+        semi-nx (faust "floor(12.0*(%{di}+1.0)/max(1.0,%{bt}))" {:di deg-i :bt beats})
         ; Smooth-step blend between adjacent Euclidean levels; normalize to [-1,1)
-        out     (faust "(%sq+%sm*%fr*(%sn-%sq))/6.0-1.0"
+        out     (faust "(%{sq}+%{sm}*%{fr}*(%{sn}-%{sq}))/6.0-1.0"
                        {:sq semi-q :sm smooth :fr frac :sn semi-nx})]
     (output :out out)))

@@ -163,9 +163,9 @@
         q    (param :q)
         tp   (param :type)
         ; Coefficients (see ex.128 svf-coeffs)
-        gv   (faust "tan(ma.PI*%hz/ma.SR)" {:hz hz})
-        kk   (faust "1.0/%qq" {:qq q})
-        dn   (faust "1.0+%kk*%gv+%gv*%gv" {:kk kk :gv gv})
+        gv   (faust "tan(ma.PI*%{hz}/ma.SR)" {:hz hz})
+        kk   (faust "1.0/%{qq}" {:qq q})
+        dn   (faust "1.0+%{kk}*%{gv}+%{gv}*%{gv}" {:kk kk :gv gv})
         ; SVF kernel — two coupled ZDF integrators via Faust tuple recursion.
         ;
         ; Mutual dependency s1↔s2 CANNOT be expressed with separate ~_ nodes
@@ -191,17 +191,17 @@
         ; n0, n_gv, n_kk, n_dn are free variables from the outer function scope.
         ; Produces a 3-channel signal: (hp, bp, lp).
         svf  (faust
-               "svf_kern ~ (_, _)\n  with {\n    svf_kern(s1p, s2p) = hp, bp, lp, s1n, s2n\n      with {\n        hp = (%in-%kk*s1p-s2p)/%dn;\n        bp = %gv*hp+s1p;\n        lp = %gv*bp+s2p;\n        s1n = 2.0*%gv*hp+s1p;\n        s2n = 2.0*%gv*bp+s2p;\n      };\n  }"
+               "svf_kern ~ (_, _)\n  with {\n    svf_kern(s1p, s2p) = hp, bp, lp, s1n, s2n\n      with {\n        hp = (%{in}-%{kk}*s1p-s2p)/%{dn};\n        bp = %{gv}*hp+s1p;\n        lp = %{gv}*bp+s2p;\n        s1n = 2.0*%{gv}*hp+s1p;\n        s2n = 2.0*%{gv}*bp+s2p;\n      };\n  }"
                {:gv gv :in in :kk kk :dn dn})
         ; Extract individual channels from the 5-channel svf node.
         ; Faust's ~ keeps ALL outputs as primary AND routes the last K through
         ; feedback. svf_kern ~ (_, _) produces 5 channels:
         ;   ch0=hp, ch1=bp, ch2=lp, ch3=s1n, ch4=s2n (s1n/s2n also feed back)
         ; (_, !, !, !, !) selects ch0; (!, _, !, !, !) selects ch1; etc.
-        hp   (faust "%sv:(_, !, !, !, !)" {:sv svf})
-        bp   (faust "%sv:(!, _, !, !, !)" {:sv svf})
-        lp   (faust "%sv:(!, !, _, !, !)" {:sv svf})
+        hp   (faust "%{sv}:(_, !, !, !, !)" {:sv svf})
+        bp   (faust "%{sv}:(!, _, !, !, !)" {:sv svf})
+        lp   (faust "%{sv}:(!, !, _, !, !)" {:sv svf})
         ; Type selector: 0=LP, 1=BP, 2=HP via nested select2
-        out  (faust "select2(%tp<1.5,select2(%tp<0.5,%lp,%bp),%hp)"
+        out  (faust "select2(%{tp}<1.5,select2(%{tp}<0.5,%{lp},%{bp}),%{hp})"
                {:tp tp :lp lp :bp bp :hp hp})]
     (output :out out)))

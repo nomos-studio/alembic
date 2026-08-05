@@ -130,14 +130,14 @@
         out (faust
               "terrain
                with {
-                 cx=0.5+0.5*cos(2.0*ma.PI*os.phasor(1,%fc));
-                 cy=0.5+0.5*cos(2.0*ma.PI*os.phasor(1,%fc*%rt)+2.0*ma.PI*%ph);
+                 cx=0.5+0.5*cos(2.0*ma.PI*os.phasor(1,%{fc}));
+                 cy=0.5+0.5*cos(2.0*ma.PI*os.phasor(1,%{fc}*%{rt})+2.0*ma.PI*%{ph});
                  ax=2.0*ma.PI*cx;
                  ay=2.0*ma.PI*cy;
-                 terrain=%w1*sin(ax)*sin(ay)
-                        +%w2*sin(ax)*sin(2.0*ay)
-                        +%w3*sin(2.0*ax)*sin(ay)
-                        +%w4*sin(2.0*ax)*sin(2.0*ay);
+                 terrain=%{w1}*sin(ax)*sin(ay)
+                        +%{w2}*sin(ax)*sin(2.0*ay)
+                        +%{w3}*sin(2.0*ax)*sin(ay)
+                        +%{w4}*sin(2.0*ax)*sin(2.0*ay);
                }"
               {:fc fc :rt rt :ph ph :w1 w1 :w2 w2 :w3 w3 :w4 w4})]
     (output :out out)))

@@ -110,13 +110,13 @@
         out (faust
               "0.25*(g0+g1+g2+g3)
                with {
-                 dc_g=max(0.001,%gd*%gr/1000.0);
-                 ph0=ma.frac(os.phasor(1,%gr)+0.0);
-                 ph1=ma.frac(os.phasor(1,%gr)+0.25);
-                 ph2=ma.frac(os.phasor(1,%gr)+0.5);
-                 ph3=ma.frac(os.phasor(1,%gr)+0.75);
+                 dc_g=max(0.001,%{gd}*%{gr}/1000.0);
+                 ph0=ma.frac(os.phasor(1,%{gr})+0.0);
+                 ph1=ma.frac(os.phasor(1,%{gr})+0.25);
+                 ph2=ma.frac(os.phasor(1,%{gr})+0.5);
+                 ph3=ma.frac(os.phasor(1,%{gr})+0.75);
                  win(ph)=float(ph<dc_g)*0.5*(1.0-cos(2.0*ma.PI*ph/dc_g));
-                 src(ph)=sin(2.0*ma.PI*ma.frac(ph*%fc/max(%gr,1.0)));
+                 src(ph)=sin(2.0*ma.PI*ma.frac(ph*%{fc}/max(%{gr},1.0)));
                  g0=win(ph0)*src(ph0);
                  g1=win(ph1)*src(ph1);
                  g2=win(ph2)*src(ph2);

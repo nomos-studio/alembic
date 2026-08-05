@@ -86,6 +86,6 @@
         fc  (param :fc)
         dp  (param :dp)
         bs  (param :bs)
-        osc (faust "os.osc(%fc)" {:fc fc})
-        out (faust "%in*(%bs+%dp*%os)" {:in in :bs bs :dp dp :os osc})]
+        osc (faust "os.osc(%{fc})" {:fc fc})
+        out (faust "%{in}*(%{bs}+%{dp}*%{os})" {:in in :bs bs :dp dp :os osc})]
     (output :out out)))

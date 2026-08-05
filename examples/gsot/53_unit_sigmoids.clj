@@ -84,32 +84,32 @@
   {:params {:drive {:range [0.5 8.0] :default 2.0}}}
   (let [x    (audio-in)
         k    (param :drive)
-        bx   (faust "2.0*%xx-1.0" {:xx x})
-        u    (faust "%kk*%bx"     {:kk k :bx bx})
+        bx   (faust "2.0*%{xx}-1.0" {:xx x})
+        u    (faust "%{kk}*%{bx}"     {:kk k :bx bx})
         ; ── go.unit.logistic ────────────────────────────────────────────────
-        log-u  (faust "2.0/(1.0+exp(0.0-%uu))-1.0" {:uu u})
-        log-k  (faust "2.0/(1.0+exp(0.0-%kk))-1.0" {:kk k})
-        log-out (faust "(%fu+%fk)/(2.0*max(%fk,0.0001))" {:fu log-u :fk log-k})
+        log-u  (faust "2.0/(1.0+exp(0.0-%{uu}))-1.0" {:uu u})
+        log-k  (faust "2.0/(1.0+exp(0.0-%{kk}))-1.0" {:kk k})
+        log-out (faust "(%{fu}+%{fk})/(2.0*max(%{fk},0.0001))" {:fu log-u :fk log-k})
         ; ── go.unit.sigmoid2 (rational softsign) ────────────────────────────
         ; f(k) = k/(1+k) — closed form, k>0 guaranteed by drive range
-        sig2-u  (faust "%uu/(1.0+abs(%uu))" {:uu u})
-        sig2-k  (faust "%kk/(1.0+%kk)"      {:kk k})
-        sig2-out (faust "(%fu+%fk)/(2.0*max(%fk,0.0001))" {:fu sig2-u :fk sig2-k})
+        sig2-u  (faust "%{uu}/(1.0+abs(%{uu}))" {:uu u})
+        sig2-k  (faust "%{kk}/(1.0+%{kk})"      {:kk k})
+        sig2-out (faust "(%{fu}+%{fk})/(2.0*max(%{fk},0.0001))" {:fu sig2-u :fk sig2-k})
         ; ── go.unit.gundermann ──────────────────────────────────────────────
-        gude-u  (faust "(4.0/ma.PI)*atan(exp(%uu))-1.0" {:uu u})
-        gude-k  (faust "(4.0/ma.PI)*atan(exp(%kk))-1.0" {:kk k})
-        gude-out (faust "(%fu+%fk)/(2.0*max(%fk,0.0001))" {:fu gude-u :fk gude-k})
+        gude-u  (faust "(4.0/ma.PI)*atan(exp(%{uu}))-1.0" {:uu u})
+        gude-k  (faust "(4.0/ma.PI)*atan(exp(%{kk}))-1.0" {:kk k})
+        gude-out (faust "(%{fu}+%{fk})/(2.0*max(%{fk},0.0001))" {:fu gude-u :fk gude-k})
         ; ── go.unit.ata (atan) ───────────────────────────────────────────────
         ; f(k) = (2/π)*atan(k) — closed form
-        ata-u  (faust "(2.0/ma.PI)*atan(%uu)" {:uu u})
-        ata-k  (faust "(2.0/ma.PI)*atan(%kk)" {:kk k})
-        ata-out (faust "(%fu+%fk)/(2.0*max(%fk,0.0001))" {:fu ata-u :fk ata-k})
+        ata-u  (faust "(2.0/ma.PI)*atan(%{uu})" {:uu u})
+        ata-k  (faust "(2.0/ma.PI)*atan(%{kk})" {:kk k})
+        ata-out (faust "(%{fu}+%{fk})/(2.0*max(%{fk},0.0001))" {:fu ata-u :fk ata-k})
         ; ── go.unit.softclip ─────────────────────────────────────────────────
         ; f(k) = min(1, 1.5k-0.5k³) — equals 1 for k>=1
-        soft-u  (faust "select2(float(abs(%uu)>1.0)>0.5,1.5*%uu-0.5*%uu*%uu*%uu,max(-1.0,min(1.0,%uu)))"
+        soft-u  (faust "select2(float(abs(%{uu})>1.0)>0.5,1.5*%{uu}-0.5*%{uu}*%{uu}*%{uu},max(-1.0,min(1.0,%{uu})))"
                         {:uu u})
-        soft-k  (faust "min(1.0,1.5*%kk-0.5*%kk*%kk*%kk)" {:kk k})
-        soft-out (faust "(%fu+%fk)/(2.0*max(%fk,0.0001))" {:fu soft-u :fk soft-k})]
+        soft-k  (faust "min(1.0,1.5*%{kk}-0.5*%{kk}*%{kk}*%{kk})" {:kk k})
+        soft-out (faust "(%{fu}+%{fk})/(2.0*max(%{fk},0.0001))" {:fu soft-u :fk soft-k})]
     (output :logistic  log-out)
     (output :sigmoid2  sig2-out)
     (output :gundermann gude-out)

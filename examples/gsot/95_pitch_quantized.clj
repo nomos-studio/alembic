@@ -87,16 +87,16 @@
   (let [in       (audio-in)
         root     (param :root)
         ; Quantize float to nearest integer degree
-        quant    (faust "rint(%in)" {:in in})
+        quant    (faust "rint(%{in})" {:in in})
         ; Degree within one octave, with correct wrapping for negative inputs
-        deg-oc   (faust "float((int(%qu)%7+7)%7)" {:qu quant})
+        deg-oc   (faust "float((int(%{qu})%7+7)%7)" {:qu quant})
         ; Octave number (may be negative)
-        oct-n    (faust "floor(%qu/7.0)" {:qu quant})
+        oct-n    (faust "floor(%{qu}/7.0)" {:qu quant})
         ; Major scale step in semitones via select2 tree on degree 0-6
-        scale-st (faust "select2(%dg<4.0,select2(%dg<6.0,11.0,select2(%dg<5.0,9.0,7.0)),select2(%dg<2.0,select2(%dg<3.0,5.0,4.0),select2(%dg<1.0,2.0,0.0)))"
+        scale-st (faust "select2(%{dg}<4.0,select2(%{dg}<6.0,11.0,select2(%{dg}<5.0,9.0,7.0)),select2(%{dg}<2.0,select2(%{dg}<3.0,5.0,4.0),select2(%{dg}<1.0,2.0,0.0)))"
                         {:dg deg-oc})
         ; MIDI note = root + diatonic semitone offset + octave transposition
-        note     (faust "%rt+%ss+%oc*12.0" {:rt root :ss scale-st :oc oct-n})
-        freq     (faust "440.0*pow(2.0,(%nt-69.0)/12.0)" {:nt note})]
+        note     (faust "%{rt}+%{ss}+%{oc}*12.0" {:rt root :ss scale-st :oc oct-n})
+        freq     (faust "440.0*pow(2.0,(%{nt}-69.0)/12.0)" {:nt note})]
     (output :freq freq)
     (output :note note)))

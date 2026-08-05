@@ -111,34 +111,34 @@
         shp  (param :shape)
         curv (param :curvature)
         ; generalized easing structure — gate and tri shared by all six easers
-        gate (faust "float(%xx >= 1.0 - %ss)" {:xx x :ss shp})
-        tri  (faust "select2(%gg > 0.5, %xx / max(1.0 - %ss, 0.0001), (1.0 - %xx) / max(%ss, 0.0001))"
+        gate (faust "float(%{xx} >= 1.0 - %{ss})" {:xx x :ss shp})
+        tri  (faust "select2(%{gg} > 0.5, %{xx} / max(1.0 - %{ss}, 0.0001), (1.0 - %{xx}) / max(%{ss}, 0.0001))"
                     {:gg gate :xx x :ss shp})
         ; shapers applied to tri
-        pow-s  (faust "pow(max(0.0, %tt), 2.0 + %cc * 8.0)"
+        pow-s  (faust "pow(max(0.0, %{tt}), 2.0 + %{cc} * 8.0)"
                       {:tt tri :cc curv})
-        circ-s (faust "1.0 - sqrt(max(0.0, 1.0 - pow(max(0.0, %tt), 2.0 + %cc * 2.0)))"
+        circ-s (faust "1.0 - sqrt(max(0.0, 1.0 - pow(max(0.0, %{tt}), 2.0 + %{cc} * 2.0)))"
                       {:tt tri :cc curv})
-        exp-s  (faust "(exp(6.0 * %tt) - 1.0) / (exp(6.0) - 1.0)"
+        exp-s  (faust "(exp(6.0 * %{tt}) - 1.0) / (exp(6.0) - 1.0)"
                       {:tt tri})
-        back-s (faust "%tt * %tt * (2.70158 * %tt - 1.70158)"
+        back-s (faust "%{tt} * %{tt} * (2.70158 * %{tt} - 1.70158)"
                       {:tt tri})
-        elas-s (faust "-(pow(2.0, 10.0 * (%tt - 1.0)) * sin((%tt - 1.075) * (2.0 * ma.PI / 0.3)))"
+        elas-s (faust "-(pow(2.0, 10.0 * (%{tt} - 1.0)) * sin((%{tt} - 1.075) * (2.0 * ma.PI / 0.3)))"
                       {:tt tri})
-        sine-s (faust "1.0 - cos(%tt * ma.PI / 2.0)"
+        sine-s (faust "1.0 - cos(%{tt} * ma.PI / 2.0)"
                       {:tt tri})
         ; generalized output: rising half scaled by (1-shape), falling half flipped
-        pow-out  (faust "select2(%gg > 0.5, %pw * (1.0 - %shp), 1.0 - %pw * %shp)"
+        pow-out  (faust "select2(%{gg} > 0.5, %{pw} * (1.0 - %{shp}), 1.0 - %{pw} * %{shp})"
                         {:gg gate :pw pow-s  :shp shp})
-        circ-out (faust "select2(%gg > 0.5, %cs * (1.0 - %shp), 1.0 - %cs * %shp)"
+        circ-out (faust "select2(%{gg} > 0.5, %{cs} * (1.0 - %{shp}), 1.0 - %{cs} * %{shp})"
                         {:gg gate :cs circ-s :shp shp})
-        exp-out  (faust "select2(%gg > 0.5, %es * (1.0 - %shp), 1.0 - %es * %shp)"
+        exp-out  (faust "select2(%{gg} > 0.5, %{es} * (1.0 - %{shp}), 1.0 - %{es} * %{shp})"
                         {:gg gate :es exp-s  :shp shp})
-        back-out (faust "select2(%gg > 0.5, %bk * (1.0 - %shp), 1.0 - %bk * %shp)"
+        back-out (faust "select2(%{gg} > 0.5, %{bk} * (1.0 - %{shp}), 1.0 - %{bk} * %{shp})"
                         {:gg gate :bk back-s :shp shp})
-        elas-out (faust "select2(%gg > 0.5, %el * (1.0 - %shp), 1.0 - %el * %shp)"
+        elas-out (faust "select2(%{gg} > 0.5, %{el} * (1.0 - %{shp}), 1.0 - %{el} * %{shp})"
                         {:gg gate :el elas-s :shp shp})
-        sine-out (faust "select2(%gg > 0.5, %sn * (1.0 - %shp), 1.0 - %sn * %shp)"
+        sine-out (faust "select2(%{gg} > 0.5, %{sn} * (1.0 - %{shp}), 1.0 - %{sn} * %{shp})"
                         {:gg gate :sn sine-s :shp shp})]
     (output :pow     pow-out)
     (output :circle  circ-out)

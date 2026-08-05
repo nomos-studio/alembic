@@ -104,10 +104,10 @@
         bs   (param :bs)
         fc   (param :fc)
         ix   (param :ix)
-        ph   (faust "os.phasor(1,%fm)" {:fm fm})
-        mo   (faust "par(i,8,sin(2.0*ma.PI*(i+1)*%ph)*pow(%bl,i)/(i+1.0)):>*(0.5)"
+        ph   (faust "os.phasor(1,%{fm})" {:fm fm})
+        mo   (faust "par(i,8,sin(2.0*ma.PI*(i+1)*%{ph})*pow(%{bl},i)/(i+1.0)):>*(0.5)"
                     {:ph ph :bl bl})
-        amrm (faust "%in*(%bs+%mo)" {:in in :bs bs :mo mo})
-        pm   (faust "sin(2.0*ma.PI*os.phasor(1,%fc)+%ix*%mo)" {:fc fc :ix ix :mo mo})]
+        amrm (faust "%{in}*(%{bs}+%{mo})" {:in in :bs bs :mo mo})
+        pm   (faust "sin(2.0*ma.PI*os.phasor(1,%{fc})+%{ix}*%{mo})" {:fc fc :ix ix :mo mo})]
     (output :amrm amrm)
     (output :pm   pm)))

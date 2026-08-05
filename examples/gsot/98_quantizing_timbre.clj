@@ -101,11 +101,11 @@
         beats  (param :beats)
         smooth (param :smooth)
         ; Map phasor to continuous degree [0,N); ratio cancels N → 12*phasor
-        degree (faust "%ph*%bt" {:ph phasor :bt beats})
-        ratio  (faust "12.0*%dg/max(1.0,%bt)" {:dg degree :bt beats})
-        semi-q (faust "floor(%qr)" {:qr ratio})
+        degree (faust "%{ph}*%{bt}" {:ph phasor :bt beats})
+        ratio  (faust "12.0*%{dg}/max(1.0,%{bt})" {:dg degree :bt beats})
+        semi-q (faust "floor(%{qr})" {:qr ratio})
         ; Smooth-step blend: lerp from Euclidean staircase to linear ramp
         ; Normalize [0,12) → [-1,1): (value/6) - 1
-        out    (faust "(%sq+%sm*(%qr-%sq))/6.0-1.0"
+        out    (faust "(%{sq}+%{sm}*(%{qr}-%{sq}))/6.0-1.0"
                       {:sq semi-q :sm smooth :qr ratio})]
     (output :out out)))

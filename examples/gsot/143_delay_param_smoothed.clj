@@ -88,10 +88,10 @@
         st  (param :st)
         dc  (param :dc)
         mx  (param :mx)
-        sk  (faust "exp(-1000.0/(%st*ma.SR))" {:st st})
-        sms (faust "(%sk*_+(1.0-%sk)*%ms)~_" {:sk sk :ms ms})
-        fb  (faust "pow(0.001,%ms/max(1.0,%dc))" {:ms ms :dc dc})
-        fdl (faust "fdl_loop ~ _\n  with { fdl_loop(fbs) = de.delay(int(ma.SR*5.0),int(max(0.0,%sm*ma.SR/1000.0)),%in+%fb*fbs); }"
+        sk  (faust "exp(-1000.0/(%{st}*ma.SR))" {:st st})
+        sms (faust "(%{sk}*_+(1.0-%{sk})*%{ms})~_" {:sk sk :ms ms})
+        fb  (faust "pow(0.001,%{ms}/max(1.0,%{dc}))" {:ms ms :dc dc})
+        fdl (faust "fdl_loop ~ _\n  with { fdl_loop(fbs) = de.delay(int(ma.SR*5.0),int(max(0.0,%{sm}*ma.SR/1000.0)),%{in}+%{fb}*fbs); }"
                    {:sm sms :in in :fb fb})
-        out (faust "(1.0-%mx)*%in+%mx*%fd" {:mx mx :in in :fd fdl})]
+        out (faust "(1.0-%{mx})*%{in}+%{mx}*%{fd}" {:mx mx :in in :fd fdl})]
     (output :out out)))

@@ -100,19 +100,19 @@
               "0.25*(g0+g1+g2+g3)
                with {
                  rnd=no.noise;
-                 dc_g=max(0.001,%gd*%gr/1000.0);
-                 ph0=ma.frac(os.phasor(1,%gr)+0.0);
-                 ph1=ma.frac(os.phasor(1,%gr)+0.25);
-                 ph2=ma.frac(os.phasor(1,%gr)+0.5);
-                 ph3=ma.frac(os.phasor(1,%gr)+0.75);
+                 dc_g=max(0.001,%{gd}*%{gr}/1000.0);
+                 ph0=ma.frac(os.phasor(1,%{gr})+0.0);
+                 ph1=ma.frac(os.phasor(1,%{gr})+0.25);
+                 ph2=ma.frac(os.phasor(1,%{gr})+0.5);
+                 ph3=ma.frac(os.phasor(1,%{gr})+0.75);
                  tr0=ph0<ph0'; tr1=ph1<ph1';
                  tr2=ph2<ph2'; tr3=ph3<ph3';
-                 fc0=ba.sAndH(tr0,max(20.0,%fc*(1.0+%fs*rnd)));
-                 fc1=ba.sAndH(tr1,max(20.0,%fc*(1.0+%fs*rnd)));
-                 fc2=ba.sAndH(tr2,max(20.0,%fc*(1.0+%fs*rnd)));
-                 fc3=ba.sAndH(tr3,max(20.0,%fc*(1.0+%fs*rnd)));
+                 fc0=ba.sAndH(tr0,max(20.0,%{fc}*(1.0+%{fs}*rnd)));
+                 fc1=ba.sAndH(tr1,max(20.0,%{fc}*(1.0+%{fs}*rnd)));
+                 fc2=ba.sAndH(tr2,max(20.0,%{fc}*(1.0+%{fs}*rnd)));
+                 fc3=ba.sAndH(tr3,max(20.0,%{fc}*(1.0+%{fs}*rnd)));
                  win(ph)=float(ph<dc_g)*0.5*(1.0-cos(2.0*ma.PI*ph/dc_g));
-                 src(ph,fg)=sin(2.0*ma.PI*ma.frac(ph*fg/max(%gr,1.0)));
+                 src(ph,fg)=sin(2.0*ma.PI*ma.frac(ph*fg/max(%{gr},1.0)));
                  g0=win(ph0)*src(ph0,fc0);
                  g1=win(ph1)*src(ph1,fc1);
                  g2=win(ph2)*src(ph2,fc2);

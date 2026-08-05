@@ -127,15 +127,15 @@
                  h(k)=sin(ang*float(k+1))/float(k+1)*float(k<=yt);
                  tbl_init=0.5*(h(0)+h(1)+h(2)+h(3)+h(4)+h(5)+h(6)+h(7));
                  tbl(i)=rdtable(N,tbl_init,max(0,min(N-1,i)));
-                 pm_s=%pm*sin(2.0*ma.PI*os.phasor(1,%fc*2.0));
-                 ph=ma.frac(os.phasor(1,%fc)+pm_s);
-                 ns_f=max(3.0,%ns);
+                 pm_s=%{pm}*sin(2.0*ma.PI*os.phasor(1,%{fc}*2.0));
+                 ph=ma.frac(os.phasor(1,%{fc})+pm_s);
+                 ns_f=max(3.0,%{ns});
                  sec=int(ph*ns_f);
                  t=ph*ns_f-float(sec);
                  a0=2.0*ma.PI*float(sec)/ns_f;
                  a1=2.0*ma.PI*float(sec+1)/ns_f;
-                 cx=0.5+%r1*(cos(a0)*(1.0-t)+cos(a1)*t);
-                 cy=0.5+%r1*(sin(a0)*(1.0-t)+sin(a1)*t);
+                 cx=0.5+%{r1}*(cos(a0)*(1.0-t)+cos(a1)*t);
+                 cy=0.5+%{r1}*(sin(a0)*(1.0-t)+sin(a1)*t);
                  xfull=cx*float(W); yfull=cy*float(H);
                  xr=int(xfull); yr=int(yfull);
                  x0=xr&(W-1); x1=(x0+1)&(W-1);
@@ -145,9 +145,9 @@
                  s01=tbl(y1*W+x0); s11=tbl(y1*W+x1);
                  raw=s00*(1.0-xf)*(1.0-yf)+s10*xf*(1.0-yf)
                      +s01*(1.0-xf)*yf+s11*xf*yf;
-                 driven=raw*(1.0+%wf*7.0);
+                 driven=raw*(1.0+%{wf}*7.0);
                  wf_o=sin(driven*ma.PI*0.5);
-                 terrain=%wf*wf_o+(1.0-%wf)*raw;
+                 terrain=%{wf}*wf_o+(1.0-%{wf})*raw;
                }"
               {:fc fc :ns ns :r1 r1 :pm pm :wf wf})]
     (output :out out)))

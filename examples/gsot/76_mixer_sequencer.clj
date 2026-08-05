@@ -102,11 +102,11 @@
         p5      (param :p5)
         p6      (param :p6)
         p7      (param :p7)
-        counter (faust "(select2(%tr>0.5,_,float(int(_+1.0)%max(1,int(%ns))))~_)"
+        counter (faust "(select2(%{tr}>0.5,_,float(int(_+1.0)%max(1,int(%{ns}))))~_)"
                        {:tr trig :ns steps})
-        pitch   (faust "select2(%ct<4.0,select2(%ct<6.0,select2(%ct<5.0,%p4,%p5),select2(%ct<7.0,%p6,%p7)),select2(%ct<2.0,select2(%ct<1.0,%p0,%p1),select2(%ct<3.0,%p2,%p3)))"
+        pitch   (faust "select2(%{ct}<4.0,select2(%{ct}<6.0,select2(%{ct}<5.0,%{p4},%{p5}),select2(%{ct}<7.0,%{p6},%{p7})),select2(%{ct}<2.0,select2(%{ct}<1.0,%{p0},%{p1}),select2(%{ct}<3.0,%{p2},%{p3})))"
                        {:ct counter :p0 p0 :p1 p1 :p2 p2 :p3 p3 :p4 p4 :p5 p5 :p6 p6 :p7 p7})
-        gate-en (faust "float(int(%pg)>>int(%ct) & 1)" {:pg pattern :ct counter})
-        gate    (faust "float(%tr>0.5)*%ge"            {:tr trig :ge gate-en})]
+        gate-en (faust "float(int(%{pg})>>int(%{ct}) & 1)" {:pg pattern :ct counter})
+        gate    (faust "float(%{tr}>0.5)*%{ge}"            {:tr trig :ge gate-en})]
     (output :pitch pitch)
     (output :gate  gate)))

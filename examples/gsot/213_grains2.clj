@@ -90,11 +90,11 @@
         out (faust
               "grain
                with {
-                 dc_g=max(0.001,%gd*%gr/1000.0);
-                 ph=os.phasor(1,%gr);
+                 dc_g=max(0.001,%{gd}*%{gr}/1000.0);
+                 ph=os.phasor(1,%{gr});
                  trig=ph<ph';
                  sf=(1.0-ph')/max(0.001,ph+1.0-ph');
-                 fc_g=ba.sAndH(trig,max(20.0,%fc*(1.0+%fs*no.noise)));
+                 fc_g=ba.sAndH(trig,max(20.0,%{fc}*(1.0+%{fs}*no.noise)));
                  gi=(1.0-sf)*fc_g/ma.SR;
                  grain_ph=(select2(trig,_+fc_g/ma.SR,gi)~_):ma.frac;
                  win=float(ph<dc_g)*0.5*(1.0-cos(2.0*ma.PI*ph/dc_g));

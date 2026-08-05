@@ -57,9 +57,9 @@
   (let [in  (audio-in)
         hz  (param :hz)
         dc  (param :dc)
-        fb  (faust "pow(0.001,1000.0/(%hz*max(1.0,%dc)))" {:hz hz :dc dc})
-        dl  (faust "int(max(1.0,ma.SR/%hz))" {:hz hz})
-        dl1 (faust "max(0,%dl-1)" {:dl dl})
-        out (faust "strd_loop ~ _\n  with { strd_loop(s) = %in+%fb*de.delay(int(ma.SR*5.0),%d1,0.5*(s+s@1)); }"
+        fb  (faust "pow(0.001,1000.0/(%{hz}*max(1.0,%{dc})))" {:hz hz :dc dc})
+        dl  (faust "int(max(1.0,ma.SR/%{hz}))" {:hz hz})
+        dl1 (faust "max(0,%{dl}-1)" {:dl dl})
+        out (faust "strd_loop ~ _\n  with { strd_loop(s) = %{in}+%{fb}*de.delay(int(ma.SR*5.0),%{d1},0.5*(s+s@1)); }"
                    {:in in :fb fb :d1 dl1})]
     (output :out out)))

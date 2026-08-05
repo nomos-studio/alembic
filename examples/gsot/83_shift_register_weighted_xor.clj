@@ -91,17 +91,17 @@
         ; Taps at bits 7,3,2,1 (polynomial x^8+x^4+x^3+x^2+1, period 255).
         ; new_bit = LFSR tap or random, chosen by weight.
         ; Two no.noise instances = two independent LCG registers.
-        state  (faust "(select2(%tr>0.5,_,float(((int(_)>>1)|(select2(0.5*(no.noise+1.0)<%wt,int(0.5*(no.noise+1.0)+0.5),((int(_)>>7)^(int(_)>>3)^(int(_)>>2)^(int(_)>>1))&1)<<7))&255)))~_"
+        state  (faust "(select2(%{tr}>0.5,_,float(((int(_)>>1)|(select2(0.5*(no.noise+1.0)<%{wt},int(0.5*(no.noise+1.0)+0.5),((int(_)>>7)^(int(_)>>3)^(int(_)>>2)^(int(_)>>1))&1)<<7))&255)))~_"
                       {:tr trig :wt weight})
         ; Extract individual bits: s0 = newest (bit 7), s7 = oldest (bit 0)
-        s0 (faust "float((int(%st)>>7)&1)" {:st state})
-        s1 (faust "float((int(%st)>>6)&1)" {:st state})
-        s2 (faust "float((int(%st)>>5)&1)" {:st state})
-        s3 (faust "float((int(%st)>>4)&1)" {:st state})
-        s4 (faust "float((int(%st)>>3)&1)" {:st state})
-        s5 (faust "float((int(%st)>>2)&1)" {:st state})
-        s6 (faust "float((int(%st)>>1)&1)" {:st state})
-        s7 (faust "float(int(%st)&1)"      {:st state})]
+        s0 (faust "float((int(%{st})>>7)&1)" {:st state})
+        s1 (faust "float((int(%{st})>>6)&1)" {:st state})
+        s2 (faust "float((int(%{st})>>5)&1)" {:st state})
+        s3 (faust "float((int(%{st})>>4)&1)" {:st state})
+        s4 (faust "float((int(%{st})>>3)&1)" {:st state})
+        s5 (faust "float((int(%{st})>>2)&1)" {:st state})
+        s6 (faust "float((int(%{st})>>1)&1)" {:st state})
+        s7 (faust "float(int(%{st})&1)"      {:st state})]
     (output :s0 s0)
     (output :s1 s1)
     (output :s2 s2)

@@ -115,7 +115,7 @@
               "sum(k,4,w(k-1)*s(k-1))
                with {
                  N = 1024;
-                 ph = os.phasor(1,%fc)*float(N);
+                 ph = os.phasor(1,%{fc})*float(N);
                  i0 = int(ph)&(N-1);
                  fr = ph-float(int(ph));
                  sinc(x) = sin(ma.PI*max(abs(x),1e-9))/(ma.PI*max(abs(x),1e-9));

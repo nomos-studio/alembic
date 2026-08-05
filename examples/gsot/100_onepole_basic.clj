@@ -84,5 +84,5 @@
   {:params {:coeff {:range [0.0 0.999] :default 0.5}}}
   (let [in    (audio-in)
         coeff (param :coeff)
-        out   (faust "(%in*(1.0-%cf)+_*%cf)~_" {:in in :cf coeff})]
+        out   (faust "(%{in}*(1.0-%{cf})+_*%{cf})~_" {:in in :cf coeff})]
     (output :out out)))

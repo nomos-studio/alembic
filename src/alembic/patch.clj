@@ -143,7 +143,7 @@
           (swap! nodes assoc id node)
           (doseq [[inlet src-id] (map vector inlets srcs)]
             (let [src-rate  (:rate (get @nodes src-id))
-                  feedback? (= op-kw :history)
+                  feedback? (#{:history :z-1} op-kw)
                   crossing? (not= src-rate rate)]
               (swap! edges conj
                      (cond-> {:from src-id :to id :inlet inlet}
@@ -220,6 +220,20 @@
   opts        — literal map; :params key carries the param schema
   let-form    — (let [bindings...] body-forms...) authoring syntax
 
+  Param schema — each entry is a map with optional keys:
+    :type     :float (default) | :int | :bool | :enum
+    :range    [lo hi]  (float/int; ignored for bool and enum)
+    :default  initial value (keyword for enum, boolean for bool, number otherwise)
+    :unit     :hz | :db | :s | ... (informational, not used by emit)
+    :values   [kw ...]  (required for :enum; defines the ordered choice set)
+
+  Type semantics (propagate to all downstream consumers):
+    :float — continuous; Faust hslider; CLAP continuous param
+    :int   — integer stepped; Faust float(int(hslider(...,1.0))); CLAP stepped param
+    :bool  — binary 0/1; Faust checkbox; CLAP stepped param; :default true|false
+    :enum  — indexed choice; Faust float(int(nentry(...))); :default must be in :values
+             DSP receives a float index 0.0, 1.0, ..., N-1.0; use with ba.selectn or select2
+
   Op names in the authoring form: phasor, sine-bi, sine-uni, tri, rect,
   mul, add, sub, div, history, delay, sah, delta, wrap, fold, clip, smooth,
   ar-env, ladder, svf, one-pole, dc-block, allpass, vca, slew, sample-hold,
@@ -258,11 +272,11 @@
     (table {:data [floats] :size N :mode :wrap|:clamp|:fold} index)
 
   Inline Faust expressions with named wired inlets:
-    (faust \"expr with %inlet-names\" {:inlet-name expr ...})
-    e.g. (faust \"os.osc(%freq)\" {:freq freq-signal})
-    %inlet-name placeholders are replaced at emit time with the Faust
-    identifier of the wired source node. Omit the inlet map for a
-    self-contained Faust expression with no wired inlets.
+    (faust \"expr with %{inlet-name}\" {:inlet-name expr ...})
+    e.g. (faust \"os.osc(%{freq})\" {:freq freq-signal})
+    %{inlet-name} placeholders are replaced at emit time with the Faust
+    identifier of the wired source node. Inlet names may be any length.
+    Omit the inlet map for a self-contained Faust expression with no wired inlets.
 
   Output forms:
     (output expr)         — unnamed, assigned channel 0, 1, 2 … in declaration order

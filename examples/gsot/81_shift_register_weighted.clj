@@ -60,15 +60,15 @@
   {:params {:weight {:range [0.0 1.0] :default 0.5}}}
   (let [trig    (audio-in)
         weight  (param :weight)
-        new-bit (faust "float(0.5*(no.noise+1.0)<%wt)" {:wt weight})
+        new-bit (faust "float(0.5*(no.noise+1.0)<%{wt})" {:wt weight})
         s0      (track-hold new-bit trig)
-        s1      (track-hold (faust "%pv@1" {:pv s0}) trig)
-        s2      (track-hold (faust "%pv@1" {:pv s1}) trig)
-        s3      (track-hold (faust "%pv@1" {:pv s2}) trig)
-        s4      (track-hold (faust "%pv@1" {:pv s3}) trig)
-        s5      (track-hold (faust "%pv@1" {:pv s4}) trig)
-        s6      (track-hold (faust "%pv@1" {:pv s5}) trig)
-        s7      (track-hold (faust "%pv@1" {:pv s6}) trig)]
+        s1      (track-hold (faust "%{pv}@1" {:pv s0}) trig)
+        s2      (track-hold (faust "%{pv}@1" {:pv s1}) trig)
+        s3      (track-hold (faust "%{pv}@1" {:pv s2}) trig)
+        s4      (track-hold (faust "%{pv}@1" {:pv s3}) trig)
+        s5      (track-hold (faust "%{pv}@1" {:pv s4}) trig)
+        s6      (track-hold (faust "%{pv}@1" {:pv s5}) trig)
+        s7      (track-hold (faust "%{pv}@1" {:pv s6}) trig)]
     (output :s0 s0)
     (output :s1 s1)
     (output :s2 s2)

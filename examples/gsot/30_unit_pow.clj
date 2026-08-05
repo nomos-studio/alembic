@@ -27,5 +27,5 @@
   {:params {:power {:range [0.1 8.0] :default 2.0}}}
   (let [x   (audio-in)
         p   (param :power)
-        out (faust "pow(max(0.0, %x), %p)" {:x x :p p})]
+        out (faust "pow(max(0.0, %{x}), %{p})" {:x x :p p})]
     (output out)))

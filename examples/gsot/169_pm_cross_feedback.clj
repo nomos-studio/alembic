@@ -121,7 +121,7 @@
         i1  (param :i1)
         i2  (param :i2)
         md  (param :md)
-        f2  (faust "%fc*%rt" {:fc fc :rt rt})
-        out (faust "(xfb ~ si.bus(2)) :> *(0.5)\n  with {\n    xfb(a,b) = sin(2.0*ma.PI*os.phasor(1,%fc+(1.0-%md)*%i1*%fc*b)+%md*%i1*b),\n               sin(2.0*ma.PI*os.phasor(1,%f2+(1.0-%md)*%i2*%f2*a)+%md*%i2*a);\n  }"
+        f2  (faust "%{fc}*%{rt}" {:fc fc :rt rt})
+        out (faust "(xfb ~ si.bus(2)) :> *(0.5)\n  with {\n    xfb(a,b) = sin(2.0*ma.PI*os.phasor(1,%{fc}+(1.0-%{md})*%{i1}*%{fc}*b)+%{md}*%{i1}*b),\n               sin(2.0*ma.PI*os.phasor(1,%{f2}+(1.0-%{md})*%{i2}*%{f2}*a)+%{md}*%{i2}*a);\n  }"
                    {:fc fc :f2 f2 :i1 i1 :i2 i2 :md md})]
     (output :out out)))

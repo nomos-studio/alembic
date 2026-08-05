@@ -99,11 +99,11 @@
   (let [in  (audio-in)
         hz  (param :hz)
         dc  (param :dc)
-        fb  (faust "pow(0.001,1000.0/(%hz*max(1.0,%dc)))" {:hz hz :dc dc})
-        dl  (faust "max(1.0,ma.SR/%hz)" {:hz hz})
-        df  (faust "%dl-int(%dl)" {:dl dl})
-        di  (faust "max(0,int(%dl)-1)" {:dl dl})
-        ap  (faust "(1.0-%df)/(1.0+%df)" {:df df})
-        out (faust "strc_loop ~ _\n  with {\n    strc_loop(s) = %in+%fb*de.delay(int(ma.SR*5.0),%di,apf)\n      with {\n        apf = apn ~ _\n          with { apn(p) = %ap*(s-p)+s@1; };\n      };\n  }"
+        fb  (faust "pow(0.001,1000.0/(%{hz}*max(1.0,%{dc})))" {:hz hz :dc dc})
+        dl  (faust "max(1.0,ma.SR/%{hz})" {:hz hz})
+        df  (faust "%{dl}-int(%{dl})" {:dl dl})
+        di  (faust "max(0,int(%{dl})-1)" {:dl dl})
+        ap  (faust "(1.0-%{df})/(1.0+%{df})" {:df df})
+        out (faust "strc_loop ~ _\n  with {\n    strc_loop(s) = %{in}+%{fb}*de.delay(int(ma.SR*5.0),%{di},apf)\n      with {\n        apf = apn ~ _\n          with { apn(p) = %{ap}*(s-p)+s@1; };\n      };\n  }"
                    {:in in :fb fb :di di :ap ap})]
     (output :out out)))

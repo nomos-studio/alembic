@@ -64,14 +64,14 @@
         hi    (param :hi)
         sigma (param :sigma)
         ; Uniform: flat density over [lo, hi]
-        unif  (faust "%lo+(%hi-%lo)*0.5*(no.noise+1.0)" {:lo lo :hi hi})
+        unif  (faust "%{lo}+(%{hi}-%{lo})*0.5*(no.noise+1.0)" {:lo lo :hi hi})
         ; Normal: bell-shaped, centered at midpoint, width = sigma × half-range
-        mid   (faust "(%lo+%hi)*0.5"   {:lo lo :hi hi})
-        sprd  (faust "(%hi-%lo)*0.5"   {:hi hi :lo lo})
+        mid   (faust "(%{lo}+%{hi})*0.5"   {:lo lo :hi hi})
+        sprd  (faust "(%{hi}-%{lo})*0.5"   {:hi hi :lo lo})
         z     (faust "0.5*(no.noise+no.noise+no.noise+no.noise+no.noise+no.noise+no.noise+no.noise+no.noise+no.noise+no.noise+no.noise)"
                      {})
         ; Clamp to [lo, hi] — rare tail values would otherwise exceed the range
-        norm  (faust "max(%lo,min(%hi,%md+%sg*%sp*%zz))"
+        norm  (faust "max(%{lo},min(%{hi},%{md}+%{sg}*%{sp}*%{zz}))"
                      {:lo lo :hi hi :md mid :sg sigma :sp sprd :zz z})]
     (output :uniform unif)
     (output :normal  norm)))

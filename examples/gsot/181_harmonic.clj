@@ -131,7 +131,7 @@
             :bl {:range [0.0 1.0]     :default 0.5}}}
   (let [fc  (param :fc)
         bl  (param :bl)
-        ph  (faust "os.phasor(1,%fc)" {:fc fc})
-        out (faust "par(i,8,sin(2.0*ma.PI*(i+1)*%ph)*pow(%bl,i)/(i+1.0)):>*(0.5)"
+        ph  (faust "os.phasor(1,%{fc})" {:fc fc})
+        out (faust "par(i,8,sin(2.0*ma.PI*(i+1)*%{ph})*pow(%{bl},i)/(i+1.0)):>*(0.5)"
                    {:ph ph :bl bl})]
     (output :out out)))

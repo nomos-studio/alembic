@@ -124,6 +124,6 @@
         b2   (param :b2)
         a1   (param :a1)
         a2   (param :a2)
-        w    (faust "(%in-%a1*_-%a2*_@1)~_" {:in in :a1 a1 :a2 a2})
-        out  (faust "%b0*%ww+%b1*%ww@1+%b2*%ww@2" {:b0 b0 :b1 b1 :b2 b2 :ww w})]
+        w    (faust "(%{in}-%{a1}*_-%{a2}*_@1)~_" {:in in :a1 a1 :a2 a2})
+        out  (faust "%{b0}*%{ww}+%{b1}*%{ww}@1+%{b2}*%{ww}@2" {:b0 b0 :b1 b1 :b2 b2 :ww w})]
     (output :out out)))

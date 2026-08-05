@@ -87,21 +87,21 @@
   {:params {:drive {:range [1.0 16.0] :default 4.0}}}
   (let [x    (audio-in)
         k    (param :drive)
-        kx   (faust "%kk*%xx" {:kk k :xx x})
+        kx   (faust "%{kk}*%{xx}" {:kk k :xx x})
         ; go.sigmoid.tanh — 1-2/(1+exp(2kx)); Faust has no tanh primitive
-        e2kx     (faust "exp(2.0*%kx)"              {:kx kx})
-        tanh-out (faust "1.0-2.0/(1.0+%ex)"         {:ex e2kx})
+        e2kx     (faust "exp(2.0*%{kx})"              {:kx kx})
+        tanh-out (faust "1.0-2.0/(1.0+%{ex})"         {:ex e2kx})
         ; go.sigmoid.logistic — 2/(1+exp(-kx))-1; 0.0- avoids unary minus
-        logistic-out (faust "2.0/(1.0+exp(0.0-%kx))-1.0" {:kx kx})
+        logistic-out (faust "2.0/(1.0+exp(0.0-%{kx}))-1.0" {:kx kx})
         ; go.sigmoid2 — rational softsign: kx/(1+|kx|)
-        sig2-out (faust "%kx/(1.0+abs(%kx))"        {:kx kx})
+        sig2-out (faust "%{kx}/(1.0+abs(%{kx}))"        {:kx kx})
         ; go.sigmoid.guderman — (4/π)*atan(exp(kx))-1 via gd(x)=2*atan(exp(x))-π/2
-        ekx      (faust "exp(%kx)"                   {:kx kx})
-        gude-out (faust "(4.0/ma.PI)*atan(%ex)-1.0" {:ex ekx})
+        ekx      (faust "exp(%{kx})"                   {:kx kx})
+        gude-out (faust "(4.0/ma.PI)*atan(%{ex})-1.0" {:ex ekx})
         ; go.sigmoid.atan — (2/π)*atan(kx)
-        atan-out (faust "(2.0/ma.PI)*atan(%kx)"     {:kx kx})
+        atan-out (faust "(2.0/ma.PI)*atan(%{kx})"     {:kx kx})
         ; go.sigmoid.softclip — cubic for |kx|≤1, hard clip outside
-        soft-out (faust "select2(float(abs(%kx)>1.0)>0.5,1.5*%kx-0.5*%kx*%kx*%kx,max(-1.0,min(1.0,%kx)))"
+        soft-out (faust "select2(float(abs(%{kx})>1.0)>0.5,1.5*%{kx}-0.5*%{kx}*%{kx}*%{kx},max(-1.0,min(1.0,%{kx})))"
                         {:kx kx})]
     (output :tanh      tanh-out)
     (output :logistic  logistic-out)

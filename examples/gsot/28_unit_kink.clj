@@ -28,6 +28,6 @@
   {:params {:kink {:range [0.01 0.99] :default 0.5}}}
   (let [x   (audio-in)
         k   (param :kink)
-        out (faust "select2(%x >= %k, %x / max(%k, 0.0001) * 0.5, 0.5 + (%x - %k) / max(1.0 - %k, 0.0001) * 0.5)"
+        out (faust "select2(%{x} >= %{k}, %{x} / max(%{k}, 0.0001) * 0.5, 0.5 + (%{x} - %{k}) / max(1.0 - %{k}, 0.0001) * 0.5)"
                    {:x x :k k})]
     (output out)))

@@ -76,12 +76,12 @@
         dc  (param :dc)
         dp  (param :dp)
         mx  (param :mx)
-        fb  (faust "pow(0.001,%ms/max(1.0,%dc))" {:ms ms :dc dc})
-        dly (faust "int(max(0.0,%ms*ma.SR/1000.0+(1.0-2.0*%iv)*os.osc(%lf)*%ld*ma.SR/1000.0))"
+        fb  (faust "pow(0.001,%{ms}/max(1.0,%{dc}))" {:ms ms :dc dc})
+        dly (faust "int(max(0.0,%{ms}*ma.SR/1000.0+(1.0-2.0*%{iv})*os.osc(%{lf})*%{ld}*ma.SR/1000.0))"
                    {:ms ms :iv iv :lf lf :ld ld})
-        fdl (faust "fdl_loop ~ _\n  with {\n    fdl_loop(s) = de.delay(int(ma.SR*5.0),%dl,%in+%fb*lpdc)\n      with {\n        lp   = (1.0-%dp)*s : +~*(%dp);\n        lpdc = (lp-lp@1) : +~*(0.9999);\n      };\n  }"
+        fdl (faust "fdl_loop ~ _\n  with {\n    fdl_loop(s) = de.delay(int(ma.SR*5.0),%{dl},%{in}+%{fb}*lpdc)\n      with {\n        lp   = (1.0-%{dp})*s : +~*(%{dp});\n        lpdc = (lp-lp@1) : +~*(0.9999);\n      };\n  }"
                    {:dl dly :in in :fb fb :dp dp})
-        out (faust "(1.0-%mx)*%in+%mx*%fd" {:mx mx :in in :fd fdl})]
+        out (faust "(1.0-%{mx})*%{in}+%{mx}*%{fd}" {:mx mx :in in :fd fdl})]
     (output :out out)))
 
 ; ---------------------------------------------------------------------------

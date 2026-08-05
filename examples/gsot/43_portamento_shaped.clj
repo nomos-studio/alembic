@@ -61,17 +61,17 @@
   {:params {:glide-ms {:range [1.0 5000.0] :default 300.0 :unit :ms}
             :shape    {:range [0.0 1.0]    :default 0.5}}}
   (let [x       (audio-in)
-        trig    (faust "float(abs(%inp-%inp')>0.5)" {:inp x})
-        slope   (faust "1000.0/(ma.SR*%gms)" {:gms (param :glide-ms)})
-        ramp    (faust "(select2(%trig>0.5,_+%slope,%slope))~_"
+        trig    (faust "float(abs(%{inp}-%{inp}')>0.5)" {:inp x})
+        slope   (faust "1000.0/(ma.SR*%{gms})" {:gms (param :glide-ms)})
+        ramp    (faust "(select2(%{trig}>0.5,_+%{slope},%{slope}))~_"
                        {:trig trig :slope slope})
-        clipped (faust "max(0.0,min(1.0,%r))" {:r ramp})
+        clipped (faust "max(0.0,min(1.0,%{r}))" {:r ramp})
         ; ease-exp blend: x + sf*((exp(3x)-1)/(exp(3)-1) - x)
         ; sf=0 → linear; sf=1 → full exponential ease-in; sf=0.5 matches maxpat
-        shaped  (faust "%r+%sf*((exp(3.0*%r)-1.0)/(exp(3.0)-1.0)-%r)"
+        shaped  (faust "%{r}+%{sf}*((exp(3.0*%{r})-1.0)/(exp(3.0)-1.0)-%{r})"
                        {:r clipped :sf (param :shape)})
         to      (track-hold x trig)
-        from    (faust "(select2(%trig>0.5,_,%tgt')~_)" {:trig trig :tgt to})
-        out     (faust "%from+%s*(%tgt-%from)" {:from from :s shaped :tgt to})]
+        from    (faust "(select2(%{trig}>0.5,_,%{tgt}')~_)" {:trig trig :tgt to})
+        out     (faust "%{from}+%{s}*(%{tgt}-%{from})" {:from from :s shaped :tgt to})]
     (output out)
     (output :ramp clipped)))

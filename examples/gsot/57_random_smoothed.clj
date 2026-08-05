@@ -66,8 +66,8 @@
         n        (faust "no.noise" {})
         lo       (param :lo)
         hi       (param :hi)
-        scaled   (faust "%lo+(%hi-%lo)*0.5*(%nn+1.0)" {:lo lo :hi hi :nn n})
+        scaled   (faust "%{lo}+(%{hi}-%{lo})*0.5*(%{nn}+1.0)" {:lo lo :hi hi :nn n})
         new-val  (track-hold scaled trig)
-        prev-val (track-hold (faust "%nv@1" {:nv new-val}) trig)
-        out      (faust "%pv+%ph*(%nv-%pv)" {:pv prev-val :ph phase :nv new-val})]
+        prev-val (track-hold (faust "%{nv}@1" {:nv new-val}) trig)
+        out      (faust "%{pv}+%{ph}*(%{nv}-%{pv})" {:pv prev-val :ph phase :nv new-val})]
     (output out)))

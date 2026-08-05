@@ -92,9 +92,9 @@
         sigma (param :sigma)
         rho   (param :rho)
         beta  (param :beta)
-        x-out (faust "%xi+%hh*%sg*(%yi-%xi)"       {:xi x-in :yi y-in :hh h :sg sigma})
-        y-out (faust "%yi+%hh*(%xi*(%rh-%zi)-%yi)" {:xi x-in :yi y-in :zi z-in :hh h :rh rho})
-        z-out (faust "%zi+%hh*(%xi*%yi-%bt*%zi)"   {:xi x-in :yi y-in :zi z-in :hh h :bt beta})]
+        x-out (faust "%{xi}+%{hh}*%{sg}*(%{yi}-%{xi})"       {:xi x-in :yi y-in :hh h :sg sigma})
+        y-out (faust "%{yi}+%{hh}*(%{xi}*(%{rh}-%{zi})-%{yi})" {:xi x-in :yi y-in :zi z-in :hh h :rh rho})
+        z-out (faust "%{zi}+%{hh}*(%{xi}*%{yi}-%{bt}*%{zi})"   {:xi x-in :yi y-in :zi z-in :hh h :bt beta})]
     (output :x x-out)
     (output :y y-out)
     (output :z z-out)))

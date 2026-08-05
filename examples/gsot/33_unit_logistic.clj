@@ -32,5 +32,5 @@
   {:params {:steepness {:range [0.0 20.0] :default 10.0}}}
   (let [x   (audio-in)
         k   (param :steepness)
-        out (faust "1.0 / (1.0 + exp(-%k * (%x - 0.5)))" {:x x :k k})]
+        out (faust "1.0 / (1.0 + exp(-%{k} * (%{x} - 0.5)))" {:x x :k k})]
     (output out)))

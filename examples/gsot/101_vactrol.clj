@@ -88,11 +88,11 @@
         atk    (param :attack)
         rel    (param :release)
         ; Asymmetric envelope: fast attack (LED-on), slow release (LED-off)
-        env    (faust "(select2(%cv>_,%rl,%at)*(%cv-_)+_)~_"
+        env    (faust "(select2(%{cv}>_,%{rl},%{at})*(%{cv}-_)+_)~_"
                       {:cv cv :at atk :rl rel})
         ; One-pole LP with env-controlled coefficient; 0.999 ceiling ensures drain
-        filter (faust "(%au+_*(1.0-%ev)*0.999)~_" {:au audio :ev env})
+        filter (faust "(%{au}+_*(1.0-%{ev})*0.999)~_" {:au audio :ev env})
         ; VCA: amplitude = env (same source couples VCF and VCA)
-        out    (faust "%fl*%ev" {:fl filter :ev env})]
+        out    (faust "%{fl}*%{ev}" {:fl filter :ev env})]
     (output :out out)
     (output :env env)))

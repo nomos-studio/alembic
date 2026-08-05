@@ -64,7 +64,7 @@
         hz  (param :hz)
         gn  (param :gn)
         dp  (param :dp)
-        dl  (faust "max(0.0,ma.SR/%hz-1.0-%dp)" {:hz hz :dp dp})
-        out (faust "strfc_loop ~ _\n  with { strfc_loop(s) = %in+%gn*de.fdelay(int(ma.SR*5.0),%dl,(1.0-%dp)*s+%dp*s@1); }"
+        dl  (faust "max(0.0,ma.SR/%{hz}-1.0-%{dp})" {:hz hz :dp dp})
+        out (faust "strfc_loop ~ _\n  with { strfc_loop(s) = %{in}+%{gn}*de.fdelay(int(ma.SR*5.0),%{dl},(1.0-%{dp})*s+%{dp}*s@1); }"
                    {:in in :gn gn :dp dp :dl dl})]
     (output :out out)))

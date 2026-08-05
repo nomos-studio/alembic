@@ -66,7 +66,7 @@
         ms  (param :ms)
         gn  (param :gn)
         bp  (param :bp)
-        dl  (faust "int(max(0.0,%ms*ma.SR/1000.0))" {:ms ms})
-        fdl (faust "enh_loop ~ _\n  with {\n    enh_loop(s) = de.delay(int(ma.SR*5.0),%dl,%in+%gn*ap)\n      with {\n        ap = apl ~ _\n          with { apl(p) = %bp*s-%bp*p+s@1; };\n      };\n  }"
+        dl  (faust "int(max(0.0,%{ms}*ma.SR/1000.0))" {:ms ms})
+        fdl (faust "enh_loop ~ _\n  with {\n    enh_loop(s) = de.delay(int(ma.SR*5.0),%{dl},%{in}+%{gn}*ap)\n      with {\n        ap = apl ~ _\n          with { apl(p) = %{bp}*s-%{bp}*p+s@1; };\n      };\n  }"
                    {:dl dl :in in :gn gn :bp bp})]
     (output :out fdl)))

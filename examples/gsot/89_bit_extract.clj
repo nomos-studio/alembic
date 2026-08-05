@@ -55,6 +55,6 @@
   (let [in     (audio-in)
         offset (param :offset)
         width  (param :width)
-        out    (faust "float((int(%in)>>int(%of))&(int(pow(2.0,float(int(%wd))))-1))"
+        out    (faust "float((int(%{in})>>int(%{of}))&(int(pow(2.0,float(int(%{wd}))))-1))"
                       {:in in :of offset :wd width})]
     (output :out out)))

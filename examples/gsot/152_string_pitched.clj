@@ -52,7 +52,7 @@
   (let [in  (audio-in)
         hz  (param :hz)
         gn  (param :gn)
-        dl  (faust "max(0.0,ma.SR/%hz-1.5)" {:hz hz})
-        out (faust "strp_loop ~ _\n  with { strp_loop(s) = %in+%gn*de.fdelay(int(ma.SR*5.0),%dl,0.5*(s+s@1)); }"
+        dl  (faust "max(0.0,ma.SR/%{hz}-1.5)" {:hz hz})
+        out (faust "strp_loop ~ _\n  with { strp_loop(s) = %{in}+%{gn}*de.fdelay(int(ma.SR*5.0),%{dl},0.5*(s+s@1)); }"
                    {:in in :gn gn :dl dl})]
     (output :out out)))

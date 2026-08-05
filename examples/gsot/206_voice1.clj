@@ -67,8 +67,8 @@
         out (faust
               "env*osc
                with {
-                 env=en.adsr(0.01,0.1,0.8,0.3,%gt);
-                 osc=sin(2.0*ma.PI*os.phasor(1,%hz));
+                 env=en.adsr(0.01,0.1,0.8,0.3,%{gt});
+                 osc=sin(2.0*ma.PI*os.phasor(1,%{hz}));
                }"
               {:hz hz :gt gt})]
     (output :out out)))

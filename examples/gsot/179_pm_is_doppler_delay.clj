@@ -141,7 +141,7 @@
         fc  (param :fc)
         fm  (param :fm)
         ix  (param :ix)
-        da  (faust "%ix*ma.SR/(2.0*ma.PI*%fc)" {:ix ix :fc fc})
-        ds  (faust "max(0.0,ma.SR+%da*os.osc(%fm))" {:da da :fm fm})
-        out (faust "de.fdelay(2*ma.SR,min(2*ma.SR-1.0,%ds),%in)" {:ds ds :in in})]
+        da  (faust "%{ix}*ma.SR/(2.0*ma.PI*%{fc})" {:ix ix :fc fc})
+        ds  (faust "max(0.0,ma.SR+%{da}*os.osc(%{fm}))" {:da da :fm fm})
+        out (faust "de.fdelay(2*ma.SR,min(2*ma.SR-1.0,%{ds}),%{in})" {:ds ds :in in})]
     (output :out out)))

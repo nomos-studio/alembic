@@ -93,11 +93,11 @@
         rho     (param :rho)
         beta    (param :beta)
         inj-amt (param :inject)
-        x-out   (faust "%xi+%hh*%sg*(%yi-%xi)+%am*%ix"
+        x-out   (faust "%{xi}+%{hh}*%{sg}*(%{yi}-%{xi})+%{am}*%{ix}"
                        {:xi x-in :yi y-in :hh h :sg sigma :am inj-amt :ix sig-in})
-        y-out   (faust "%yi+%hh*(%xi*(%rh-%zi)-%yi)"
+        y-out   (faust "%{yi}+%{hh}*(%{xi}*(%{rh}-%{zi})-%{yi})"
                        {:xi x-in :yi y-in :zi z-in :hh h :rh rho})
-        z-out   (faust "%zi+%hh*(%xi*%yi-%bt*%zi)"
+        z-out   (faust "%{zi}+%{hh}*(%{xi}*%{yi}-%{bt}*%{zi})"
                        {:xi x-in :yi y-in :zi z-in :hh h :bt beta})]
     (output :x x-out)
     (output :y y-out)

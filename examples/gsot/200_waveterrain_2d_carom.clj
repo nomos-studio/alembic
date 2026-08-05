@@ -105,8 +105,8 @@
                  h(k)=sin(ang*float(k+1))/float(k+1)*float(k<=yt);
                  tbl_init=0.5*(h(0)+h(1)+h(2)+h(3)+h(4)+h(5)+h(6)+h(7));
                  tbl(i)=rdtable(N,tbl_init,max(0,min(N-1,i)));
-                 ph_x=os.phasor(1,%fc);
-                 ph_y=ma.frac(os.phasor(1,%fc*%rt)+%ph);
+                 ph_x=os.phasor(1,%{fc});
+                 ph_y=ma.frac(os.phasor(1,%{fc}*%{rt})+%{ph});
                  cx=1.0-abs(2.0*ph_x-1.0);
                  cy=1.0-abs(2.0*ph_y-1.0);
                  xfull=cx*float(W); yfull=cy*float(H);

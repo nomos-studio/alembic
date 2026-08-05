@@ -66,17 +66,17 @@
         hz  (param :hz)
         q   (param :q)
         ; SVF coefficients (same as ex.128/129)
-        gv  (faust "tan(ma.PI*%hz/ma.SR)" {:hz hz})
-        kk  (faust "1.0/%qq" {:qq q})
-        dn  (faust "1.0+%kk*%gv+%gv*%gv" {:kk kk :gv gv})
+        gv  (faust "tan(ma.PI*%{hz}/ma.SR)" {:hz hz})
+        kk  (faust "1.0/%{qq}" {:qq q})
+        dn  (faust "1.0+%{kk}*%{gv}+%{gv}*%{gv}" {:kk kk :gv gv})
         ; SVF kernel via Faust tuple recursion (see ex.129 for full derivation).
         ; svf_kern(s1p, s2p) = hp, bp, lp, s1n, s2n  (5-channel output).
         ; ~ (_, _) routes last 2 outputs (s1n, s2n) back as (s1p, s2p).
         svf (faust
-              "svf_kern ~ (_, _)\n  with {\n    svf_kern(s1p, s2p) = hp, bp, lp, s1n, s2n\n      with {\n        hp = (%in-%kk*s1p-s2p)/%dn;\n        bp = %gv*hp+s1p;\n        lp = %gv*bp+s2p;\n        s1n = 2.0*%gv*hp+s1p;\n        s2n = 2.0*%gv*bp+s2p;\n      };\n  }"
+              "svf_kern ~ (_, _)\n  with {\n    svf_kern(s1p, s2p) = hp, bp, lp, s1n, s2n\n      with {\n        hp = (%{in}-%{kk}*s1p-s2p)/%{dn};\n        bp = %{gv}*hp+s1p;\n        lp = %{gv}*bp+s2p;\n        s1n = 2.0*%{gv}*hp+s1p;\n        s2n = 2.0*%{gv}*bp+s2p;\n      };\n  }"
               {:gv gv :in in :kk kk :dn dn})
         ; Extract HP (ch0) and LP (ch2) from the 5-channel SVF signal.
-        hp  (faust "%sv:(_, !, !, !, !)" {:sv svf})
-        lp  (faust "%sv:(!, !, _, !, !)" {:sv svf})]
+        hp  (faust "%{sv}:(_, !, !, !, !)" {:sv svf})
+        lp  (faust "%{sv}:(!, !, _, !, !)" {:sv svf})]
     (output :out0 lp)
     (output :out1 hp)))

@@ -82,11 +82,11 @@
   {:params {:drive {:range [0.5 8.0] :default 2.0}}}
   (let [x     (audio-in)
         k     (param :drive)
-        bx    (faust "2.0*%xx-1.0"                    {:xx x})
-        u     (faust "%kk*%bx"                         {:kk k :bx bx})
-        e2u   (faust "exp(2.0*%uu)"                    {:uu u})
-        tanhu (faust "1.0-2.0/(1.0+%eu)"              {:eu e2u})
+        bx    (faust "2.0*%{xx}-1.0"                    {:xx x})
+        u     (faust "%{kk}*%{bx}"                         {:kk k :bx bx})
+        e2u   (faust "exp(2.0*%{uu})"                    {:uu u})
+        tanhu (faust "1.0-2.0/(1.0+%{eu})"              {:eu e2u})
         ; tanh(k): normalization denominator — uses k directly via exp form
-        tanhk (faust "1.0-2.0/(1.0+exp(2.0*%kk))"    {:kk k})
-        out   (faust "(%tu+%tk)/(2.0*max(%tk,0.0001))" {:tu tanhu :tk tanhk})]
+        tanhk (faust "1.0-2.0/(1.0+exp(2.0*%{kk}))"    {:kk k})
+        out   (faust "(%{tu}+%{tk})/(2.0*max(%{tk},0.0001))" {:tu tanhu :tk tanhk})]
     (output out)))

@@ -60,5 +60,5 @@
   (let [trig    (audio-in)
         rand-01 (faust "0.5*(no.noise+1.0)" {})
         prob    (param :prob)
-        out     (faust "float(%rr<%pp)*%tr" {:rr rand-01 :pp prob :tr trig})]
+        out     (faust "float(%{rr}<%{pp})*%{tr}" {:rr rand-01 :pp prob :tr trig})]
     (output out)))

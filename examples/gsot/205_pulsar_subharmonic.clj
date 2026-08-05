@@ -112,14 +112,14 @@
         out (faust
               "puls_sub
                with {
-                 ns_f=max(1.0,float(int(%ns)));
-                 fp_e=%fp/ns_f;
-                 dc_f=max(0.001,%dc);
+                 ns_f=max(1.0,float(int(%{ns})));
+                 fp_e=%{fp}/ns_f;
+                 dc_f=max(0.001,%{dc});
                  ph_p=os.phasor(1,fp_e);
                  gate=float(ph_p<dc_f);
                  ph_f=ph_p/dc_f;
                  win=gate*0.5*(1.0-cos(2.0*ma.PI*ph_f));
-                 formant=sin(2.0*ma.PI*ma.frac(ph_p*%fc/max(fp_e,1.0)));
+                 formant=sin(2.0*ma.PI*ma.frac(ph_p*%{fc}/max(fp_e,1.0)));
                  puls_sub=win*formant;
                }"
               {:fp fp :dc dc :fc fc :ns ns})]

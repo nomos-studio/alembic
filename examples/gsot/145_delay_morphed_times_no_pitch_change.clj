@@ -96,14 +96,14 @@
         st  (param :st)
         dc  (param :dc)
         mx  (param :mx)
-        sk  (faust "exp(-1000.0/(%st*ma.SR))" {:st st})
-        smo (faust "(%sk*_+(1.0-%sk)*%mo)~_" {:sk sk :mo mo})
-        fba (faust "pow(0.001,%ta/max(1.0,%dc))" {:ta ta :dc dc})
-        fbb (faust "pow(0.001,%tb/max(1.0,%dc))" {:tb tb :dc dc})
-        dla (faust "dla_loop ~ _\n  with { dla_loop(fbs) = de.delay(int(ma.SR*5.0),int(max(0.0,%ta*ma.SR/1000.0)),%in+%fa*fbs); }"
+        sk  (faust "exp(-1000.0/(%{st}*ma.SR))" {:st st})
+        smo (faust "(%{sk}*_+(1.0-%{sk})*%{mo})~_" {:sk sk :mo mo})
+        fba (faust "pow(0.001,%{ta}/max(1.0,%{dc}))" {:ta ta :dc dc})
+        fbb (faust "pow(0.001,%{tb}/max(1.0,%{dc}))" {:tb tb :dc dc})
+        dla (faust "dla_loop ~ _\n  with { dla_loop(fbs) = de.delay(int(ma.SR*5.0),int(max(0.0,%{ta}*ma.SR/1000.0)),%{in}+%{fa}*fbs); }"
                    {:ta ta :in in :fa fba})
-        dlb (faust "dlb_loop ~ _\n  with { dlb_loop(fbs) = de.delay(int(ma.SR*5.0),int(max(0.0,%tb*ma.SR/1000.0)),%in+%fb*fbs); }"
+        dlb (faust "dlb_loop ~ _\n  with { dlb_loop(fbs) = de.delay(int(ma.SR*5.0),int(max(0.0,%{tb}*ma.SR/1000.0)),%{in}+%{fb}*fbs); }"
                    {:tb tb :in in :fb fbb})
-        wet (faust "(1.0-%sm)*%da+%sm*%db" {:sm smo :da dla :db dlb})
-        out (faust "(1.0-%mx)*%in+%mx*%wt" {:mx mx :in in :wt wet})]
+        wet (faust "(1.0-%{sm})*%{da}+%{sm}*%{db}" {:sm smo :da dla :db dlb})
+        out (faust "(1.0-%{mx})*%{in}+%{mx}*%{wt}" {:mx mx :in in :wt wet})]
     (output :out out)))

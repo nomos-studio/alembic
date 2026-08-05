@@ -76,15 +76,15 @@
   (let [trig   (audio-in)
         cv-in  (audio-in)
         s0     (track-hold cv-in trig)
-        s1     (track-hold (faust "%pv@1" {:pv s0}) trig)
-        s2     (track-hold (faust "%pv@1" {:pv s1}) trig)
-        s3     (track-hold (faust "%pv@1" {:pv s2}) trig)
-        s4     (track-hold (faust "%pv@1" {:pv s3}) trig)
-        s5     (track-hold (faust "%pv@1" {:pv s4}) trig)
-        s6     (track-hold (faust "%pv@1" {:pv s5}) trig)
-        s7     (track-hold (faust "%pv@1" {:pv s6}) trig)
+        s1     (track-hold (faust "%{pv}@1" {:pv s0}) trig)
+        s2     (track-hold (faust "%{pv}@1" {:pv s1}) trig)
+        s3     (track-hold (faust "%{pv}@1" {:pv s2}) trig)
+        s4     (track-hold (faust "%{pv}@1" {:pv s3}) trig)
+        s5     (track-hold (faust "%{pv}@1" {:pv s4}) trig)
+        s6     (track-hold (faust "%{pv}@1" {:pv s5}) trig)
+        s7     (track-hold (faust "%{pv}@1" {:pv s6}) trig)
         sel    (param :canon)
-        voice2 (faust "select2(%sl<5.0,select2(%sl<7.0,select2(%sl<6.0,%s5,%s6),%s7),select2(%sl<3.0,select2(%sl<2.0,%s1,%s2),select2(%sl<4.0,%s3,%s4)))"
+        voice2 (faust "select2(%{sl}<5.0,select2(%{sl}<7.0,select2(%{sl}<6.0,%{s5},%{s6}),%{s7}),select2(%{sl}<3.0,select2(%{sl}<2.0,%{s1},%{s2}),select2(%{sl}<4.0,%{s3},%{s4})))"
                       {:sl sel :s1 s1 :s2 s2 :s3 s3 :s4 s4 :s5 s5 :s6 s6 :s7 s7})]
     (output :v1 s0)
     (output :v2 voice2)))

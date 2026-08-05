@@ -66,19 +66,19 @@
         weight   (param :weight)
         rnd-amt  (param :rnd-amt)
         ; Raw weight: centre ± spread, clamped to [0,1]
-        raw-wt   (faust "max(0.0,min(1.0,%wt+%ra*no.noise))" {:wt weight :ra rnd-amt})
+        raw-wt   (faust "max(0.0,min(1.0,%{wt}+%{ra}*no.noise))" {:wt weight :ra rnd-amt})
         ; Hold the weight constant for the duration of each step
         held-wt  (track-hold raw-wt trig)
         ; New bit: independent Bernoulli draw using held weight
-        new-bit  (faust "float(0.5*(no.noise+1.0)<%wh)" {:wh held-wt})
+        new-bit  (faust "float(0.5*(no.noise+1.0)<%{wh})" {:wh held-wt})
         s0       (track-hold new-bit trig)
-        s1       (track-hold (faust "%pv@1" {:pv s0}) trig)
-        s2       (track-hold (faust "%pv@1" {:pv s1}) trig)
-        s3       (track-hold (faust "%pv@1" {:pv s2}) trig)
-        s4       (track-hold (faust "%pv@1" {:pv s3}) trig)
-        s5       (track-hold (faust "%pv@1" {:pv s4}) trig)
-        s6       (track-hold (faust "%pv@1" {:pv s5}) trig)
-        s7       (track-hold (faust "%pv@1" {:pv s6}) trig)]
+        s1       (track-hold (faust "%{pv}@1" {:pv s0}) trig)
+        s2       (track-hold (faust "%{pv}@1" {:pv s1}) trig)
+        s3       (track-hold (faust "%{pv}@1" {:pv s2}) trig)
+        s4       (track-hold (faust "%{pv}@1" {:pv s3}) trig)
+        s5       (track-hold (faust "%{pv}@1" {:pv s4}) trig)
+        s6       (track-hold (faust "%{pv}@1" {:pv s5}) trig)
+        s7       (track-hold (faust "%{pv}@1" {:pv s6}) trig)]
     (output :s0 s0)
     (output :s1 s1)
     (output :s2 s2)

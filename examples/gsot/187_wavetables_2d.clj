@@ -127,7 +127,7 @@
             :wp {:range [0.0 1.0]     :default 0.0}}}
   (let [fc  (param :fc)
         wp  (param :wp)
-        ph  (faust "os.phasor(1,%fc)" {:fc fc})
+        ph  (faust "os.phasor(1,%{fc})" {:fc fc})
         out (faust
               "bilinear
                with {
@@ -137,7 +137,7 @@
                  h(k)=sin(ang*float(k+1))/float(k+1)*float(k<=yt);
                  tbl_init=0.5*(h(0)+h(1)+h(2)+h(3)+h(4)+h(5)+h(6)+h(7));
                  tbl(i)=rdtable(N,tbl_init,max(0,min(N-1,i)));
-                 xfull=%ph*float(W); yfull=%wp*float(H);
+                 xfull=%{ph}*float(W); yfull=%{wp}*float(H);
                  xi=int(xfull); yi=int(yfull);
                  x0=xi&(W-1); x1=(x0+1)&(W-1);
                  y0=yi%H; y1=(y0+1)%H;

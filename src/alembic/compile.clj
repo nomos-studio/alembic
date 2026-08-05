@@ -10,6 +10,7 @@
   (compile-to-cpp graph)             — Faust C++ source string (generic)
   (compile-to-wasm graph & opts)     — compile to .wasm + companion .json
   (compile-to-clap graph & opts)     — compile to native .clap bundle
+  (run-dsp graph & opts)             — render N samples via csvplot arch → {:ch0 [...] ...}
   (faust-source graph)               — emitted .dsp source (no compiler)
 
   compile-to-wasm options:
@@ -197,6 +198,68 @@
     (when (not= 0 exit)
       (throw (ex-info err-msg {:stdout out :stderr err :cmd cmd})))
     {:out out :err err}))
+
+;; ---------------------------------------------------------------------------
+;; DSP execution — csvplot architecture
+;; ---------------------------------------------------------------------------
+
+(defn- parse-dsp-csv
+  "Parse csvplot output into {:ch0 [samples...] :ch1 [...] ...}.
+  csvplot.cpp uses comma-tab (,\\t) as the column separator and emits a
+  'channel N' header row which is skipped.  Non-numeric rows are discarded."
+  [s]
+  (let [rows (->> (str/split-lines s)
+                  (keep (fn [line]
+                          (when-not (or (str/blank? line)
+                                        (re-find #"(?i)channel" line))
+                            (let [cols (mapv (fn [v]
+                                              (try (Double/parseDouble (str/trim v))
+                                                   (catch NumberFormatException _ nil)))
+                                            (str/split line #",?\t"))]
+                              (when (every? some? cols) cols)))))
+                  vec)
+        n-ch (count (first rows))]
+    (into {} (map (fn [ch]
+                    [(keyword (str "ch" ch))
+                     (mapv #(nth % ch) rows)])
+                  (range (max 1 n-ch))))))
+
+(defn run-dsp
+  "Compile `graph` via the Faust csvplot architecture, run for n-samples,
+  and return a map {:ch0 [samples...] :ch1 [...] ...} of sample vectors.
+
+  Uses faust -a csvplot.cpp + clang++ to produce and execute a self-contained
+  DSP binary.  Requires clang++ on PATH in addition to faust.
+
+  Options:
+    :n-samples   number of samples to render (default: 4096)
+    :sample-rate sample rate in Hz (default: 44100)"
+  [graph & {:keys [n-samples sample-rate]
+            :or   {n-samples 4096 sample-rate 44100}}]
+  (let [src      (emit-faust graph)
+        arch-dir (faust-arch-dir)
+        arch-f   (str arch-dir "/csvplot.cpp")]
+    (with-dsp-file [in-f src]
+      (let [cpp-f (make-temp ".cpp")
+            bin-f (make-temp "")]
+        (try
+          (sh-or-throw "Faust csvplot arch step failed"
+                       "faust" "-i" "-a" arch-f
+                       (.getAbsolutePath in-f)
+                       "-o" (.getAbsolutePath cpp-f))
+          (sh-or-throw "C++ compilation of DSP binary failed"
+                       "clang++" "-O2"
+                       (.getAbsolutePath cpp-f)
+                       "-o" (.getAbsolutePath bin-f))
+          (let [_ (.setExecutable bin-f true)
+                {:keys [out]} (sh-or-throw "DSP binary execution failed"
+                                           (.getAbsolutePath bin-f)
+                                           "-n" (str n-samples)
+                                           "-r" (str sample-rate))]
+            (parse-dsp-csv out))
+          (finally
+            (.delete cpp-f)
+            (.delete bin-f)))))))
 
 (defn compile-to-clap
   "Compile `graph` to a native CLAP plugin bundle (.clap).

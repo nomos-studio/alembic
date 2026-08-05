@@ -48,6 +48,6 @@
         ms   (param :ms)
         ; per-sample rate: 1.0 / (time_ms × SR / 1000)
         ; guarded: max(1,ms×SR/1000) prevents division by zero and clips to ≤1
-        rate (faust "1000.0/(max(1.0,%ms*ma.SR/1000.0))" {:ms ms})
-        out  (faust "(_+max(-%rt,min(%rt,%in-_)))~_" {:rt rate :in in})]
+        rate (faust "1000.0/(max(1.0,%{ms}*ma.SR/1000.0))" {:ms ms})
+        out  (faust "(_+max(-%{rt},min(%{rt},%{in}-_)))~_" {:rt rate :in in})]
     (output :out out)))

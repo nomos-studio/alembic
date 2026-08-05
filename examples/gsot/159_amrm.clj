@@ -83,10 +83,10 @@
   (let [in  (audio-in)
         fc  (param :fc)
         mr  (param :mr)
-        osc (faust "os.osc(%fc)" {:fc fc})
-        am  (faust "%in*(1.0+%os)" {:in in :os osc})
-        rm  (faust "%in*%os"       {:in in :os osc})
-        out (faust "(1.0-%mr)*%am+%mr*%rm" {:am am :rm rm :mr mr})]
+        osc (faust "os.osc(%{fc})" {:fc fc})
+        am  (faust "%{in}*(1.0+%{os})" {:in in :os osc})
+        rm  (faust "%{in}*%{os}"       {:in in :os osc})
+        out (faust "(1.0-%{mr})*%{am}+%{mr}*%{rm}" {:am am :rm rm :mr mr})]
     (output :am am)
     (output :rm rm)
     (output :out out)))

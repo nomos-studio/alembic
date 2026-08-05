@@ -99,12 +99,12 @@
         out (faust
               "puls
                with {
-                 dc_f=max(0.001,%dc);
-                 ph_p=os.phasor(1,%fp);
+                 dc_f=max(0.001,%{dc});
+                 ph_p=os.phasor(1,%{fp});
                  gate=float(ph_p<dc_f);
                  ph_f=ph_p/dc_f;
                  win=gate*0.5*(1.0-cos(2.0*ma.PI*ph_f));
-                 formant=sin(2.0*ma.PI*ma.frac(ph_p*%fc/max(%fp,1.0)));
+                 formant=sin(2.0*ma.PI*ma.frac(ph_p*%{fc}/max(%{fp},1.0)));
                  puls=win*formant;
                }"
               {:fp fp :dc dc :fc fc})]

@@ -75,25 +75,25 @@
         reshuffle (audio-in)
         n         (param :size)
         ; Counter: reset on reshuffle, advance mod N on trig
-        counter   (faust "(select2(%rs>0.5,select2(%tr>0.5,_,float(int(_+1.0)%max(1,int(%nn)))),0.0)~_)"
+        counter   (faust "(select2(%{rs}>0.5,select2(%{tr}>0.5,_,float(int(_+1.0)%max(1,int(%{nn})))),0.0)~_)"
                          {:rs reshuffle :tr trig :nn n})
         ; Natural cycle-start: counter wrapped to 0 via trig (not reshuffle)
-        nat-start (faust "float(%ct<0.5)*float(%tr>0.5)*(1.0-float(%rs>0.5))"
+        nat-start (faust "float(%{ct}<0.5)*float(%{tr}>0.5)*(1.0-float(%{rs}>0.5))"
                          {:ct counter :tr trig :rs reshuffle})
         ; Key gate: fire on natural wrap OR forced reshuffle
-        key-gate  (faust "max(%ns,float(%rs>0.5))" {:ns nat-start :rs reshuffle})
+        key-gate  (faust "max(%{ns},float(%{rs}>0.5))" {:ns nat-start :rs reshuffle})
         ; Raw random key [0, N-1]
-        rand-key  (faust "float(int(float(int(%nn))*0.5*(no.noise+1.0)))" {:nn n})
+        rand-key  (faust "float(int(float(int(%{nn}))*0.5*(no.noise+1.0)))" {:nn n})
         ; Previous key (held between key-gate events)
         prev-key  (track-hold rand-key key-gate)
         ; Last value output by previous cycle: (N-1 + prev-key) mod N
-        last-val  (faust "float(int(%nn-1.0+%pk)%max(1,int(%nn)))" {:nn n :pk prev-key})
+        last-val  (faust "float(int(%{nn}-1.0+%{pk})%max(1,int(%{nn})))" {:nn n :pk prev-key})
         ; Collision-adjusted key: +1 mod N if new key == last-val
-        key-adj   (faust "float(int(%rk+float(float(int(%rk)%max(1,int(%nn)))==%lv))%max(1,int(%nn)))"
+        key-adj   (faust "float(int(%{rk}+float(float(int(%{rk})%max(1,int(%{nn})))==%{lv}))%max(1,int(%{nn})))"
                          {:rk rand-key :lv last-val :nn n})
         ; Final key (held between key-gate events)
         key-final (track-hold key-adj key-gate)
         ; Output: all N values per cycle, different rotation each cycle
-        out       (faust "float(int(%ct+%kf)%max(1,int(%nn)))"
+        out       (faust "float(int(%{ct}+%{kf})%max(1,int(%{nn})))"
                          {:ct counter :kf key-final :nn n})]
     (output out)))

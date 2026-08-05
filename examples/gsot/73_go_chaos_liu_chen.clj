@@ -64,9 +64,9 @@
         y-in (audio-in)
         z-in (audio-in)
         h    (param :h)
-        x-out (faust "%xi+%hh*36.0*(%yi-%xi)"   {:xi x-in :yi y-in :hh h})
-        y-out (faust "%yi+%hh*(20.0*%yi-%xi*%zi)" {:xi x-in :yi y-in :zi z-in :hh h})
-        z-out (faust "%zi+%hh*(%xi*%yi-3.0*%zi)" {:xi x-in :yi y-in :zi z-in :hh h})]
+        x-out (faust "%{xi}+%{hh}*36.0*(%{yi}-%{xi})"   {:xi x-in :yi y-in :hh h})
+        y-out (faust "%{yi}+%{hh}*(20.0*%{yi}-%{xi}*%{zi})" {:xi x-in :yi y-in :zi z-in :hh h})
+        z-out (faust "%{zi}+%{hh}*(%{xi}*%{yi}-3.0*%{zi})" {:xi x-in :yi y-in :zi z-in :hh h})]
     (output :x x-out)
     (output :y y-out)
     (output :z z-out)))

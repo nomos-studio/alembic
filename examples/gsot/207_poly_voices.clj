@@ -95,10 +95,10 @@
               "0.25*(v1+v2+v3+v4)
                with {
                  voice(hz,gt)=en.adsr(0.01,0.1,0.8,0.3,gt)*sin(2.0*ma.PI*os.phasor(1,hz));
-                 v1=voice(%f1,%g1);
-                 v2=voice(%f2,%g2);
-                 v3=voice(%f3,%g3);
-                 v4=voice(%f4,%g4);
+                 v1=voice(%{f1},%{g1});
+                 v2=voice(%{f2},%{g2});
+                 v3=voice(%{f3},%{g3});
+                 v4=voice(%{f4},%{g4});
                }"
               {:f1 f1 :f2 f2 :f3 f3 :f4 f4 :g1 g1 :g2 g2 :g3 g3 :g4 g4})]
     (output :out out)))

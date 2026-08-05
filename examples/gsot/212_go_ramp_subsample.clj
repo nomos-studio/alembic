@@ -86,12 +86,12 @@
         out (faust
               "win*src
                with {
-                 dc_g=max(0.001,%gd*%fp/1000.0);
-                 ph_m=os.phasor(1,%fp);
+                 dc_g=max(0.001,%{gd}*%{fp}/1000.0);
+                 ph_m=os.phasor(1,%{fp});
                  trig=ph_m<ph_m';
                  sf=(1.0-ph_m')/max(0.001,ph_m+1.0-ph_m');
-                 gi=(1.0-sf)*%fc/ma.SR;
-                 grain_ph=(select2(trig,_+%fc/ma.SR,gi)~_):ma.frac;
+                 gi=(1.0-sf)*%{fc}/ma.SR;
+                 grain_ph=(select2(trig,_+%{fc}/ma.SR,gi)~_):ma.frac;
                  win=float(ph_m<dc_g)*0.5*(1.0-cos(2.0*ma.PI*ph_m/dc_g));
                  src=sin(2.0*ma.PI*grain_ph);
                }"

@@ -85,7 +85,7 @@
         out (faust
               "trig*sf
                with {
-                 ph=os.phasor(1,%fp);
+                 ph=os.phasor(1,%{fp});
                  trig=float(ph<ph');
                  sf=(1.0-ph')/max(0.001,ph+1.0-ph');
                }"

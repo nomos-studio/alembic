@@ -82,6 +82,6 @@
   {:params {:hz {:range [1.0 20000.0] :default 1000.0}}}
   (let [in    (audio-in)
         freq  (param :hz)
-        coeff (faust "exp(-2.0*ma.PI*%hz/ma.SR)" {:hz freq})
-        out   (faust "(%in*(1.0-%cf)+_*%cf)~_" {:in in :cf coeff})]
+        coeff (faust "exp(-2.0*ma.PI*%{hz}/ma.SR)" {:hz freq})
+        out   (faust "(%{in}*(1.0-%{cf})+_*%{cf})~_" {:in in :cf coeff})]
     (output :out out)))

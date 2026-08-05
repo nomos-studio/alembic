@@ -110,18 +110,18 @@
                with {
                  N=65536;
                  rnd=no.noise;
-                 dc_g=max(0.001,%gd*%gr/1000.0);
-                 ph0=ma.frac(os.phasor(1,%gr)+0.0);
-                 ph1=ma.frac(os.phasor(1,%gr)+0.25);
-                 ph2=ma.frac(os.phasor(1,%gr)+0.5);
-                 ph3=ma.frac(os.phasor(1,%gr)+0.75);
+                 dc_g=max(0.001,%{gd}*%{gr}/1000.0);
+                 ph0=ma.frac(os.phasor(1,%{gr})+0.0);
+                 ph1=ma.frac(os.phasor(1,%{gr})+0.25);
+                 ph2=ma.frac(os.phasor(1,%{gr})+0.5);
+                 ph3=ma.frac(os.phasor(1,%{gr})+0.75);
                  tr0=ph0<ph0'; tr1=ph1<ph1'; tr2=ph2<ph2'; tr3=ph3<ph3';
-                 ps0=ba.sAndH(tr0,ma.frac(%sp+%ps*rnd));
-                 ps1=ba.sAndH(tr1,ma.frac(%sp+%ps*rnd));
-                 ps2=ba.sAndH(tr2,ma.frac(%sp+%ps*rnd));
-                 ps3=ba.sAndH(tr3,ma.frac(%sp+%ps*rnd));
+                 ps0=ba.sAndH(tr0,ma.frac(%{sp}+%{ps}*rnd));
+                 ps1=ba.sAndH(tr1,ma.frac(%{sp}+%{ps}*rnd));
+                 ps2=ba.sAndH(tr2,ma.frac(%{sp}+%{ps}*rnd));
+                 ps3=ba.sAndH(tr3,ma.frac(%{sp}+%{ps}*rnd));
                  win(ph)=float(ph<dc_g)*0.5*(1.0-cos(2.0*ma.PI*ph/dc_g));
-                 src(ph,ps)=rdtable(N,os.sinwaveform(N),int(ma.frac(ph*%fc/max(%gr,1.0)+ps)*float(N))&(N-1));
+                 src(ph,ps)=rdtable(N,os.sinwaveform(N),int(ma.frac(ph*%{fc}/max(%{gr},1.0)+ps)*float(N))&(N-1));
                  g0=win(ph0)*src(ph0,ps0);
                  g1=win(ph1)*src(ph1,ps1);
                  g2=win(ph2)*src(ph2,ps2);

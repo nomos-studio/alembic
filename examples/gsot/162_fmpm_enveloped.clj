@@ -95,9 +95,9 @@
         md  (param :md)
         at  (param :at)
         rl  (param :rl)
-        env (faust "en.ar(%at,%rl,%gt)" {:at at :rl rl :gt gt})
-        mo  (faust "os.osc(%fm)" {:fm fm})
-        iy  (faust "%ix*%en" {:ix ix :en env})
-        out (faust "%en*sin(2.0*ma.PI*os.phasor(1,%fc+(1.0-%md)*%iy*%fm*%mo)+%md*%iy*%mo)"
+        env (faust "en.ar(%{at},%{rl},%{gt})" {:at at :rl rl :gt gt})
+        mo  (faust "os.osc(%{fm})" {:fm fm})
+        iy  (faust "%{ix}*%{en}" {:ix ix :en env})
+        out (faust "%{en}*sin(2.0*ma.PI*os.phasor(1,%{fc}+(1.0-%{md})*%{iy}*%{fm}*%{mo})+%{md}*%{iy}*%{mo})"
                    {:en env :fc fc :fm fm :iy iy :md md :mo mo})]
     (output :out out)))

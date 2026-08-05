@@ -80,7 +80,7 @@
         trig  (:out cmp)
         noise (faust "abs(no.noise)")
         to    (track-hold noise trig)
-        from  (faust "(select2(%trig>0.5,_,%tgt')~_)" {:trig trig :tgt to})
-        out   (faust "%from+%ramp*(%tgt-%from)" {:from from :ramp ramp :tgt to})]
+        from  (faust "(select2(%{trig}>0.5,_,%{tgt}')~_)" {:trig trig :tgt to})
+        out   (faust "%{from}+%{ramp}*(%{tgt}-%{from})" {:from from :ramp ramp :tgt to})]
     (output out)
     (output :ramp ramp)))

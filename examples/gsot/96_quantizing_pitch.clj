@@ -99,13 +99,13 @@
         beats  (param :beats)
         root   (param :root)
         ; Degree within current octave of the scale (0..N-1)
-        deg-oc (faust "float(int(%in)%max(1,int(%bt)))" {:in in :bt beats})
+        deg-oc (faust "float(int(%{in})%max(1,int(%{bt})))" {:in in :bt beats})
         ; Octave number (integer floor division)
-        oct-n  (faust "floor(%in/max(1.0,%bt))" {:in in :bt beats})
+        oct-n  (faust "floor(%{in}/max(1.0,%{bt}))" {:in in :bt beats})
         ; Inverse digitized ratio: semitone = floor(12 * degree / N)
-        semi   (faust "floor(12.0*%dg/max(1.0,%bt))" {:dg deg-oc :bt beats})
+        semi   (faust "floor(12.0*%{dg}/max(1.0,%{bt}))" {:dg deg-oc :bt beats})
         ; MIDI note and frequency
-        note   (faust "%rt+%sm+%oc*12.0" {:rt root :sm semi :oc oct-n})
-        freq   (faust "440.0*pow(2.0,(%nt-69.0)/12.0)" {:nt note})]
+        note   (faust "%{rt}+%{sm}+%{oc}*12.0" {:rt root :sm semi :oc oct-n})
+        freq   (faust "440.0*pow(2.0,(%{nt}-69.0)/12.0)" {:nt note})]
     (output :freq freq)
     (output :note note)))

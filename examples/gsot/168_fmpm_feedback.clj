@@ -96,6 +96,6 @@
   (let [fc  (param :fc)
         ix  (param :ix)
         md  (param :md)
-        out (faust "fmfb ~ _\n  with { fmfb(x) = sin(2.0*ma.PI*os.phasor(1,%fc+(1.0-%md)*%ix*%fc*x)+%md*%ix*x); }"
+        out (faust "fmfb ~ _\n  with { fmfb(x) = sin(2.0*ma.PI*os.phasor(1,%{fc}+(1.0-%{md})*%{ix}*%{fc}*x)+%{md}*%{ix}*x); }"
                    {:fc fc :ix ix :md md})]
     (output :out out)))

@@ -62,8 +62,8 @@
         trig   (:out cmp)
         noise  (faust "abs(no.noise)")
         to     (track-hold noise trig)
-        from   (faust "(select2(%trig>0.5,_,%tgt')~_)" {:trig trig :tgt to})
-        shaped (faust "0.5*(1.0-cos(2.0*ma.PI*%r))" {:r ramp})
-        out    (faust "%from+%s*(%tgt-%from)" {:from from :s shaped :tgt to})]
+        from   (faust "(select2(%{trig}>0.5,_,%{tgt}')~_)" {:trig trig :tgt to})
+        shaped (faust "0.5*(1.0-cos(2.0*ma.PI*%{r}))" {:r ramp})
+        out    (faust "%{from}+%{s}*(%{tgt}-%{from})" {:from from :s shaped :tgt to})]
     (output out)
     (output :ramp ramp)))

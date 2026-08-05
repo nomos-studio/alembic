@@ -64,22 +64,60 @@
     (if (str/includes? s ".") s (str s ".0"))))
 
 ;; ---------------------------------------------------------------------------
-;; Param hslider declaration
+;; Param declaration — dispatches on :type in the param schema
+;;
+;;   :float (default) — hslider; continuous range; step auto-derived as range/1e4
+;;   :int             — hslider with step 1, wrapped in float(int(...)); discrete integer
+;;   :bool            — checkbox; binary 0/1; no range/step arguments
+;;   :enum            — nentry with range [0, N-1] step 1, wrapped in float(int(...));
+;;                      requires :values [kw ...]; :default must be one of the values
+;;
+;; All types carry their full schema in the graph value for downstream consumers
+;; (CLAP param flags, nomos-rt param bus, UI tooling). The Faust widget choice is
+;; the emit-time consequence; the schema is the authoritative type record.
 ;; ---------------------------------------------------------------------------
 
-(defn- hslider
+(defn- param-rhs
   [{:keys [name]} params-schema]
-  (let [nm           (clojure.core/name name)
-        sch          (get params-schema name {})
-        [lo hi]      (get sch :range [0.0 1.0])
-        default      (get sch :default 0.0)
-        step         (max 1e-4 (/ (- (double hi) (double lo)) 1e4))]
-    (format "hslider(\"%s\", %s, %s, %s, %s)"
-            nm
-            (fmt-num default)
-            (fmt-num lo)
-            (fmt-num hi)
-            (fmt-num step))))
+  (let [nm  (clojure.core/name name)
+        sch (get params-schema name {})
+        typ (get sch :type :float)]
+    (case typ
+      :float
+      (let [[lo hi] (get sch :range [0.0 1.0])
+            default (get sch :default 0.0)
+            step    (max 1e-4 (/ (- (double hi) (double lo)) 1e4))]
+        (format "hslider(\"%s\", %s, %s, %s, %s)"
+                nm (fmt-num default) (fmt-num lo) (fmt-num hi) (fmt-num step)))
+
+      :int
+      (let [[lo hi] (get sch :range [0 127])
+            default (get sch :default (first [(int lo)]))]
+        (format "float(int(hslider(\"%s\", %s, %s, %s, 1.0)))"
+                nm (fmt-num (double default)) (fmt-num (double lo)) (fmt-num (double hi))))
+
+      :bool
+      (format "checkbox(\"%s\")" nm)
+
+      :enum
+      (let [values  (get sch :values [])
+            _       (when (empty? values)
+                      (throw (ex-info (str ":enum param '" nm "' requires :values [...] in schema")
+                                      {:param name :schema sch})))
+            default (get sch :default (first values))
+            idx     (.indexOf (vec values) default)
+            _       (when (neg? idx)
+                      (throw (ex-info (str ":enum param '" nm "' :default " default
+                                           " is not in :values " values)
+                                      {:param name :default default :values values})))
+            n       (count values)]
+        (format "float(int(nentry(\"%s\", %s, 0.0, %s, 1.0)))"
+                nm (fmt-num (double idx)) (fmt-num (double (dec n)))))
+
+      (throw (ex-info (str "Unknown param :type " (pr-str typ) " for '" nm
+                           "' — expected :float :int :bool :enum")
+                      {:param name :type typ})))))
+
 
 ;; ---------------------------------------------------------------------------
 ;; Per-node right-hand side expression
@@ -91,7 +129,7 @@
   (let [i #(node-ident (get (:inputs node) %))]
     (case (:op node)
       :const    (fmt-num (:value node))
-      :param    (hslider node params-schema)
+      :param    (param-rhs node params-schema)
       :phasor   (format "os.phasor(1.0, %s)" (i :freq))
       :sine-bi  (format "sin(2.0*ma.PI*%s)" (i :input))
       :sine-uni (format "(0.5 + 0.5*sin(2.0*ma.PI*%s))" (i :input))
@@ -102,6 +140,7 @@
       :sub      (format "(%s - %s)" (i :a) (i :b))
       :div      (format "(%s / %s)" (i :a) (i :b))
       :history  (format "%s'" (i :input))
+      :z-1      (format "%s'" (i :in))
       ;; :delay — opts-aware delay line:
       ;;   :smooth true  (default) → de.sdelay: glitch-free crossfade on time change
       ;;   :smooth false, :interp :linear/:cubic → de.fdelay: fractional, raw Doppler
@@ -208,6 +247,13 @@
       ;; Uses positive-modulo formula: floor handles negatives correctly in Faust
       :wave-fold   (format "(1.0 - 2.0 * abs((%s + 1.0 - 4.0 * floor((%s + 1.0) / 4.0)) / 2.0 - 1.0))"
                            (i :in) (i :in))
+      ;; :triode-pre — 12AX7 tube stage (lookup-table model from tubes.lib)
+      ;;   gain multiplied before the stage; use T1_12AX7 (brightest bias point)
+      ;;   For multi-stage preamp, chain in Alembic: (triode-pre (triode-pre x g) g)
+      :triode-pre
+      (format "(%s * %s) : component(\"tubes.lib\").T1_12AX7"
+              (i :in) (i :gain))
+
       ;; :naive-svf — Chamberlin-style SVF; LP output; cutoff capped at Nyquist/6 for stability
       ;; fi.svf_morph(freq_hz, Q, blend=0.0, x) → pure LP
       :naive-svf   (format "fi.svf_morph(min(%s * ma.SR * 0.5, ma.SR / 6.0), (0.5 + %s * 9.5), 0.0, %s)"
@@ -379,15 +425,15 @@
       :beat-trigger (let [ph (i :phase)]
                       (format "float((%s' - %s) > 0.5)" ph ph))
       ;; :faust — raw Faust expression with named inlet substitution.
-      ;; %inlet-name placeholders are replaced with the Faust identifier of the
-      ;; wired source node. Longer inlet names are substituted first to avoid
-      ;; prefix collisions (e.g. %in-wet replaced before %in).
-      ;; Nodes with no :inputs return :source unchanged — backward compatible.
+      ;; %{inlet-name} placeholders are replaced with the Faust identifier of the
+      ;; wired source node.  Delimiters make substitution unambiguous regardless
+      ;; of inlet name length — no ordering constraints between inlets.
+      ;; Nodes with no :inputs return :source unchanged.
       :faust       (let [src (:source node)]
                      (reduce (fn [s [inlet node-id]]
-                               (str/replace s (str "%" (name inlet)) (node-ident node-id)))
+                               (str/replace s (str "%{" (name inlet) "}") (node-ident node-id)))
                              src
-                             (sort-by (comp - count name first) (:inputs node))))
+                             (:inputs node)))
       (throw (ex-info (str "Unknown op in Faust emitter: " (:op node))
                       {:node node})))))
 

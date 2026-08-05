@@ -68,9 +68,9 @@
   (let [in      (audio-in)
         trigger (audio-in)
         ; Modulo-8 counter: advances by 1 on each trigger
-        counter (faust "(select2(%tr>0.5,_,float(int(_+1.0)%8))~_)"
+        counter (faust "(select2(%{tr}>0.5,_,float(int(_+1.0)%8))~_)"
                        {:tr trigger})
         ; Circular left rotation of input by counter positions
-        out     (faust "float(((int(%in)<<int(%ct))|(int(%in)>>(8-int(%ct))))&255)"
+        out     (faust "float(((int(%{in})<<int(%{ct}))|(int(%{in})>>(8-int(%{ct}))))&255)"
                        {:in in :ct counter})]
     (output :out out)))

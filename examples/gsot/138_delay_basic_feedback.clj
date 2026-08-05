@@ -71,7 +71,7 @@
         ms  (param :ms)
         fb  (param :fb)
         mx  (param :mx)
-        fdl (faust "fdl_loop ~ _\n  with { fdl_loop(fbs) = de.delay(int(ma.SR*5.0),int(max(0.0,%ms*ma.SR/1000.0)),%in+%fb*fbs); }"
+        fdl (faust "fdl_loop ~ _\n  with { fdl_loop(fbs) = de.delay(int(ma.SR*5.0),int(max(0.0,%{ms}*ma.SR/1000.0)),%{in}+%{fb}*fbs); }"
                    {:ms ms :in in :fb fb})
-        out (faust "(1.0-%mx)*%in+%mx*%fd" {:mx mx :in in :fd fdl})]
+        out (faust "(1.0-%{mx})*%{in}+%{mx}*%{fd}" {:mx mx :in in :fd fdl})]
     (output :out out)))

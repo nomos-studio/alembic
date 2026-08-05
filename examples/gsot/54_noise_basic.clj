@@ -51,5 +51,5 @@
 (defpatch! noise-basic
   {:params {:amp {:range [0.0 1.0] :default 1.0}}}
   (let [n   (faust "no.noise" {})
-        out (faust "%nn*%aa" {:nn n :aa (param :amp)})]
+        out (faust "%{nn}*%{aa}" {:nn n :aa (param :amp)})]
     (output out)))

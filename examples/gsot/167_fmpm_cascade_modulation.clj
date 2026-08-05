@@ -122,11 +122,11 @@
         i1  (param :i1)
         i2  (param :i2)
         md  (param :md)
-        f1  (faust "%fc*%r1" {:fc fc :r1 r1})
-        f2  (faust "%fc*%r2" {:fc fc :r2 r2})
-        m2  (faust "os.osc(%f2)" {:f2 f2})
-        m1  (faust "sin(2.0*ma.PI*os.phasor(1,%f1+(1.0-%md)*%i2*%f2*%m2)+%md*%i2*%m2)"
+        f1  (faust "%{fc}*%{r1}" {:fc fc :r1 r1})
+        f2  (faust "%{fc}*%{r2}" {:fc fc :r2 r2})
+        m2  (faust "os.osc(%{f2})" {:f2 f2})
+        m1  (faust "sin(2.0*ma.PI*os.phasor(1,%{f1}+(1.0-%{md})*%{i2}*%{f2}*%{m2})+%{md}*%{i2}*%{m2})"
                    {:f1 f1 :f2 f2 :i2 i2 :md md :m2 m2})
-        out (faust "sin(2.0*ma.PI*os.phasor(1,%fc+(1.0-%md)*%i1*%f1*%m1)+%md*%i1*%m1)"
+        out (faust "sin(2.0*ma.PI*os.phasor(1,%{fc}+(1.0-%{md})*%{i1}*%{f1}*%{m1})+%{md}*%{i1}*%{m1})"
                    {:fc fc :f1 f1 :i1 i1 :md md :m1 m1})]
     (output :out out)))

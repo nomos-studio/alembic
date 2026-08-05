@@ -106,10 +106,10 @@
         rt  (param :rt)
         ix  (param :ix)
         mx  (param :mx)
-        fm  (faust "%fc*%rt" {:fc fc :rt rt})
-        ph  (faust "os.phasor(1,%fm)" {:fm fm})
-        ms  (faust "sin(2.0*ma.PI*%ph)" {:ph ph})
-        mc  (faust "cos(2.0*ma.PI*%ph)" {:ph ph})
-        out (faust "(1.0+%mx*%mc)*sin(2.0*ma.PI*os.phasor(1,%fc)+%ix*%ms)"
+        fm  (faust "%{fc}*%{rt}" {:fc fc :rt rt})
+        ph  (faust "os.phasor(1,%{fm})" {:fm fm})
+        ms  (faust "sin(2.0*ma.PI*%{ph})" {:ph ph})
+        mc  (faust "cos(2.0*ma.PI*%{ph})" {:ph ph})
+        out (faust "(1.0+%{mx}*%{mc})*sin(2.0*ma.PI*os.phasor(1,%{fc})+%{ix}*%{ms})"
                    {:mx mx :mc mc :fc fc :ix ix :ms ms})]
     (output :out out)))

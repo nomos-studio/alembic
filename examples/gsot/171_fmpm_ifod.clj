@@ -112,9 +112,9 @@
         ix  (param :ix)
         bs  (param :bs)
         md  (param :md)
-        fm  (faust "%fc*%rt" {:fc fc :rt rt})
-        mo  (faust "os.osc(%fm)" {:fm fm})
-        fo  (faust "sin(2.0*ma.PI*os.phasor(1,%fc+(1.0-%md)*%ix*%fm*%mo)+%md*%ix*%mo)"
+        fm  (faust "%{fc}*%{rt}" {:fc fc :rt rt})
+        mo  (faust "os.osc(%{fm})" {:fm fm})
+        fo  (faust "sin(2.0*ma.PI*os.phasor(1,%{fc}+(1.0-%{md})*%{ix}*%{fm}*%{mo})+%{md}*%{ix}*%{mo})"
                    {:fc fc :fm fm :ix ix :md md :mo mo})
-        out (faust "%in*(%bs+%fo)" {:in in :bs bs :fo fo})]
+        out (faust "%{in}*(%{bs}+%{fo})" {:in in :bs bs :fo fo})]
     (output :out out)))
